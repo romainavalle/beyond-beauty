@@ -14,7 +14,7 @@ module.exports = {
     ]
   },
   router: {
-    //base: process.env.NODE_ENV === 'dev' ? '/' : '/beyond-beauty/'
+    base: process.env.NODE_ENV === 'dev' ? '/' : '/beyond-beauty/'
   },
   /*
   ** Customize the progress bar color

@@ -1,0 +1,13 @@
+#!/bin/sh -x
+# Git workflow hack script from: http://jonrohan.me/guide/git/dead-simple-git-workflow-for-agile-teams/
+ref=$(git symbolic-ref HEAD 2> /dev/null) || exit 0
+CURRENT="${ref#refs/heads/}"
+if [ -n "$1" ]; then
+	master_branch=$1
+else
+	master_branch="master"
+fi
+git checkout ${master_branch}
+git pull origin ${master_branch}
+git checkout ${CURRENT}
+git rebase ${master_branch}
