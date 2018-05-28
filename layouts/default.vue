@@ -1,8 +1,26 @@
 <template>
-  <div>
+  <div class="beyond-beauty">
     <nuxt/>
   </div>
 </template>
+
+<script>
+import Emitter from '~/assets/js/events'
+import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+export default {
+  methods:{
+    resize(){
+      this.$children[0].$children.forEach(child => {
+        child.resize(ResizeHelper.width(),ResizeHelper.height())
+      })
+    }
+  },
+
+  mounted () {
+    Emitter.on('GLOBAL_RESIZE', this.resize.bind(this))
+  }
+}
+</script>
 
 <style>
 html {

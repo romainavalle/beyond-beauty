@@ -5,7 +5,7 @@
   "author": "Romain Avalle <romain.avalle@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "NODE_ENV=dev nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -16,8 +16,10 @@
     "ajv": "^6.4.0",
     "dat.gui": "^0.7.1",
     "gsap": "^1.20.4",
+    "lodash": "^4.17.10",
     "nuxt": "^1.0.0",
-    "pixi.js": "^4.7.3"
+    "pixi.js": "^4.7.3",
+    "stats-js": "^1.0.0-alpha1"
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",

@@ -1,77 +1,51 @@
+
 <template>
   <section class="container">
+    <v-blob ref="blob" debug="true"></v-blob>
   </section>
 </template>
 
 <script>
-import Blob from '~/assets/js/Blob'
+import vBlob from '~/components/Blob.vue'
 if (process.browser) {
   var dat = require('dat.gui')
+  var Pixi = require('pixi.js')
 }
 export default {
+  components:{vBlob},
   methods:{
-    resize() {
-      this.canvas.width = window.innerWidth;
-      this.canvas.height = window.innerHeight;
+    setup () {
+      let width = window.innerWidth * 2
+      let height = window.innerHeight * 2
+      this.renderer = Pixi.autoDetectRenderer({ backgroundColor: 0xFFFFFF, antialias: false, width, height})
+      this.renderer.plugins.interaction.destroy()
+      this.$el.appendChild(this.renderer.view)
+      this.stage = new Pixi.Container()
+      this.container = new Pixi.Container()
+      this.blob = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.$refs.blob.canvas));
+      this.blob.tint = 0xCC0000
+      this.stage.addChild(this.blob)
     },
-    mouseMove(e) {
-      let blobPos = this.blob.position;
-      let diff = { x: e.clientX - blobPos.x, y: e.clientY - blobPos.y };
-      let dist = Math.sqrt((diff.x * diff.x) + (diff.y * diff.y));
-      let angle = null;
-      if(dist < this.blob.radius && this.hover === false) {
-        let vector = { x: e.clientX - blobPos.x, y: e.clientY - blobPos.y };
-        angle = Math.atan2(vector.y, vector.x);
-        this.hover = true;
-      } else if (dist > this.blob.radius && this.hover === true){ 
-        let vector = { x: e.clientX - blobPos.x, y: e.clientY - blobPos.y };
-        angle = Math.atan2(vector.y, vector.x);
-        this.hover = false;
-      }
-      
-      if(typeof angle == 'number') {
-        let nearestPoint = null;
-        let distanceFromPoint = 10 ;
-        this.blob.points.forEach((point)=> {
-          point.color = 'red'
-          if(Math.abs(angle - point.angle) < distanceFromPoint) {
-            nearestPoint = point;
-            distanceFromPoint = Math.abs(angle - point.angle);
-          } 
-        })
-        if(nearestPoint) {
-          let strengthVec = { x: this.oldMousePoint.x - e.clientX, y: this.oldMousePoint.y - e.clientY };
-          let strength = Math.min(Math.sqrt((strengthVec.x * strengthVec.x) + (strengthVec.y * strengthVec.y)) / 20 , 50);
-          //
-          nearestPoint.color = 'blue'
-          nearestPoint.acceleration = (strength * (this.hover ? -1 : 1));
-          nearestPoint.render()
-        }
-      }
-      
-      this.oldMousePoint.x = e.clientX;
-      this.oldMousePoint.y = e.clientY;
+    tick(){
+      this.blob.texture.update()
+      this.renderer.render(this.stage)
+      requestAnimationFrame(this.tick.bind(this));
     }
+
   },
   mounted() {
     //console.log(window)
     window.gui = new dat.default.GUI({name: 'Blob'});
     this.canvas = document.createElement('canvas');
-    this.$el.appendChild(this.canvas);
-    
-    this.blob = new Blob(this.canvas)
+    this.$el.appendChild(this.canvas)
+    this.canvas.height = 100
+    this.canvas.width = 100
 
-    window.addEventListener('resize', this.resize.bind(this));
-    this.resize();
-    
-    this.oldMousePoint = { x: 0, y: 0};
-    this.hover = false;
-  
-    window.addEventListener('mousemove', this.mouseMove.bind(this));
-    
-    this.blob.canvas = this.canvas;
-    this.blob.init();
-    this.blob.render();
+    this.$nextTick(()=>{
+      this.setup()
+      this.tick()
+    })
+
   }
 }
 

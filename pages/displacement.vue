@@ -20,7 +20,7 @@ export default {
       this.stage = new Pixi.Container()
 
         let img = new Image()
-        img.src = 'images/beyond-beauty-2.png'
+        img.src = 'images/beyond-beauty.png'
         let sprite = new Pixi.Sprite(new Pixi.Texture(new Pixi.BaseTexture(img)))
         sprite.interactive = false
         this.displacementTexture = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.canvas));
@@ -46,14 +46,14 @@ export default {
     this.$el.appendChild(this.canvas)
     this.canvas.height = 100
     this.canvas.width = 100
-    
+
     this.displacement = new Displacement(this.canvas)
 
     this.displacement.canvas = this.canvas;
     this.displacement.init();
     this.setup()
     this.tick()
-   
+
   }
 }
 
