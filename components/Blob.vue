@@ -25,10 +25,10 @@ export default {
 
     this.blob = new Blob(this.canvas, this.debug)
 
-    TweenMax.ticker.addEventListener('tick', ()=>{
+    /*TweenMax.ticker.addEventListener('tick', ()=>{
       this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
       this.blob.render();
-    })
+    })*/
 
   }
 }

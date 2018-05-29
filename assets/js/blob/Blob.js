@@ -3,8 +3,9 @@ import MouseHelper from '~/assets/js/utils/MouseHelper'
 import { TweenMax } from 'gsap'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 class Blob {
-  constructor(ctx, debug = false) {
+  constructor(ctx, index, debug = false) {
     this.ctx = ctx
+    this.index = index
     this.debug = debug
     this.color = 'red'
     this.numPoints = 4 + Math.floor(Math.random() * 5)
@@ -44,13 +45,13 @@ class Blob {
     }
     const cosAngle = Math.random() * Math.PI / 3
     const sinAngle = Math.random() * Math.PI / 3
-    this.position.x = Math.cos(cosAngle + Math.PI / 4 + Math.PI / 6) * (ResizeHelper.width() ) - ResizeHelper.width() / 2
-    this.position.y =  Math.sin(sinAngle + Math.PI / 4 + Math.PI / 6) * (ResizeHelper.height() ) + ResizeHelper.height() / 2
+    this.position.x = Math.cos(cosAngle + Math.PI / 4) * (ResizeHelper.width() ) - ResizeHelper.width() / 2
+    this.position.y =  Math.sin(sinAngle + Math.PI / 4) * (ResizeHelper.height() ) + ResizeHelper.height() / 2
     const x =  this.position.x + ResizeHelper.width() * Math.cos(Math.PI / 4) + ResizeHelper.width()
     const y = this.position.y - ResizeHelper.height() * Math.sin(Math.PI / 4) - ResizeHelper.height()
     const time = this.radius / 5
     if(!this.firstTime){
-      TweenMax.to(this.position, time,{x,y, onComplete:this.setBlob.bind(this)}).progress(Math.random())
+      TweenMax.to(this.position, time,{x,y, onComplete:this.setBlob.bind(this)}).progress(this.index / 10)
       this.firstTime = true
     }else{
       TweenMax.to(this.position, time,{x,y, onComplete:this.setBlob.bind(this)})

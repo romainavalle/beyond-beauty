@@ -1,3 +1,4 @@
+var path = require('path')
 module.exports = {
   /*
   ** Headers of the page
@@ -20,14 +21,23 @@ module.exports = {
   ** Customize the progress bar color
   */
   loading: { color: '#3B8070' },
-  /*
-  ** Build configuration
-  */
+
   build: {
     /*
     ** Run ESLint on save
     */
+
     extend (config, { isDev, isClient }) {
+      var stylus = config.module.rules[0].options.loaders.stylus.find( e => e.loader == 'stylus-loader');
+        // extend default options
+        Object.assign(stylus.options, {
+          import: [
+            /*'~nib/index.styl',
+            '~rupture/rupture/index.styl',*/
+            // require my own configs and variables and mixins and ..
+            path.resolve(__dirname, 'assets/stylus/main.styl')
+          ]
+        })
       if (isDev && isClient) {
         config.module.rules.push({
           enforce: 'pre',

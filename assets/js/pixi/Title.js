@@ -42,15 +42,30 @@ class Title {
       this.container.addChild(title)
       this.title_array.push(title)
     }
+    this.originalW = this.container.width
+    this.originalH = this.container.height
+
   }
   resize(w,h) {
+
     this.container.position.x = w * .5
+    const ratio = this.originalW / this.originalH
+    let containerW, containerH, screenRatio
+    if(w > h) {
+      screenRatio = w / (2280 / 2) * 0.7
+    }else{
+      screenRatio = h / (1760 / 2) * 0.7
+    }
+    this.container.width = this.originalW * screenRatio
+    this.container.height = this.originalH * screenRatio
+    this.container.position.x = w * .5
+    this.container.position.y = h * .5 - (this.container.height - 5000 * screenRatio) * .5
   }
   show(delay = 0){
     TweenMax.staggerTo(this.title_array, 1, {delay, rotation: 0, alpha: 1, ease: Quad.easeOut}, .1)
   }
   hide(){
-    TweenMax.staggerTo(this.title_array, 1, {rotation: -this.angle, alpha: 0, ease: Quad.easeIn}, .1, () => {
+    TweenMax.staggerTo(this.title_array, .75, {rotation: -this.angle, alpha: 0, ease: Quint.easeIn}, .1, () => {
       this.title_array.forEach(title => {
         TweenMax.set(title, {rotation: this.angle, alpha: 0})
       });

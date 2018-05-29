@@ -9,7 +9,7 @@ class Blobs {
     this.ctx = this.canvas.getContext('2d')
     this.blobs = []
     for (let index = 0; index < 8; index++) {
-      const blob = new Blob(this.ctx, false)
+      const blob = new Blob(this.ctx, index, false)
       this.blobs.push(blob)
     }
   }

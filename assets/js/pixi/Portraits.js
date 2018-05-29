@@ -1,0 +1,51 @@
+
+import Portrait from "~/assets/js/pixi/Portrait"
+import { pages } from '~/assets/data.json'
+
+if (process.browser) {
+  var Pixi = require('pixi.js')
+}
+class Portraits {
+  constructor(stage) {
+    this.stage = stage
+    this.portraits = []
+    this.init()
+  }
+
+  init() {
+    this.setupPortrait()
+  }
+
+  setupPortrait() {
+    this.portraitsprite = new Pixi.Sprite()
+    pages.forEach(page => {
+      const portraitContainer = new Pixi.Container()
+      const portrait = new Portrait(portraitContainer, page.id, page.color)
+      this.portraitsprite.addChild(portraitContainer)
+      this.portraits.push(portrait)
+    });
+    this.stage.addChild(this.portraitsprite)
+  }
+
+  load() {
+    pages.forEach((page, i) => {
+      this.portraits[i].load()
+    })
+  }
+
+  resize(w, h) {
+    pages.forEach((page, i) => {
+      this.portraits[i].resize(w, h)
+    })
+  }
+
+  hide(id) {
+    this.portraits[id].hide()
+  }
+
+  show(id, delay) {
+    this.portraits[id].show(delay * 1.2);
+  }
+
+}
+export default Portraits

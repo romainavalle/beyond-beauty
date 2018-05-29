@@ -2,11 +2,31 @@
   "pages":[
     {
       "id": "natalie-portman",
+      "pageId": "the-revolution-of-desire",
+      "pageName": "The Revolution of Desire",
+      "name": "Natalie Portman",
       "color": "#f7c8ae"
     },
     {
       "id": "emma-watson",
+      "pageId": "true-version-of-yourself",
+      "pageName": "True Version of Yourself",
+      "name": "Emma Watson",
       "color": "#f7b8b0"
+    },
+    {
+      "id": "jennifer-lawrence",
+      "pageId": "our-pursuit-of-happiness",
+      "pageName": "Our Pursuit of Happiness",
+      "name": "Jennifer Lawrence",
+      "color": "#f7cfae"
+    },
+    {
+      "id": "cara-delevingne",
+      "pageId": "just-wonderfull-creatures",
+      "pageName": "Just Wonderfull Creatures",
+      "name": "Cara Delevingne",
+      "color": "#f5d4a4"
     }
   ]
 }
