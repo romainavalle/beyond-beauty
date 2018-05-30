@@ -1,33 +1,34 @@
 <template>
-  <div class="HomeCanvas">
+  <div class='HomeCanvas'>
   </div>
 </template>
 
 <script>
-import ResizeHelper from "~/assets/js/utils/ResizeHelper";
+import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 
-import PixiBlobs from "~/assets/js/pixi/PixiBlobs";
-import Background from "~/assets/js/pixi/Background";
-import Portraits from "~/assets/js/pixi/Portraits";
-import Titles from "~/assets/js/pixi/Titles";
-import { pages } from "~/assets/data.json";
-import Emitter from "~/assets/js/events";
-import { mapGetters } from "vuex";
+import PixiBlobs from '~/assets/js/pixi/PixiBlobs';
+import Background from '~/assets/js/pixi/Background';
+import Portraits from '~/assets/js/pixi/Portraits';
+import Titles from '~/assets/js/pixi/Titles';
+import { pages } from '~/assets/data.json';
+import Emitter from '~/assets/js/events';
+import { mapState, mapGetters } from 'vuex';
 
 if (process.browser) {
-  var Pixi = require("pixi.js");
+  var Pixi = require('pixi.js');
 }
 export default {
   data() {
     return {};
   },
   computed: {
-    ...mapGetters(["currentHomeSlideId"])
+    ...mapState(['currentHomeSlideId', 'route']),
+    ...mapGetters(['currentPageId'])
   },
   methods: {
-    load() {
-      this.portraits.load();
-      this.titles.load();
+    onReady(){
+      this.portraits.load()
+      this.titles.load()
     },
     tick() {
       this.pixiBlobs.tick();
@@ -37,36 +38,56 @@ export default {
       this.pixiBlobs.resize(w, h);
       this.portraits.resize(w, h);
       this.titles.resize(w, h);
+      this.background.resize(w, h);
       this.renderer.resize(w, h);
     },
     hide(id) {
       this.portraits.hide(id);
       this.titles.hide(id);
     },
-    show(delay) {
+    showHomeSlide(delay) {
+      this.portraitsContainer.visible = true
+      this.background.hide()
       this.pixiBlobs.setTint(pages[this.currentHomeSlideId].color);
       this.portraits.show(this.currentHomeSlideId, delay * 1.2);
-      this.titles.show(this.currentHomeSlideId, delay * 0.6);
+      this.titles.show(this.currentHomeSlideId, delay * 0.6, 1);
+      this.titles.scaleTo(1, delay * 0.6, 1);
+    },
+    showPage(delay, time) {
+      this.background.show()
+      this.pixiBlobs.setTint(pages[this.currentPageId].color);
+      if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId, delay * 1.2);
+      this.titles.show(this.currentPageId, delay * 0.6, time);
+      this.titles.scaleTo(.7, delay * 0.6, time);
     },
     portraitClick() {
       this.$router.push({
-        name: "story-pageId",
+        name: 'story-pageId',
         params: { pageId: pages[this.currentHomeSlideId].pageId }
       });
     }
   },
   watch: {
     currentHomeSlideId(val, old) {
-      if (old != -1) {
-        this.hide(old);
-        this.show(1);
-      } else {
-        this.show(0);
+      if(this.route.name === 'index'){
+        if (old != -1) {
+          this.hide(old);
+          this.showHomeSlide(1);
+        } else {
+          this.showHomeSlide(0);
+        }
+      }
+    },
+    'route.name'(val, old) {
+      if(val !== 'index'){
+        this.showPage(.5, 1)
+      }else{
+        this.showHomeSlide(1)
       }
     }
   },
   beforeDestroy() {
-    Emitter.removeListener("PORTRAIT_CLICK", this._portraitClick);
+    Emitter.removeListener('PORTRAIT_CLICK', this._portraitClick);
   },
 
   mounted() {
@@ -101,14 +122,19 @@ export default {
     this.portraits = new Portraits(this.portraitsContainer);
     this.stage.addChild(this.portraitsContainer);
 
-    this.load();
-
-    Emitter.on("PORTRAIT_CLICK", this._portraitClick);
+    setTimeout(()=>{
+      if(this.route.name !== 'index'){
+        this.background.show(0)
+        this.showPage(0)
+        this.portraitsContainer.visible = false
+      }
+    },1000)
+    Emitter.on('PORTRAIT_CLICK', this._portraitClick);
   }
 };
 </script>
 
-<style lang="stylus" scoped>
+<style lang='stylus' scoped>
 .HomeCanvas {
   height: 100%;
   overflow: hidden;

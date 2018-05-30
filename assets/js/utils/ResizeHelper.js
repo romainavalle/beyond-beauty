@@ -9,7 +9,6 @@ class ResizeHelper {
     if(!process.browser) return
     this.dimension = memoize(this._dimension);
     window.addEventListener('resize', (e) => delay(() => this.onResize(e), 300))
-    setTimeout(() => this.onResize(), 1000)
   }
 
   onResize(e) {

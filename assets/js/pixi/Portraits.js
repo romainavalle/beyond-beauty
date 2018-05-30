@@ -47,5 +47,9 @@ class Portraits {
     this.portraits[id].show(delay * 1.2);
   }
 
+  disappear(id, delay) {
+    this.portraits[id].disappear(delay * 1.2);
+  }
+
 }
 export default Portraits

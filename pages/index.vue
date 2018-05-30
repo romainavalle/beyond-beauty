@@ -8,9 +8,8 @@
 </template>
 
 <script>
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import data from '~/assets/data.json'
-import { mapGetters, mapActions } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 export default {
   data(){
     return {
@@ -18,7 +17,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['currentHomeSlideId']),
+    ...mapState(['currentHomeSlideId']),
     name(){
       return this.currentHomeSlideId !== -1 ? data.pages[this.currentHomeSlideId].name : ''
     },
@@ -67,8 +66,10 @@ export default {
     clearTimeout(this.nextPageTimer)
     clearTimeout(this.idleTimer)
   },
+
   mounted() {
-    this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), 1000)
+    const time = this.currentHomeSlideId === -1 ? 1000 : 10000
+    this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), time)
   }
 }
 
@@ -89,7 +90,7 @@ export default {
     position absolute
   button
     align-items center
-    color black
+    color $colors-black
     display flex
     letter-spacing $unitH * 4
     font-size 10 * $unitH
@@ -101,7 +102,7 @@ export default {
     pointer-events auto
     &:before,
     &:after
-      background black
+      background $colors-black
       content ''
       display block
       height 1px

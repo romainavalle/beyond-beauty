@@ -1,4 +1,5 @@
 import Vuex from 'vuex'
+import { pages } from '~/assets/data.json'
 const createStore = () => {
   return new Vuex.Store({
     state: {
@@ -17,6 +18,13 @@ const createStore = () => {
     getters: {
       currentHomeSlideId: state => {
         return state.currentHomeSlideId
+      },
+      currentPageId: state => {
+        const page = pages.find(p => {return p.pageId === state.route.params.pageId})
+        return pages.indexOf(page)
+      },
+      route: state => {
+        return state.route
       }
     }
   })

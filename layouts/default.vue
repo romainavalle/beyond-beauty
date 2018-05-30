@@ -1,7 +1,7 @@
 <template>
   <div class="beyond-beauty">
-    <v-home-canvas ref="homeCanvas"></v-home-canvas>
-    <nuxt/>
+      <v-home-canvas ref="homeCanvas"></v-home-canvas>
+    <nuxt v-if="isLoaded"/>
   </div>
 </template>
 
@@ -10,7 +10,18 @@ import Emitter from '~/assets/js/events'
 import Stats from 'stats-js'
 import vHomeCanvas from '~/components/HomeCanvas.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+if(process.browser){
+  var MMUnpacker = require('mm-unpacker')
+}
+const load = require('load-asset');
+
+
 export default {
+  data(){
+    return {
+      isLoaded: false
+    }
+  },
   components:{vHomeCanvas},
   methods:{
     resize(){
@@ -36,13 +47,30 @@ export default {
       this.stats.end()
       requestAnimationFrame(this.tick.bind(this));
 
+    },
+    onReady(){
+      Emitter.on('GLOBAL_RESIZE', this.resize.bind(this))
+      this.setDebug()
+      this.$children[0].$children.forEach(child => {
+        child.onReady && child.onReady()
+      })
+      if(process.browser)this.$refs.homeCanvas.onReady()
+      this.$nextTick(this.tick.bind(this))
+
+      if(process.browser)this.$nextTick(()=>{
+        this.resize()
+      })
     }
   },
 
-  mounted () {
-    Emitter.on('GLOBAL_RESIZE', this.resize.bind(this))
-    this.setDebug()
-    setTimeout(this.tick.bind(this), 1000)
+  async mounted () {
+    const path = process.env.NODE_ENV === 'dev' ? '/' : ''
+    const assets =  await load.all([{ url: `${path}packed/pack.json`, type: 'json' },{ url: `${path}packed/pack.pack`, type: 'binary' }])
+    if(process.browser){
+      window.unpacker = new MMUnpacker(assets[1], assets[0]);
+    }
+    this.isLoaded = true
+    this.$nextTick(this.onReady.bind(this))
   }
 }
 </script>
