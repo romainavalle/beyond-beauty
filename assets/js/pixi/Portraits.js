@@ -27,9 +27,9 @@ class Portraits {
     this.stage.addChild(this.portraitsprite)
   }
 
-  load() {
+  load(getter) {
     pages.forEach((page, i) => {
-      this.portraits[i].load()
+      this.portraits[i].load(getter)
     })
   }
 

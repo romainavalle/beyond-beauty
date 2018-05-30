@@ -10,6 +10,7 @@ import Emitter from '~/assets/js/events'
 import Stats from 'stats-js'
 import vHomeCanvas from '~/components/HomeCanvas.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+import { mapActions } from 'vuex'
 if(process.browser){
   var MMUnpacker = require('mm-unpacker')
 }
@@ -24,6 +25,7 @@ export default {
   },
   components:{vHomeCanvas},
   methods:{
+    ...mapActions(['setPacker']),
     resize(){
      this.$children[0].$children.forEach(child => {
         child.resize && child.resize(ResizeHelper.width(),ResizeHelper.height())
@@ -49,6 +51,7 @@ export default {
 
     },
     onReady(){
+      this.isLoaded = true
       Emitter.on('GLOBAL_RESIZE', this.resize.bind(this))
       this.setDebug()
       this.$children[0].$children.forEach(child => {
@@ -67,9 +70,10 @@ export default {
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
     const assets =  await load.all([{ url: `${path}packed/pack.json`, type: 'json' },{ url: `${path}packed/pack.pack`, type: 'binary' }])
     if(process.browser){
-      window.unpacker = new MMUnpacker(assets[1], assets[0]);
+      const unpacker = new MMUnpacker(assets[1], assets[0]);
+      window.unpacker = unpacker
+      this.setPacker(unpacker)
     }
-    this.isLoaded = true
     this.$nextTick(this.onReady.bind(this))
   }
 }

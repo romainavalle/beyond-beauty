@@ -23,12 +23,12 @@ export default {
   },
   computed: {
     ...mapState(['currentHomeSlideId', 'route']),
-    ...mapGetters(['currentPageId'])
+    ...mapGetters(['currentPageId', 'getURI'])
   },
   methods: {
     onReady(){
-      this.portraits.load()
-      this.titles.load()
+      this.portraits.load(this.getURI)
+      this.titles.load(this.getURI)
     },
     tick() {
       this.pixiBlobs.tick();
@@ -91,6 +91,7 @@ export default {
   },
 
   mounted() {
+
     this._portraitClick = this.portraitClick.bind(this);
     const width = ResizeHelper.width();
     const height = ResizeHelper.height();

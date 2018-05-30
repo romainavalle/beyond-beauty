@@ -41,10 +41,10 @@ class Titles {
     });
   }
 
-  load() {
+  load(getter) {
     pages.forEach((page, i) => {
-      this.titlesBorder[i].load()
-      this.titles[i].load()
+      this.titlesBorder[i].load(getter)
+      this.titles[i].load(getter)
     })
   }
 
