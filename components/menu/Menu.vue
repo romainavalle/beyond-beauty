@@ -22,7 +22,8 @@ export default {
   name: "menuEl",
   data(){
     return {
-      pages
+      pages,
+      isTicking: false
     }
   },
   components: {vMenuLink, vMenuDraggable, vMenuCitations, vMenuHeader, vMenuFooter},
@@ -31,7 +32,7 @@ export default {
   },
   methods:{
     tick() {
-      return
+      if(this.isTicking)this.$refs.menuDraggable.tick()
     },
     resize(w, h) {
       this.$refs.menuDraggable.resize(w,h)
@@ -39,7 +40,7 @@ export default {
     show(){
       TweenMax.set(this.$el, {xPercent: 100, autoAlpha: 1})
       TweenMax.set(this.$refs.line, {xPercent: 100})
-      TweenMax.to(this.$el, .7,{xPercent: 0, ease: Quad.easeInOut})
+      TweenMax.to(this.$el, .7,{xPercent: 0, ease: Quad.easeInOut, onComplete: () => { this.isTicking = true }})
       TweenMax.to(this.$refs.line, .7,{delay:.35, xPercent: 0, ease: Quad.easeInOut})
       this.$refs.menuDraggable.show()
       this.$refs.header.show(1)
@@ -47,12 +48,17 @@ export default {
       this.$refs.menuCitations.show()
     },
     hide() {
-      TweenMax.to(this.$el, .7, {autoAlpha: 0})
+      //TweenMax.to(this.$el, .7, {autoAlpha: 0})
+      TweenMax.to(this.$el, .7, {delay: .4, xPercent: -100, ease: Quad.easeIn, onComplete: () => { this.isTicking = false }})
+      TweenMax.to(this.$refs.line, .7,{ xPercent: -100, ease: Quad.easeIn})
+
+      this.$refs.menuDraggable.hide()
       this.$refs.menuCitations.hide()
       this.$refs.header.hide()
       this.$refs.footer.hide()
     },
     onReady(){
+      TweenMax.set(this.$el, {autoAlpha: 0})
     }
   },
   watch:{
@@ -65,7 +71,6 @@ export default {
     }
   },
   mounted() {
-    TweenMax.set(this.$el, {autoAlpha: 0})
     TweenMax.set(this.$el, {xPercent: 100, autoAlpha: 0})
   }
 }
@@ -81,6 +86,7 @@ export default {
   right 0
   bottom 0
   z-index 15
+  overflow hidden
   .line
     width 100%
     height 1px

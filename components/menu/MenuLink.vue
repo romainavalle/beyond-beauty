@@ -27,6 +27,9 @@ export default {
   methods:{
     resize(w,h){
     },
+    tick(x){
+      TweenMax.set(this.$refs.img, {x})
+    }
   },
   mounted() {
   }

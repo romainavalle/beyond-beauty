@@ -19,7 +19,8 @@ if (process.browser) {
 }
 export default {
   data() {
-    return {};
+    return {
+    };
   },
   computed: {
     ...mapState(['currentHomeSlideId', 'route']),
@@ -55,7 +56,6 @@ export default {
     },
     showPage(delay, time) {
       this.background.show()
-      console.log(this.currentPageId)
       this.pixiBlobs.setTint(pages[this.currentPageId].color);
       if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId, delay * 1.2);
       this.titles.show(this.currentPageId, delay * 0.6, time);
@@ -81,6 +81,7 @@ export default {
     },
     'route.name'(val, old) {
       if(val !== 'index'){
+        this.hide(this.currentHomeSlideId)
         this.showPage(.5, 1)
       }else{
         this.showHomeSlide(1)
@@ -140,7 +141,7 @@ export default {
 .HomeCanvas {
   height: 100%;
   overflow: hidden;
-  position: relative;
+  position: absolute;
   width: 100%;
 }
 </style>

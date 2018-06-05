@@ -1,16 +1,18 @@
 <template>
   <section class="Story">
+    <v-story-top></v-story-top>
   </section>
 </template>
 
 <script>
-import { mapActions } from 'vuex';
-import { mapGetters } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
+import vStoryTop from '~/components/story/StoryTop.vue'
 export default {
   data(){
     return {
     }
   },
+  components: { vStoryTop },
   computed:{
     ...mapGetters(['currentPageId'])
   },

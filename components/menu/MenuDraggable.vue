@@ -28,6 +28,11 @@ export default {
   components:{vMenuLink},
   methods:{
     tick() {
+      this.$refs.link.forEach((el, i) => {
+        let t = (-this.snapValues[i] + this.draggable[0].x) / (ResizeHelper.width())
+        const ease = t > 0 ? (--t)*t*t+1 :t*t*t
+        el.tick(ease * 100)
+      })
     },
     resize(w, h) {
       TweenMax.set(this.$el, {x: ResizeHelper.width() / 2 - ( 160 * 4 * ResizeHelper.width() / 2880)})
@@ -35,19 +40,16 @@ export default {
         el.resize(w,h)
       })
       for (let i = 0; i< pages.length; i++) {
-        this.snapValues.push(Math.round(-i * 160 * 8 * ResizeHelper.width() / 2880))
         this.$set(this.snapValues, i, Math.round(-i * 160 * 8 * ResizeHelper.width() / 2880))
       }
       if(this.draggable && this.draggable[0]){
-        this.draggable[0].update()
         this.slideDraggable()
       }
     },
     slideDraggable(){
-      TweenMax.set(this.$refs.content ,{
-        x: -this.currentId * 160 * 8 * ResizeHelper.width() / 2880, force3D:true
+      TweenMax.to(this.$refs.content , .5,{
+        x: -this.currentId * 160 * 8 * ResizeHelper.width() / 2880, force3D:true, ease: Quint.easeOut,onComplete:()=>{this.draggable[0].update()}
       })
-      this.draggable[0].update()
     },
     resetDraggable(){
       this.draggable = Draggable.create(this.$refs.content , {
@@ -92,8 +94,10 @@ export default {
       TweenMax.fromTo(this.$refs.content, .7, {x: ResizeHelper.width()}, {delay: .7, x: 0, ease: Quad.easeInOut, force3D:true})
       TweenMax.set(this.$el, {autoApha: 1})
     },
+    hide() {
+      TweenMax.to(this.$refs.content, 1, {x: '-=' + ResizeHelper.width(), ease: Quad.easeIn, force3D:true})
+    },
     onReady(){
-
     }
 
   },

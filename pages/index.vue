@@ -34,7 +34,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentHomeSlideId'])
+    ...mapState(['currentHomeSlideId', 'isMenuOpen'])
   },
   methods:{
     ...mapActions(['setCurrentHomeSlideId']),
@@ -85,6 +85,15 @@ export default {
   beforeDestroy(){
     clearTimeout(this.nextPageTimer)
     clearTimeout(this.idleTimer)
+  },
+  watch:{
+    isMenuOpen(val){
+      if(val){
+        if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
+      }else{
+        this.setTimer(10000)
+      }
+    }
   },
 
   mounted() {
@@ -163,7 +172,7 @@ export default {
         transform translateX(5 * $unitH)
     .word
       position relative
-      width 60 * $unitH
+      width 100 * $unitH
       height 14 * 1.3 * $unitH
       transform translateX(3 * $unitH)
       &>span

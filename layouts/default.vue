@@ -1,6 +1,6 @@
 <template>
   <div class="beyond-beauty">
-    <v-logo></v-logo>
+    <component :is="logo"></component>
     <v-home-canvas ref="homeCanvas"></v-home-canvas>
     <v-menu ref="siteMenu"></v-menu>
     <nuxt v-if="isLoaded"/>
@@ -12,7 +12,8 @@ import Emitter from '~/assets/js/events'
 import Stats from 'stats-js'
 
 import vHomeCanvas from '~/components/HomeCanvas.vue'
-import vLogo from '~/components/Logo.vue'
+import vLogo from '~/components/common/Logo.vue'
+import vMenuButton from '~/components/common/vMenuButton.vue'
 import vMenu from '~/components/menu/Menu.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
@@ -26,12 +27,13 @@ const load = require('load-asset');
 export default {
   data(){
     return {
-      isLoaded: false
+      isLoaded: false,
+      logo: this.$route.name === 'index' ? vLogo : vMenuButton
     }
   },
   computed:{
   },
-  components:{vHomeCanvas, vMenu, vLogo},
+  components:{vHomeCanvas, vMenu, vLogo, vMenuButton},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen']),
     resize(){

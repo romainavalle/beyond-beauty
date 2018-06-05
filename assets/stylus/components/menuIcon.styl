@@ -1,0 +1,24 @@
+.MenuButton, .Logo
+  .icon
+    width 24 * $unitH
+    height 7px
+    overflow hidden
+    span
+      transform translateX(-28 * $unitH)
+      height 1px
+      width 52 * $unitH
+      display block
+      margin-bottom 2px
+      background linear-gradient(to left, $colors-black, $colors-black 24 * $unitH, transparent 24 * $unitH, transparent 28 * $unitH, $colors-black 28 * $unitH, $colors-black 52 * $unitH)
+      transition transform .3s ease-in-out-quad
+      &:nth-child(2)
+        transition-delay .1s
+      &:nth-child(3)
+        transition-delay .2s
+        margin-left -10 * $unitH
+  &:hover
+    .icon
+      span
+        transform translateX(0px)
+        &:nth-child(3)
+          transform translateX(20 * $unitH)
