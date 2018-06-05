@@ -1,7 +1,9 @@
 {
   "$colors": {
-    "d-black": "#1a1a1a",
+    "dBlack": "#1a1a1a",
     "black": "#212121",
-    "grey": "#4e4e4b"
+    "grey": "#4e4e4b",
+    "dGrey": "#363636",
+    "white": "#e2e5df"
   }
 }

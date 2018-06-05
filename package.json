@@ -16,7 +16,7 @@
   "dependencies": {
     "ajv": "^6.4.0",
     "dat.gui": "^0.7.1",
-    "gsap": "^1.20.4",
+    "gsap": "git+https://manudurgoni:dibsHk2uRKSe9rsbMKjL@gitlab.upian.com/upian/Tools/gsap.git",
     "load-asset": "^1.2.0",
     "lodash": "^4.17.10",
     "mm-unpacker": "^3.0.3",

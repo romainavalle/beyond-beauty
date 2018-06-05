@@ -28,5 +28,23 @@
       "name": "Cara Delevingne",
       "color": "#f5d4a4"
     }
+  ],
+  "citations":[
+    {
+      "author" : "Edmund Burke 1",
+      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+    },
+    {
+      "author" : "Edmund Burke 2",
+      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+    },
+    {
+      "author" : "Edmund Burke 3",
+      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+    },
+    {
+      "author" : "Edmund Burke 4",
+      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+    }
   ]
 }

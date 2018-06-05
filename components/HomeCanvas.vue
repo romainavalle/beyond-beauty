@@ -49,12 +49,13 @@ export default {
       this.portraitsContainer.visible = true
       this.background.hide()
       this.pixiBlobs.setTint(pages[this.currentHomeSlideId].color);
-      this.portraits.show(this.currentHomeSlideId, delay * 1.2);
-      this.titles.show(this.currentHomeSlideId, delay * 0.6, 1);
+      this.portraits.show(this.currentHomeSlideId, 0.2 * delay);
+      this.titles.show(this.currentHomeSlideId, delay * 0.8, 1);
       this.titles.scaleTo(1, delay * 0.6, 1);
     },
     showPage(delay, time) {
       this.background.show()
+      console.log(this.currentPageId)
       this.pixiBlobs.setTint(pages[this.currentPageId].color);
       if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId, delay * 1.2);
       this.titles.show(this.currentPageId, delay * 0.6, time);

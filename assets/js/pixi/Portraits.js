@@ -44,11 +44,11 @@ class Portraits {
   }
 
   show(id, delay) {
-    this.portraits[id].show(delay * 1.2);
+    this.portraits[id].show(delay);
   }
 
   disappear(id, delay) {
-    this.portraits[id].disappear(delay * 1.2);
+    this.portraits[id].disappear(delay);
   }
 
 }

@@ -8,7 +8,6 @@ class Portait {
     this.container = container
     this.id = id
     this.color = color
-    this.step = 0
     this.originalW = 1652 / 2
     this.originalH = 2442 / 2
     this.currentMaskTween = 0
@@ -106,8 +105,10 @@ class Portait {
       this.maskDisappearTint_array.push(maskStep)
       this.container.addChild(maskStep)
     }
-    this.portrait.mask = this.mask_array[0]
-    this.mask_array[this.currentMask].visible = true
+    setTimeout(()=>{
+      this.portrait.mask = this.mask_array[0]
+      this.mask_array[this.currentMask].visible = true
+    }, 16)
   }
   resize(w, h) {
     const ratio = this.originalW / this.originalH
@@ -123,18 +124,22 @@ class Portait {
     this.container.width = containerW
     this.container.height = containerH
     this.container.position.x = w * .5 - containerW / 2
-    this.container.position.y = h * .5 - containerH / 2
+    this.container.position.y = this.posY = h * .5 - containerH / 2
   }
   show(delay = 0) {
-    delay *= 60
     this.currentMaskTween = 0
     this.currentMask = 0
     this.portrait.mask = this.mask_array[0]
     this.mask_array[this.currentMask].visible = true
-    TweenMax.to(this, 42, { useFrames: true, delay, currentMaskTween: 42, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) })
+    TweenMax.to(this, 42, { useFrames: true, delay, currentMaskTween: 42, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+    TweenMax.fromTo(this.container.position, 1, {y: this.posY + 50}, {delay: delay + .5, y: this.posY, ease:Quad.easeOut})
   }
   hide() {
-    TweenMax.to(this, 38, { useFrames: true, delay: 20, currentMaskTween: 80, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: () => { this.currentMaskTween = 0 } })
+    TweenMax.to(this, 38, { useFrames: true, currentMaskTween: 80, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: this.onHideComplete.bind(this) }).timeScale(.5)
+    TweenMax.to(this.container.position, 1, { y: this.posY - 50, ease:Quad.easeIn})
+  }
+  onHideComplete(){
+     this.currentMaskTween = 0
   }
   disappear() {
     this.currentMaskDisappearTween = 0
@@ -148,15 +153,17 @@ class Portait {
         this.maskDisappearPortrait_array[this.currentMaskDisappear].visible = false
         this.maskDisappearTint_array[this.currentMaskDisappear].visible = false
       }
-    })
+    }).timeScale(.5)
   }
   tweenUpdate() {
+    if(this.currentMask === Math.round(this.currentMaskTween))return
     this.mask_array[this.currentMask].visible = false
     this.currentMask = Math.round(this.currentMaskTween)
     this.portrait.mask = this.mask_array[this.currentMask]
     this.mask_array[this.currentMask].visible = true
   }
   tweenDisappearUpdate() {
+    if(this.currentMaskDisappear === Math.round(this.currentMaskDisappearTween))return
     this.maskDisappearPortrait_array[this.currentMaskDisappear].visible = false
     this.maskDisappearTint_array[this.currentMaskDisappear].visible = false
 

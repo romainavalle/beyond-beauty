@@ -4,7 +4,8 @@ const createStore = () => {
   return new Vuex.Store({
     state: {
       currentHomeSlideId: -1,
-      packer: null
+      packer: null,
+      isMenuOpen: false
     },
     mutations: {
       SET_CURRENT_HOME_SLIDE_ID (state, id) {
@@ -12,9 +13,15 @@ const createStore = () => {
       },
       SET_PACKER (state, packer) {
         state.packer = packer
+      },
+      SET_MENU_OPEN (state, bool){
+        state.isMenuOpen = bool
       }
     },
     actions: {
+      setMenuOpen ({ commit }, bool) {
+        commit('SET_MENU_OPEN', bool)
+      },
       setCurrentHomeSlideId ({ commit }, /*{ commit }, { app, isStatic }*/ id) {
         commit('SET_CURRENT_HOME_SLIDE_ID', id)
       },

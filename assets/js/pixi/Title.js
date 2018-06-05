@@ -10,6 +10,7 @@ class Title {
     this.isBordered = isBordered
     this.angle = Math.PI / 25
     this.title_array = []
+    if(!this.isBordered)this.container.tint = 0xf1f3ee
     //this.init()
   }
 
