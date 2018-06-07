@@ -7,7 +7,10 @@
       </svg>
       <span>0 {{id + 1}}</span>
     </div>
-    <p v-text="paragraph" :data-text="paragraph" :class="paragraphClass"></p>
+    <div class="content">
+      <p v-text="paragraph.text" :data-text="paragraph.text" :class="paragraphClass" class="text"></p>
+      <p v-html="paragraph.html" class="html" ref="html"></p>
+    </div>
   </div>
 </template>
 <script>
@@ -40,6 +43,7 @@ export default {
     showPart() {
       //TweenMax.to(window, 1, {scrollTo: {y: Utils.offset(this.$el).top}, overwrite: 1, ease: Quad.easeOut})
       TweenMax.to(this.$el, .5,{opacity: 1, ease:Quad.easeInOut})
+      TweenMax.staggerTo(this.$spans, .3,{opacity: 1, ease:Quad.easeOut}, 1)
       this.paragraphClass = 'active'
       TweenMax.to(this.$refs.load, 3, {'stroke-dashoffset': 60, ease: Quad.easeOut})
       Emmiter.on('SOUND_LOADED', this.activateSound.bind(this))
@@ -49,6 +53,7 @@ export default {
       TweenMax.to(this.$refs.timer, .5,{'stroke-dashoffset': 352, ease: Quad.easeOut})
       TweenMax.to(this.$el, .5,{opacity: .5, ease:Quad.easeInOut})
       this.isActive = false
+      TweenMax.to(this.$spans, .3,{opacity: 0, ease:Quad.easeOut, overwrite: 1}, 1)
       Emmiter.removeListener('SOUND_LOADED', this.activateSound.bind(this))
     },
     activateSound() {
@@ -62,12 +67,15 @@ export default {
     }
   },
   beforeDestory() {
+    TweenMax.killAllTweensOf(this.spans)
     Emmiter.removeListener('SOUND_LOADED', this.activateSound.bind(this))
   },
   mounted(){
     this._activateSound = this.activateSound.bind(this)
     this._deactivateSound = this.deactivateSound.bind(this)
-    TweenMax.set(this.$el, {opacity: 0.5})
+    TweenMax.set(this.$el, {opacity: 0.3})
+    this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
+    TweenMax.set(this.$spans, {opacity: 0})
   }
 }
 
@@ -79,12 +87,18 @@ export default {
   justify-content space-between
   & + .StorySpeechPart
     margin-top 60 * $unitV
+  .content
+    width 640 * $unitH
+    position relative
   p
     font-size 26 * $unitH
     font-weight normal
     line-height 40 * $unitH
-    color $colors-grey
-    width 640 * $unitH
+    &.text
+      color $colors-dGrey
+    &.html
+      position absolute
+      top 0
   .number
     height 210 * $unitH
     width 210 * $unitH

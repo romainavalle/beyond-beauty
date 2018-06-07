@@ -94,7 +94,7 @@ export default {
     position relative
   h3:before,
   strong:before,
-  p:before
+  p.text:before
     content attr(data-text)
     top 0
     position absolute
@@ -105,9 +105,14 @@ export default {
     background-size 500px 500px !important
   strong.active:before
     background-size 500px 500px !important
-  p.active:before
+  p.text.active:before
     background-size 1000px 1000px !important
     transition background-size 1s ease-in-out-quad
+  p.text:before
+    background radial-gradient(rgba(#4e4e4b,1) 50%,rgba(#4e4e4b,0) 100%) no-repeat
+    background-size 0px 0px
+    background-position center center
+    -webkit-background-clip text
   h3
     font-size 148 * $unitH
     font-weight normal
@@ -118,57 +123,55 @@ export default {
     font-weight normal
     margin 60 * $unitV 0 60 * $unitV 60 * $unitH
     display block
-  p
-    font-size 26 * $unitH
-    font-weight normal
-    line-height 40 * $unitH
-    color $colors-grey
   &.speech-0
-    .number span
+    .number span,
+    p.html span
       color #f7c8ae
     .number svg .timer
       stroke #f7c8ae
     h3:before,
-    strong:before,
-    p:before
+    strong:before
       background radial-gradient(rgba(#f7c8ae,1) 50%,rgba(#f7c8ae,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
   &.speech-1
-    .number span
+    .number span,
+    p.html span
       color #f7b8b0
     .number svg .timer
       stroke #f7b8b0
     h3:before,
-    strong:before,
-    p:before
+    strong:before
       background radial-gradient(rgba(#f7b8b0,1) 50%,rgba(#f7b8b0,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
+
   &.speech-2
-    .number span
+    .number span,
+    p.html span
       color #f7cfae
     .number svg .timer
       stroke #f7cfae
     h3:before,
-    strong:before,
-    p:before
+    strong:before
       background radial-gradient(rgba(#f7cfae,1) 50%,rgba(#f7cfae,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
+
   &.speech-3
-    .number span
+    .number span,
+    p.html span
       color #f5d4a4
     .number svg .timer
       stroke #f5d4a4
     h3:before,
-    strong:before,
-    p:before
+    strong:before
       background radial-gradient(rgba(#f5d4a4,1) 50%,rgba(#f5d4a4,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
+
 </style>
