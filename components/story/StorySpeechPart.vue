@@ -41,7 +41,7 @@ export default {
       //TweenMax.to(window, 1, {scrollTo: {y: Utils.offset(this.$el).top}, overwrite: 1, ease: Quad.easeOut})
       TweenMax.to(this.$el, .5,{opacity: 1, ease:Quad.easeInOut})
       this.paragraphClass = 'active'
-      TweenMax.to(this.$refs.load, 3, {'stroke-dashoffset': 0, ease: Quad.easeOut})
+      TweenMax.to(this.$refs.load, 3, {'stroke-dashoffset': 60, ease: Quad.easeOut})
       Emmiter.on('SOUND_LOADED', this.activateSound.bind(this))
     },
     hidePart() {
