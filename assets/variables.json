@@ -4,6 +4,10 @@
     "black": "#212121",
     "grey": "#4e4e4b",
     "dGrey": "#363636",
-    "white": "#e2e5df"
+    "white": "#e2e5df",
+    "speech-1": "#f7c8ae",
+    "speech-2": "#f7b8b0",
+    "speech-3": "#f7cfae",
+    "speech-4": "#f5d4a4"
   }
 }

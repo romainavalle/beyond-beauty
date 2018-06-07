@@ -5,28 +5,64 @@
       "pageId": "the-revolution-of-desire",
       "pageName": "The Revolution of Desire",
       "name": "Natalie Portman",
-      "color": "#f7c8ae"
+      "color": "#f7c8ae",
+      "story":{
+        "name": "Woman March",
+        "date": "16.12.18",
+        "texts": [
+          "I keep hearing a particular gripe about this culture shift, and maybe you have too. Some people have been calling this movement ‘puritanical’ or ‘a return to Victorian values,’ where men can’t behave or speak sexually around dainty, delicate, fragile women. To these people, I want to say: the current system is puritanical. Maybe men can say and do whatever they want, but women cannot. The current system inhibits women from expressing our desires, wants, and needs; from seeking our pleasure. Let me tell you about my own experience.",
+          "I turned 12 on the set of my first film, The Professional, in which I played a young girl who befriends a hit man and hopes to avenge the murder of her family. [...] I was so excited at 13 when the film was released, and my work and my art would have a human response. I excitedly opened my first fan mail to read a rape fantasy that a man had written me. A countdown was started on my local radio show to my 18th birthday, euphemistically the date that I would be legal to sleep with. Movie reviewers talked about my budding breasts in reviews. [...] At 13 years old, the message from our culture was clear to me. I felt the need to cover my body and to inhibit my expression and my work in order to send my own message to the world that I’m someone worthy of safety and respect. The response to my expression—from small comments about my body to more threatening, deliberate statements, served to control my behavior through an environment of sexual terrorism.",
+          "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire."
+        ]
+      }
     },
     {
       "id": "emma-watson",
       "pageId": "true-version-of-yourself",
       "pageName": "True Version of Yourself",
       "name": "Emma Watson",
-      "color": "#f7b8b0"
+      "color": "#f7b8b0",
+      "story":{
+        "name": "Woman March",
+        "date": "16.12.18",
+        "texts": [
+          "I keep hearing a particular gripe about this culture shift, and maybe you have too. Some people have been calling this movement ‘puritanical’ or ‘a return to Victorian values,’ where men can’t behave or speak sexually around dainty, delicate, fragile women. To these people, I want to say: the current system is puritanical. Maybe men can say and do whatever they want, but women cannot. The current system inhibits women from expressing our desires, wants, and needs; from seeking our pleasure. Let me tell you about my own experience.",
+          "I turned 12 on the set of my first film, The Professional, in which I played a young girl who befriends a hit man and hopes to avenge the murder of her family. [...] I was so excited at 13 when the film was released, and my work and my art would have a human response. I excitedly opened my first fan mail to read a rape fantasy that a man had written me. A countdown was started on my local radio show to my 18th birthday, euphemistically the date that I would be legal to sleep with. Movie reviewers talked about my budding breasts in reviews. [...] At 13 years old, the message from our culture was clear to me. I felt the need to cover my body and to inhibit my expression and my work in order to send my own message to the world that I’m someone worthy of safety and respect. The response to my expression—from small comments about my body to more threatening, deliberate statements, served to control my behavior through an environment of sexual terrorism.",
+          "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire."
+        ]
+      }
     },
     {
       "id": "jennifer-lawrence",
       "pageId": "our-pursuit-of-happiness",
       "pageName": "Our Pursuit of Happiness",
       "name": "Jennifer Lawrence",
-      "color": "#f7cfae"
+      "color": "#f7cfae",
+      "story":{
+        "name": "Woman March",
+        "date": "16.12.18",
+        "texts": [
+          "I keep hearing a particular gripe about this culture shift, and maybe you have too. Some people have been calling this movement ‘puritanical’ or ‘a return to Victorian values,’ where men can’t behave or speak sexually around dainty, delicate, fragile women. To these people, I want to say: the current system is puritanical. Maybe men can say and do whatever they want, but women cannot. The current system inhibits women from expressing our desires, wants, and needs; from seeking our pleasure. Let me tell you about my own experience.",
+          "I turned 12 on the set of my first film, The Professional, in which I played a young girl who befriends a hit man and hopes to avenge the murder of her family. [...] I was so excited at 13 when the film was released, and my work and my art would have a human response. I excitedly opened my first fan mail to read a rape fantasy that a man had written me. A countdown was started on my local radio show to my 18th birthday, euphemistically the date that I would be legal to sleep with. Movie reviewers talked about my budding breasts in reviews. [...] At 13 years old, the message from our culture was clear to me. I felt the need to cover my body and to inhibit my expression and my work in order to send my own message to the world that I’m someone worthy of safety and respect. The response to my expression—from small comments about my body to more threatening, deliberate statements, served to control my behavior through an environment of sexual terrorism.",
+          "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire."
+        ]
+      }
     },
     {
       "id": "cara-delevingne",
       "pageId": "just-wonderfull-creatures",
       "pageName": "Just Wonderfull Creatures",
       "name": "Cara Delevingne",
-      "color": "#f5d4a4"
+      "color": "#f5d4a4",
+      "story":{
+        "name": "Woman March",
+        "date": "16.12.18",
+        "texts": [
+          "I'm going to start with a poem that I wrote when I wasn't very happy. I actually wrote this a year ago but again as if you know depression, it comes back it's a reoccurring thing you can't really sort away anyway. Who am I. Who am I trying to be not myself, anyone but myself. Living in a fantasy to bury the reality. Making myself that mystery, a strong facade disguising the misery. Empty beyond the point of emptiness full to the brim of fake confidence. A god that will never be broken because I broke a long time ago. I am hurting but don't tell anyone. No one needs to know. Don't show all you failed. Always okay, always fine, always on show. The show must go on. It will never stop. The show must not go on but I know it will. I give up. I give up giving up. I am lost. I don't need to be saved, I need to be found. Basically, it's kind of just the same reoccurring thing of not knowing who you are and feeling.",
+          "When I was a kid I always wanted to change the world because all kids think they're going to be super heroes but I have so many messages in terms of just young girls and how the mental illness and depression is not something to be ashamed of and I wish at that time, I had realised that other people go through it, that I can talk to other people; You're not alone, you're not an alien. And you know my message has always been to accept yourself no matter what. To Love yourself, to embrace your flaws. I think flaws are the things that make us special. The cracks within us are the beautiful parts that need to have light shed on them, otherwise they're just left. ",
+          "And also women are great. They're wonderful, wonderful creatures. Women are the barrier of life and I think it took an experience of going to a talk by a woman who'd dealt with so much. You know, like, all these women here is so incredible. Like the last talk; You know I watched her on YouTube but it made me cry. And we witnesses these extreme experiences that trapped into women suppression and all these other things. But really that happens every day and we're all used to it in the workplace in relationships. Women are constantly suppressed but it takes an extreme circumstance for us to realise it because we're used to it. That always confuses me a lot. But obviously I think we're changing that now slowly but surely but at just the point of like supporting each other and reaching out and communicating, it's the most important thing. So I want to help basically I don't know how, if anyone has any suggestions."
+        ]
+      }
     }
   ],
   "citations":[

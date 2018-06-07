@@ -34,6 +34,7 @@ export default {
       this.citationTimer = setTimeout(this._next, 1000)
     },
     hide(){
+      if(this.currentId === -1)return
       this.$refs.citation[this.currentId].hide()
       clearTimeout(this.citationTimer)
     }

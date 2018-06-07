@@ -30,6 +30,13 @@ export default {
     onReady(){
       this.portraits.load(this.getURI)
       this.titles.load(this.getURI)
+      setTimeout(()=>{
+        if(this.route.name !== 'index'){
+          this.background.show(0)
+          this.showPage(0, 0)
+          this.portraitsContainer.visible = false
+        }
+      },1000)
     },
     tick() {
       this.pixiBlobs.tick();
@@ -81,7 +88,8 @@ export default {
     },
     'route.name'(val, old) {
       if(val !== 'index'){
-        this.hide(this.currentHomeSlideId)
+        //this.hide(this.currentHomeSlideId)
+        this.titles.hide(this.currentHomeSlideId);
         this.showPage(.5, 1)
       }else{
         this.showHomeSlide(1)
@@ -125,13 +133,7 @@ export default {
     this.portraits = new Portraits(this.portraitsContainer);
     this.stage.addChild(this.portraitsContainer);
 
-    setTimeout(()=>{
-      if(this.route.name !== 'index'){
-        this.background.show(0)
-        this.showPage(0)
-        this.portraitsContainer.visible = false
-      }
-    },1000)
+
     Emitter.on('PORTRAIT_CLICK', this._portraitClick);
   }
 };
@@ -141,7 +143,7 @@ export default {
 .HomeCanvas {
   height: 100%;
   overflow: hidden;
-  position: absolute;
+  position: fixed;
   width: 100%;
 }
 </style>

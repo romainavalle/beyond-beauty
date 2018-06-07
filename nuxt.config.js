@@ -24,6 +24,17 @@ module.exports = {
   plugins: [
     '~plugins/vuex-router-sync.js'
   ],
+  generate: {
+    routes: function () {
+      var routes_array = []
+      var data = JSON.parse(require('fs').readFileSync(`./assets/data.json`, 'utf-8'))
+      for (let index = 0; index < data.pages.length; index++) {
+        routes_array.push('/story/'+data.pages[index].pageId)
+
+      }
+      return routes_array
+    }
+  },
   build: {
     /*
     ** Run ESLint on save

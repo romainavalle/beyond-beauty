@@ -38,6 +38,9 @@ export default {
   },
   methods:{
     ...mapActions(['setCurrentHomeSlideId']),
+    tick() {
+
+    },
     name(id){
       return this.id !== -1 ? pages[id % 4].name : ''
     },
