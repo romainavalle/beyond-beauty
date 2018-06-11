@@ -17,6 +17,7 @@ class Portait {
     this.mask_array = []
     this.maskDisappearPortrait_array = []
     this.maskDisappearTint_array = []
+    this.container.visible = false
     //this.init()
   }
 
@@ -51,8 +52,8 @@ class Portait {
     //setup (loader, ressources) {
     //this.portrait = new Pixi.Sprite(ressources[this.id].texture)
     //this.portraitTinted = new Pixi.Sprite(ressources[this.id+'_white'].texture)
-    this.portrait = new Pixi.Sprite.fromImage(getter(`bust/${this.id}.png`))
-    this.portraitTinted = new Pixi.Sprite.fromImage(getter(`bust/${this.id}-white.png`))
+    this.portrait = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`bust/${this.id}.png`)))
+    this.portraitTinted = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`bust/${this.id}-white.png`)))
     TweenMax.set(this.portraitTinted, { colorProps: { tint: this.color, format: "number" } })
     this.portraitTinted.visible = false
     this.portrait.interactive = true
@@ -70,7 +71,7 @@ class Portait {
       id = index
       if (index < 10) id = '0' + index
       //const maskStep = new Pixi.Sprite(ressources['mask_transition_'+index].texture)
-      const maskStep = new Pixi.Sprite.fromImage(getter(`mask/transition/transition_bust_${id}.png`))
+      const maskStep = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`mask/transition/transition_bust_${id}.png`)))
       maskStep.interactive = false
       maskStep.visible = false
       maskStep.width = this.originalW
@@ -82,7 +83,7 @@ class Portait {
     for (let index = 0; index < 13; index++) {
       id = index
       if (index < 10) id = '0' + index
-      const maskStep = new Pixi.Sprite.fromImage(getter(`mask/disappear/disappear_bust_${id}.png`))
+      const maskStep = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`mask/disappear/disappear_bust_${id}.png`)))
       //const maskStep = new Pixi.Sprite(ressources['mask_disappear_'+index].texture)
       maskStep.interactive = false
       maskStep.visible = false
@@ -94,7 +95,7 @@ class Portait {
     for (let index = 0; index < 13; index++) {
       id = index
       if (index < 10) id = '0' + index
-      const maskStep = new Pixi.Sprite.fromImage(getter(`mask/disappear/disappear_bust_${id}.png`))
+      const maskStep = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`mask/disappear/disappear_bust_${id}.png`)))
       //const maskStep = new Pixi.Sprite(ressources['mask_disappear_'+index].texture)
       maskStep.interactive = false
       maskStep.visible = false
@@ -123,22 +124,25 @@ class Portait {
     }
     this.container.width = containerW
     this.container.height = containerH
-    this.container.position.x = w * .5 - containerW / 2
+    this.container.position.x = this.posX = w * .5 - containerW / 2
     this.container.position.y = this.posY = h * .5 - containerH / 2
   }
   show(delay = 0) {
+
+    this.container.visible = true
     this.currentMaskTween = 0
     this.currentMask = 0
     this.portrait.mask = this.mask_array[0]
     this.mask_array[this.currentMask].visible = true
-    TweenMax.to(this, 42, { useFrames: true, delay, currentMaskTween: 42, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
-    TweenMax.fromTo(this.container.position, 1, {y: this.posY + 50}, {delay: delay + .5, y: this.posY, ease:Quad.easeOut})
+    TweenMax.to(this, 42, { useFrames: true, delay: 0, currentMaskTween: 42, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 50, x: this.posX - 40}, {delay: delay + .5, y: this.posY, x: this.posX, ease: Quart.easeOut})
   }
   hide() {
     TweenMax.to(this, 38, { useFrames: true, currentMaskTween: 80, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: this.onHideComplete.bind(this) }).timeScale(.5)
-    TweenMax.to(this.container.position, 1, { y: this.posY - 50, ease:Quad.easeIn})
+    TweenMax.to(this.container.position, 1, { y: this.posY - 80, x: this.posX + 60, ease: Cubic.easeIn})
   }
   onHideComplete(){
+    this.container.visible = false
      this.currentMaskTween = 0
   }
   disappear() {

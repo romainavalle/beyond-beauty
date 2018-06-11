@@ -22,11 +22,11 @@ export default {
       TweenMax.set(this.$refs.author, {opacity: 0})
       TweenMax.set(this.$refs.text, {opacity: 0, x: 20})
       TweenMax.set(this.$el, {autoAlpha: 1})
-      TweenMax.to(this.$refs.author, 1,{delay, opacity: 1, ease: Quad.easeOut})
-      TweenMax.staggerTo(this.$refs.text, .5,{delay, opacity: 1, x: 0, ease: Quad.easeOut}, .1)
+      TweenMax.to(this.$refs.author, 1.2,{delay, opacity: 1, ease: Quad.easeOut, force3D: true})
+      TweenMax.staggerTo(this.$refs.text, .7,{delay, opacity: 1, x: 0, ease: Quad.easeOut, force3D: true}, .2)
     },
     hide() {
-      TweenMax.to(this.$el, .5, {autoAlpha: 0, ease: Quad.easeIn})
+      TweenMax.to(this.$el, .8, {autoAlpha: 0, ease: Quad.easeIn, force3D: true})
     }
   },
   mounted() {
@@ -46,7 +46,7 @@ export default {
     font-weight normal
     font-size 21 * $unitH
     color $colors-grey
-    width 400 * $unitH
+    width 480 * $unitH
   p
     color $colors-white
     font-size 25 * $unitH

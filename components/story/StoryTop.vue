@@ -1,5 +1,5 @@
 <template>
-  <div class="StoryTop">
+  <div class="StoryTop" :class="pages[currentPageId].id">
     <div class="content">
       <div class="title">
         <h1 v-text="pages[currentPageId].pageName"></h1>
@@ -142,4 +142,16 @@ export default {
         height 26 * $unitH
         width 3px
         transform-origin 0 0
+  &.natalie-portman .number svg
+    width 527 * $unitH
+    height 447 * $unitH
+  &.emma-watson .number svg
+    width 583 * $unitH
+    height 457 * $unitH
+  &.jennifer-lawrence .number svg
+    width 569 * $unitH
+    height 454 * $unitH
+  &.cara-delevingne .number svg
+    width 643 * $unitH
+    height 447 * $unitH
 </style>

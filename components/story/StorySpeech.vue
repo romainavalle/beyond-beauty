@@ -31,8 +31,14 @@ export default {
     }
   },
   methods:{
-    tick(){
+    tick(scrollTop){
+      if(scrollTop < 0) scrollTop = 0
+      TweenMax.set(this.$el, {y: scrollTop - (scrollTop * this.contentHeight)})
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].tick()
+    },
+    resize(w, h) {
+      this.contentHeight = this.$el.clientHeight / (this.$parent.$el.clientHeight - h)
+      this.parentHeight = this.$parent.$el.clientHeight - h
     },
     showPart(part) {
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].hidePart()
@@ -68,9 +74,7 @@ export default {
 
 <style lang="stylus" scoped>
 .StorySpeech
-  position relative
-  padding-top 160 * $unitV
-  padding-bottom 160 * $unitV
+  position absolute
   width 960 * $unitH
   h3
     font-size 148 * $unitH

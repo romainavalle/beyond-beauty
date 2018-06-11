@@ -1,10 +1,12 @@
 <template>
   <div class="Menu">
+    <div class="content" ref="content">
+      <v-menu-header ref="header"></v-menu-header>
+      <v-menu-citations ref="menuCitations"></v-menu-citations>
+      <v-menu-footer ref="footer"></v-menu-footer>
+    </div>
     <div class="line" ref="line"></div>
-    <v-menu-header ref="header"></v-menu-header>
     <v-menu-draggable ref="menuDraggable"></v-menu-draggable>
-    <v-menu-citations ref="menuCitations"></v-menu-citations>
-    <v-menu-footer ref="footer"></v-menu-footer>
   </div>
 </template>
 
@@ -16,41 +18,44 @@ import vMenuFooter from '~/components/menu/MenuFooter.vue'
 import vMenuCitations from '~/components/menu/MenuCitations.vue'
 import vMenuDraggable from '~/components/menu/MenuDraggable.vue'
 import { pages } from '~/assets/data.json'
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: "menuEl",
   data(){
     return {
-      pages,
-      isTicking: false
+      pages
     }
   },
   components: {vMenuLink, vMenuDraggable, vMenuCitations, vMenuHeader, vMenuFooter},
   computed:{
-    ...mapState(['isMenuOpen'])
+    ...mapState(['isMenuOpen','isMenuVisible'])
   },
   methods:{
+    ...mapActions(['setMenuVisible']),
     tick() {
-      if(this.isTicking)this.$refs.menuDraggable.tick()
+      if(this.isMenuVisible)this.$refs.menuDraggable.tick()
     },
     resize(w, h) {
       this.$refs.menuDraggable.resize(w,h)
     },
     show(){
       TweenMax.set(this.$el, {xPercent: 100, autoAlpha: 1})
+      TweenMax.set(this.$refs.content, {xPercent: 0})
       TweenMax.set(this.$refs.line, {xPercent: 100})
-      TweenMax.to(this.$el, .7,{xPercent: 0, ease: Quad.easeInOut, onComplete: () => { this.isTicking = true }})
-      TweenMax.to(this.$refs.line, .7,{delay:.35, xPercent: 0, ease: Quad.easeInOut})
+      TweenMax.to(this.$el, .9, {xPercent: 0, ease: Expo.easeOut, onComplete: () => { this.setMenuVisible(true) }})
+      TweenMax.to(this.$refs.line, .9, {delay: .3, xPercent: 0, ease: Expo.easeOut})
       this.$refs.menuDraggable.show()
       this.$refs.header.show(1)
+      this.$refs.menuCitations.show(1.5)
       this.$refs.footer.show(2)
-      this.$refs.menuCitations.show()
     },
     hide() {
       //TweenMax.to(this.$el, .7, {autoAlpha: 0})
-      TweenMax.to(this.$el, .7, {delay: .4, xPercent: -100, ease: Quad.easeIn, onComplete: () => { this.isTicking = false }})
-      TweenMax.to(this.$refs.line, .7,{ xPercent: -100, ease: Quad.easeIn})
+      this.setMenuVisible(false)
+      TweenMax.to(this.$el, .9, {xPercent: -100, ease: Cubic.easeIn})
+      TweenMax.to(this.$refs.content, .9, {xPercent: 100, ease: Cubic.easeIn})
+      TweenMax.to(this.$refs.line, .9,{ xPercent: -100, ease: Quad.easeIn})
 
       this.$refs.menuDraggable.hide()
       this.$refs.menuCitations.hide()
@@ -94,4 +99,10 @@ export default {
     top 50%
     left 0
     background $colors-grey
+  .content
+    position absolute
+    top 0
+    left 0
+    right 0
+    bottom 0
 </style>

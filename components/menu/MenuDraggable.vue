@@ -35,12 +35,12 @@ export default {
       })
     },
     resize(w, h) {
-      TweenMax.set(this.$el, {x: ResizeHelper.width() / 2 - ( 160 * 4 * ResizeHelper.width() / 2880)})
+      TweenMax.set(this.$el, {x: ResizeHelper.width() / 2 - ( 160 * 4 * ResizeHelper.width() / 2880), y: '-50%'})
       this.$refs.link.forEach((el, i)=>{
         el.resize(w,h)
       })
       for (let i = 0; i< pages.length; i++) {
-        this.$set(this.snapValues, i, Math.round(-i * 160 * 8 * ResizeHelper.width() / 2880))
+        this.$set(this.snapValues, i, Math.round(-i * 160 * 7 * ResizeHelper.width() / 2880))
       }
       if(this.draggable && this.draggable[0]){
         this.slideDraggable()
@@ -91,11 +91,11 @@ export default {
     show(){
       this.resetDraggable()
       this.currentId = 0
-      TweenMax.fromTo(this.$refs.content, .7, {x: ResizeHelper.width()}, {delay: .7, x: 0, ease: Quad.easeInOut, force3D:true})
+      TweenMax.fromTo(this.$refs.content, .9, {x: ResizeHelper.width()}, {delay: .8, x: 0, ease: Expo.easeOut, force3D:true})
       TweenMax.set(this.$el, {autoApha: 1})
     },
     hide() {
-      TweenMax.to(this.$refs.content, 1, {x: '-=' + ResizeHelper.width(), ease: Quad.easeIn, force3D:true})
+      TweenMax.to(this.$refs.content, .9, {x: '+=' + ResizeHelper.width() * .2, opacity: 0, ease: Cubic.easeIn, force3D:true, onComplete: () => {TweenMax.set(this.$refs.content, {x: 0, opacity: 1})}})
     },
     onReady(){
     }
@@ -112,10 +112,12 @@ export default {
 .MenuDraggable
   position absolute
   top 50%
+  transform translate(0, -50%)
   .content
+    padding 0 330 * $unitH
+    margin-left -330 * $unitH
     background $colors-black
     position relative
-    transform translate(0, -50%)
   ul
     position relative
     display flex

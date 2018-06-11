@@ -1,14 +1,15 @@
 import ResizeHelper from '../utils/ResizeHelper';
-
+import { pages } from '~/assets/data.json'
 if (process.browser) {
   var Pixi = require('pixi.js')
 }
 class Title {
-  constructor(container, id, isBordered) {
+  constructor(container, id, idNum, isBordered) {
     this.container = container
     this.id = id
+    this.idNum = idNum
     this.isBordered = isBordered
-    this.angle = Math.PI / 25
+    this.angle = Math.PI / 35
     this.title_array = []
     if(!this.isBordered)this.container.tint = 0xf1f3ee
     //this.init()
@@ -38,19 +39,17 @@ class Title {
   dispose() {
     this.loaded++
     if (this.loaded != 3) return
-    let h = 50
     for (let index = 0; index < 3; index++) {
       const imgSprite = new Pixi.Sprite.from(this.img_array[index])
       const title = new Pixi.Sprite()
       title.addChild(imgSprite)
       imgSprite.position.x = -this.img_array[index].width / 4
-      imgSprite.position.y = 5000 + h
-      h += this.img_array[index].height / 2 + 0
+      imgSprite.position.y = 5000 + pages[this.idNum].titlePosition[index]
       imgSprite.scale.x = .5
       imgSprite.scale.y = .5
       title.interactive = false
-      title.position.y = -5000
-      TweenMax.set(title, { rotation: this.angle, alpha: 0 })
+      title.position.y = -5035
+
       this.container.addChild(title)
       this.title_array.push(title)
     }
@@ -58,6 +57,7 @@ class Title {
     this.originalH = this.container.height
     this.isDisposed = true
     if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
+    setTimeout(this.reset.bind(this), 20)
 
   }
   resize(w, h) {
@@ -76,15 +76,18 @@ class Title {
     this.container.position.x = w * .5
     this.container.position.y = h * .5 - (this.container.height - 5000 * screenRatio) * .5
   }
+  reset() {
+    this.title_array.forEach(title => {
+      TweenMax.set(title, { rotation: this.angle, alpha: 0 })
+    });
+    this.container.visible = false
+  }
   show(delay = 0, time) {
-    TweenMax.staggerTo(this.title_array, time, { delay, rotation: 0, alpha: 1, ease: Quad.easeOut }, .1)
+    this.container.visible = true
+    TweenMax.staggerTo(this.title_array, time, { delay, rotation: 0, alpha: 1, ease: Quart.easeOut }, .1)
   }
   hide() {
-    TweenMax.staggerTo(this.title_array, .75, { rotation: -this.angle, alpha: 0, ease: Quint.easeIn }, .1, () => {
-      this.title_array.forEach(title => {
-        TweenMax.set(title, { rotation: this.angle, alpha: 0 })
-      });
-    })
+    TweenMax.staggerTo(this.title_array, .7, { rotation: -this.angle, alpha: 0, ease: Cubic.easeIn }, .1, this.reset.bind(this))
   }
 }
 export default Title

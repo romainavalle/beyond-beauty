@@ -1,5 +1,6 @@
 
 import Portrait from "~/assets/js/pixi/Portrait"
+import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import { pages } from '~/assets/data.json'
 
 if (process.browser) {
@@ -29,8 +30,13 @@ class Portraits {
 
   load(getter) {
     pages.forEach((page, i) => {
-      this.portraits[i].load(getter)
+      setTimeout(() => {
+        this.portraits[i].load(getter)
+      }, i * 30)
     })
+    setTimeout(() => {
+      this.resize(ResizeHelper.width(),ResizeHelper.height())
+    }, 200)
   }
 
   resize(w, h) {

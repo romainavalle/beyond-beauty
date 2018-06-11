@@ -6,6 +6,7 @@
       "pageName": "The Revolution of Desire",
       "name": "Natalie Portman",
       "color": "#f7c8ae",
+      "titlePosition": [0, 190, 420],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -22,8 +23,11 @@
             "text": "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire.",
             "html": "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire."
           }
-
-
+        ],
+        "media": [
+          {"src": "natalie-portman-1.png", "width": 1762, "height": 1380},
+          {"src": "natalie-portman-2.png", "width": 1205, "height": 1205},
+          {"src": "natalie-portman-3.png", "width": 1395, "height": 1698}
         ]
       }
     },
@@ -33,6 +37,7 @@
       "pageName": "True Version of Yourself",
       "name": "Emma Watson",
       "color": "#f7b8b0",
+      "titlePosition": [0, 190, 420],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -49,8 +54,11 @@
             "text": "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire.",
             "html": "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire."
           }
-
-
+        ],
+        "media": [
+          {"src": "emma-watson-1.png", "width": 1762, "height": 1380},
+          {"src": "emma-watson-2.png", "width": 1205, "height": 1205},
+          {"src": "emma-watson-3.png", "width": 1395, "height": 1698}
         ]
       }
     },
@@ -60,6 +68,7 @@
       "pageName": "Our Pursuit of Happiness",
       "name": "Jennifer Lawrence",
       "color": "#f7cfae",
+      "titlePosition": [0, 190, 420],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -76,7 +85,12 @@
             "text": "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire.",
             "html": "A world in which I could wear whatever I want, say whatever I want, and express a desire however I want—without fearing for my physical safety or reputation—that would be the world in which female desire and sexuality could have its greatest expression and fulfillment. That world we want to build is the opposite of puritanical. So I’d like to propose one way to continue moving this revolution forward. Let’s declare loud and clear: The is what I want. This is what I need. This is what I desire. This is how you can help me achieve pleasure. To people of all genders here with us today, let’s find a space where we mutually, consensually look out for each other’s pleasure, and allow the vast, limitless range of desire to be expressed. Let’s make a revolution of desire."
           }
-          ]
+        ],
+        "media": [
+          {"src": "jennifer-lawrence-1.png", "width": 1600, "height": 1190},
+          {"src": "jennifer-lawrence-2.png", "width": 1280, "height": 1280},
+          {"src": "jennifer-lawrence-3.png", "width": 1280, "height": 1600}
+        ]
       }
     },
     {
@@ -85,6 +99,7 @@
       "pageName": "Just Wonderfull Creatures",
       "name": "Cara Delevingne",
       "color": "#f5d4a4",
+      "titlePosition": [0, 190, 420],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -101,8 +116,11 @@
             "text": "And also women are great. They're wonderful, wonderful creatures. Women are the barrier of life and I think it took an experience of going to a talk by a woman who'd dealt with so much. You know, like, all these women here is so incredible. Like the last talk; You know I watched her on YouTube but it made me cry. And we witnesses these extreme experiences that trapped into women suppression and all these other things. But really that happens every day and we're all used to it in the workplace in relationships. Women are constantly suppressed but it takes an extreme circumstance for us to realise it because we're used to it. That always confuses me a lot. But obviously I think we're changing that now slowly but surely but at just the point of like supporting each other and reaching out and communicating, it's the most important thing. So I want to help basically I don't know how, if anyone has any suggestions.",
             "html": "<span>And also women are great.</span><span> They're wonderful,</span><span> wonderful creatures.</span><span> Women are the barrier of life and I think it took an experience of going to a talk by a woman who'd dealt with so much.</span><span> You know, like, all these women here is so incredible.</span><span> Like the last talk;</span><span> You know I watched her on YouTube but it made me cry.</span><span> And we witnesses these extreme experiences that trapped into women suppression and all these other things.</span><span> But really that happens every day and we're all used to it in the workplace in relationships.</span><span> Women are constantly suppressed but it takes an extreme circumstance for us to realise it because we're used to it.</span><span> That always confuses me a lot.</span><span> But obviously I think we're changing that now slowly but surely but at just the point of like supporting each other and reaching out and communicating,</span><span> it's the most important thing.</span><span> So I want to help basically I don't know how,</span><span> if anyone has any suggestions</span>."
           }
-
-
+        ],
+        "media": [
+          {"src": "cara-delevingne-1.png", "width": 1600, "height": 1190},
+          {"src": "cara-delevingne-2.png", "width": 1280, "height": 1280},
+          {"src": "cara-delevingne-3.png", "width": 1280, "height": 1600}
         ]
       }
     }

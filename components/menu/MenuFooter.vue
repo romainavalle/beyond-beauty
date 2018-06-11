@@ -30,6 +30,7 @@ export default {
   display flex
   flex-wrap nowrap
   font-size 14 * $unitH
+  letter-spacing 3 * $unitH
   text-transform uppercase
   display flex
   bottom 158 * $unitV //160 - 2 lineheight

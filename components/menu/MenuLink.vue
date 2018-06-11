@@ -1,8 +1,8 @@
 <template>
-  <li class="MenuLink">
+  <li class="MenuLink" :class="this.page.id">
     <router-link :to="{name:'story-pageId', params: { pageId: page.pageId }}">
       <img :src="img" alt="page.name" if="packer" draggable="false" ref="img">
-      <strong v-text="page.name"></strong>
+      <strong v-text="page.name" ref="strong"></strong>
       </router-link>
   </li>
 </template>
@@ -14,6 +14,8 @@ export default {
   name: "menuEl",
   data(){
     return {
+      imgW: 774,
+      imgH: 832
     }
   },
   computed:{
@@ -28,7 +30,7 @@ export default {
     resize(w,h){
     },
     tick(x){
-      TweenMax.set(this.$refs.img, {x})
+      TweenMax.set([this.$refs.img, this.$refs.strong], {x})
     }
   },
   mounted() {
@@ -43,14 +45,24 @@ export default {
   position relative
   margin 0 160 * $unitH
   user-select none
+  a
+    display block
+    position relative
   img
-    width 6 * 160 * $unitH
+    width 5 * 160 * $unitH
     display block
   strong
+    display block
     position absolute
-    bottom 0
-    right 0
+    bottom 60 * $unitH
+    right 100 * $unitH
     color $colors-grey
     font-weight normal
     font-size 21 * $unitH
+  &.natalie-portman strong
+    right 140 * $unitH
+  &.emma-watson strong
+    right 140 * $unitH
+  &.jennifer-lawrence strong
+    right 60 * $unitH
 </style>

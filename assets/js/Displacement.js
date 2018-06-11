@@ -16,10 +16,16 @@ class Displacement {
   init() {
     this.canvas = document.createElement('canvas');
     this.ctx = this.canvas.getContext('2d');
+    if(this.debug){
+      document.body.appendChild(this.canvas)
+      this.canvas.style.position = 'absolute'
+      this.canvas.style.bottom = '0px'
+      this.canvas.style.left = '0px'
+    }
     this.canvas.height = 100
     this.canvas.width = 100
     this.img =  new Image()
-    this.img.src = require('~/assets/images/perlin5.jpg')
+    this.img.src = require('~/assets/images/t3.png')
     this.setDisplacement()
     if(this.debug){
       window.gui.add(this, 'speed', 0.001, 1)
@@ -34,7 +40,7 @@ class Displacement {
   }
 
   fill() {
-    this.ctx.drawImage(this.img, -40 + Math.sin(this.time * .4)  * 40, -40 + Math.cos(this.time * .4)  * 40);
+    this.ctx.drawImage(this.img, -40 + Math.sin(this.time)  * 40, -40 + Math.cos(this.time)  * 40);
       /*var i, n, prevPoint, currentPoint, nextPoint, x, y;
       for (i = 0; i < this.width * this.height; i++) {
         currentPoint = this.points[i]

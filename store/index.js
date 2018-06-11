@@ -5,7 +5,9 @@ const createStore = () => {
     state: {
       currentHomeSlideId: -1,
       packer: null,
-      isMenuOpen: false
+      isMenuOpen: false,
+      isMenuVisible: false,
+      isAppReady: false
     },
     mutations: {
       SET_CURRENT_HOME_SLIDE_ID (state, id) {
@@ -16,17 +18,29 @@ const createStore = () => {
       },
       SET_MENU_OPEN (state, bool){
         state.isMenuOpen = bool
+      },
+      SET_MENU_VISIBLE (state, bool){
+        state.isMenuVisible = bool
+      },
+      SET_APP_READY (state){
+        state.isAppReady = true
       }
     },
     actions: {
       setMenuOpen ({ commit }, bool) {
         commit('SET_MENU_OPEN', bool)
       },
+      setMenuVisible ({ commit }, bool) {
+        commit('SET_MENU_VISIBLE', bool)
+      },
       setCurrentHomeSlideId ({ commit }, /*{ commit }, { app, isStatic }*/ id) {
         commit('SET_CURRENT_HOME_SLIDE_ID', id)
       },
       setPacker ({ commit }, packer) {
         commit('SET_PACKER', packer)
+      },
+      setAppReady ({ commit }) {
+        commit('SET_APP_READY')
       }
     },
     getters: {

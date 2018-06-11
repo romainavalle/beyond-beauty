@@ -1,7 +1,8 @@
 <template>
   <div class="beyond-beauty">
+    <v-loader></v-loader>
     <transition name="menuButton" mode="out-in">
-      <component :is="logo"></component>
+      <component :is="logo" ref="menuButton"></component>
     </transition>
     <v-home-canvas ref="homeCanvas"></v-home-canvas>
     <v-menu ref="siteMenu"></v-menu>
@@ -15,7 +16,8 @@ import Stats from 'stats-js'
 
 import vHomeCanvas from '~/components/HomeCanvas.vue'
 import vLogo from '~/components/common/Logo.vue'
-import vMenuButton from '~/components/common/vMenuButton.vue'
+import vMenuButton from '~/components/common/MenuButton.vue'
+import vLoader from '~/components/common/Loader.vue'
 import vMenu from '~/components/menu/Menu.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
@@ -34,13 +36,14 @@ export default {
     }
   },
   computed:{
+    ...mapState(['isAppReady']),
     logo(){
       return this.$route.name === 'index' ? vLogo : vMenuButton
     }
   },
-  components:{vHomeCanvas, vMenu, vLogo, vMenuButton},
+  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader},
   methods:{
-    ...mapActions(['setPacker', 'setMenuOpen']),
+    ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady']),
     resize(){
       if(this.page)this.page.resize && this.page.resize(ResizeHelper.width(),ResizeHelper.height())
       this.$refs.homeCanvas.resize(ResizeHelper.width(),ResizeHelper.height())
@@ -68,13 +71,14 @@ export default {
       if(this.page)this.page.onReady && this.page.onReady()
       if(process.browser)this.$refs.homeCanvas.onReady()
       if(process.browser)this.$refs.siteMenu.onReady()
-      this.$nextTick(() => {
-        TweenMax.ticker.addEventListener('tick', this.tick.bind(this))
-      })
-
-      if(process.browser)this.$nextTick(()=>{
-        this.resize()
-      })
+      setTimeout(() => {
+        this.setAppReady()
+        this.$refs.menuButton.show()
+          if(process.browser)this.$nextTick(()=>{
+            TweenMax.ticker.addEventListener('tick', this.tick.bind(this))
+            this.resize()
+          })
+      },500)
     }
   },
   created(){
@@ -104,7 +108,7 @@ export default {
   height 100%
   position relative
   width 100%
-  &:after
+  /*&:after
     background url('~/assets/images/noise.jpg')
     background-size 256px 256px
     content ''
@@ -117,7 +121,7 @@ export default {
     top 0
     width 100vw
     z-index 99999
-    mix-blend-mode overlay
+    mix-blend-mode overlay*/
   .menuButton-enter-active, .menuButton-leave-active
     transition opacity 1s ease-in-out-quad, transform 1s ease-in-out-quad
   .menuButton-enter, .menuButton-leave-to

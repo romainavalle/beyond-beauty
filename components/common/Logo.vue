@@ -1,5 +1,5 @@
 <template>
-  <div class="Logo" @click="setMenuOpen(true)">
+  <div class="Logo" @click="setMenuOpen(true)" :class="readyClass">
     <h1>
       <no-ssr>
         <span class="icon">
@@ -13,21 +13,18 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import MenuButtonMixin from './ButtonMenuMixins'
 export default {
-  name: 'logo',
-  methods: {
-    ...mapActions(['setMenuOpen'])
-  },
-  mounted() {
-  }
+  name: 'Logo',
+  mixins: [MenuButtonMixin]
+
 }
 
 </script>
 
 <style lang="stylus" scoped>
 .Logo
-  position absolute
+  position fixed
   top 160 * $unitV
   left 160 * $unitH
   margin-left -44 * $unitH
@@ -37,11 +34,12 @@ export default {
   cursor pointer
   .icon
     margin-right 20 * $unitH
-    margin-bottom 2px
   h1
     font-family $hawthorn
     font-size 40 * $unitH
     color $colors-black
+    line-height 1
+    font-weight normal
     margin 0
     padding 0
     text-transform uppercase

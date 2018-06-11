@@ -1,13 +1,7 @@
 <template>
-  <div class="StoryMedia">
-    <div class="img">
-      <img :src="getImage(1)" alt="">
-    </div>
-    <div class="img">
-      <img :src="getImage(2)" alt="">
-    </div>
-    <div class="img">
-      <img :src="getImage(3)" alt="">
+  <div class="StoryMedia" :class="id">
+    <div class="img" v-for="(img,i) in media" :key="i">
+      <img :src="getImage(img.src)" :width="img.width" :height="img.height" :alt="id">
     </div>
   </div>
 </template>
@@ -19,7 +13,6 @@ export default {
   name: 'StoryMedia',
   data(){
     return {
-      currentPart: -1,
       isShown: false
     }
   },
@@ -27,52 +20,33 @@ export default {
     ...mapGetters(['currentPageId', 'getURI']),
     id() {
       return pages[this.currentPageId].id
+    },
+    media(){
+      return pages[this.currentPageId].story.media
     }
-
   },
   methods:{
-    getImage(id) {
-      return this.getURI(`speech/${this.id}-${id}.png`)
-    },
-    tick(scrollTop){
-      TweenMax.set(this.$el, {y: scrollTop > 0 ? 0 : -scrollTop})
-      if(scrollTop >= 0) {
-        this.show()
-      }else{
-        this.hide()
-      }
-    },
-    resize(w, h, contentHeight) {
-      this.contentHeight = contentHeight
-    },
-    showPart(part) {
-      if(this.currentPart === part)return
-      const direction = part > this.currentPart ? 1 : -1
-      if(this.currentPart !== -1) this.hideImg(direction)
-      this.currentPart = part
-      if(this.currentPart !== -1) this.showImg(direction)
-    },
-    hideImg(direction) {
-      TweenMax.to(this.imgs[this.currentPart], .5, {y: -direction * ResizeHelper.height() / 2, opacity: 0, ease: Quad.easeIn, overwrite: 1})
-    },
-    showImg(direction) {
-      TweenMax.fromTo(this.imgs[this.currentPart], .7, {y: direction * ResizeHelper.height() / 2, opacity: 0}, {delay: this.isShown ? .4 : 0, y: 0, opacity: 1, ease: Quad.easeOut, overwrite: 1})
+    getImage(src) {
+      const path = process.env.NODE_ENV === 'dev' ? '/' : ''
+      return `${path}images/speech/${src}`
     },
     show() {
       if(this.isShown)return
       this.isShown = true
-      TweenMax.to(this.$el, 1,{autoAlpha: 1, ease: Quad.easeOut})
+      TweenMax.staggerTo(this.$imgs, 2, {delay: 1, opacity: 1}, .5)
     },
     hide() {
       if(!this.isShown)return
       this.isShown = false
-      TweenMax.to(this.$el, .5,{autoAlpha: 0, ease: Quad.easeIn})
+      TweenMax.to(this.$imgs, .5, {opacity: 0, ease: Quad.easeIn, overwrite: 1})
+    },
+    load() {
+
     }
   },
   mounted(){
-    this.imgs = [].slice.call(this.$el.querySelectorAll('.img'))
-    TweenMax.set(this.$el, {autoAlpha: 0})
-    TweenMax.set(this.imgs, {opacity: 0})
+    this.$imgs = [].slice.call(this.$el.querySelectorAll('.img'))
+    TweenMax.set(this.$imgs, {opacity: 0})
   }
 }
 
@@ -80,22 +54,15 @@ export default {
 
 <style lang="stylus" scoped>
 .StoryMedia
-  position fixed
+  position relative
   width 12 * 160 * $unitH
-  height 100vh
-  top 0
-  right 0
+  margin-left auto
   .img
-    position absolute
-    top 0
-    left 0
-    right 0
-    bottom 0
+    position relative
+  .img + .img
+    margin-top 160 * $unitV
   img
     display block
-    position absolute
     width 7 * 160 * $unitH
-    top 50%
-    left 50%
-    transform translate(-50%, -50%)
+    margin 0 auto
 </style>

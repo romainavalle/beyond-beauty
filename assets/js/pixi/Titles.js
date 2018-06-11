@@ -22,9 +22,9 @@ class Titles {
 
   setupTitle() {
     this.titleSprite = new Pixi.Sprite()
-    pages.forEach(page => {
+    pages.forEach((page, i) => {
       const titleContainer = new Pixi.Container()
-      const title = new Title(titleContainer, page.id)
+      const title = new Title(titleContainer, page.id, i)
       this.titleSprite.addChild(titleContainer)
       this.titles.push(title)
     });
@@ -33,9 +33,9 @@ class Titles {
 
   setupTitleBorder() {
     this.titleBorderSprite = new Pixi.Container()
-    pages.forEach(page => {
+    pages.forEach((page, i) => {
       const titleBorderContainer = new Pixi.Container()
-      const title = new Title(titleBorderContainer, page.id, true)
+      const title = new Title(titleBorderContainer, page.id, i, true)
       this.titleBorderSprite.addChild(titleBorderContainer)
       this.titlesBorder.push(title)
     });

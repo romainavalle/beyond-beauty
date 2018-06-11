@@ -1,9 +1,9 @@
 <template>
-  <section class="Home">
+  <section class="Home" :class="{'ready' : isAppReady}">
     <strong class="title">
       <transition-group name="name">
         <span class="innerTitle" v-for="(page,i) in pages" :key="i" v-show="i === currentHomeSlideId">
-          <span v-text="name(i)"></span>·<span v-text="title(i)"></span>
+          <span v-text="name(i)"></span><em></em><span v-text="title(i)"></span>
         </span>
       </transition-group>
     </strong>
@@ -34,7 +34,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'isMenuOpen'])
+    ...mapState(['currentHomeSlideId', 'isMenuOpen', 'isAppReady'])
   },
   methods:{
     ...mapActions(['setCurrentHomeSlideId']),
@@ -83,9 +83,38 @@ export default {
     setTimer(time){
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
       this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), time)
+    },
+    setMouseWheelListener(){
+      this._onWheel = this.onWheel.bind(this)
+      window.addEventListener("mousewheel", this._onWheel, false);
+      window.addEventListener("DOMMouseScroll", this._onWheel, false);
+    },
+    removeMouseWheelListener(){
+      window.removeEventListener("mousewheel", this._onWheel, false);
+      window.removeEventListener("DOMMouseScroll", this._onWheel, false);
+    },
+    setKeyEvents(){
+      this._onKey = this.onKey.bind(this)
+      document.addEventListener("keydown", this._onKey, false);
+    },
+    removeKeyEvents(){
+      document.addEventListener("keydown", this._onKey, false);
+    },
+    onKey(e) {
+      if(e.keyCode === 38) this.nextPage(1)
+      if(e.keyCode === 40) this.nextPage(1)
+    },
+    onWheel(e) {
+      e.preventDefault()
+      if(e.deltaY > 0) this.nextPage(1)
+      if(e.deltaY < 0) this.nextPage(-1)
     }
   },
   beforeDestroy(){
+    if(process.browser){
+      this.removeMouseWheelListener()
+      this.removeKeyEvents()
+    }
     clearTimeout(this.nextPageTimer)
     clearTimeout(this.idleTimer)
   },
@@ -101,6 +130,10 @@ export default {
 
   mounted() {
     const time = this.currentHomeSlideId === -1 ? 1000 : 10000
+    if(process.browser){
+      this.setMouseWheelListener()
+      this.setKeyEvents()
+    }
     this.setTimer(time)
     window.addEventListener("focus", this.setTimer.bind(this, 10000), false);
     window.addEventListener("blur", () => {
@@ -120,9 +153,9 @@ export default {
   width 100%
   pointer-events none
   .title
-    bottom 80 * $unitH
+    bottom 180 * $unitH
     font-size 20 * $unitH
-    left 80 * $unitH
+    left 170 * $unitH
     position absolute
     font-weight normal
     .innerTitle
@@ -131,11 +164,19 @@ export default {
       top 0
       left 0
       white-space nowrap
+      align-content center
+      em
+        display block
+        width 3px
+        height 3px
+        background $colors-grey
+        border-radius 50%
+        margin-top 8 * $unitH
       span
         display block
       span:nth-child(1)
         transform translateX(-10 * $unitH)
-      span:nth-child(2)
+      span ~ span
         transform translateX(10 * $unitH)
     .name-enter-active, .name-leave-active
       transition opacity .5s
@@ -149,7 +190,7 @@ export default {
       transition-delay .7s
     .name-enter span:nth-child(1), .name-leave-to span:nth-child(1)
       transform translateX(-20 * $unitH)
-    .name-enter span:nth-child(2), .name-leave-to span:nth-child(2)
+    .name-enter span ~ span, .name-leave-to span ~ span
       transform translateX(20 * $unitH)
   button
     align-items center
@@ -163,16 +204,20 @@ export default {
     position absolute
     text-transform uppercase
     pointer-events auto
-    transition letter-spacing .5s ease-in-out-quad
+    transition letter-spacing .3s ease-in-quad
     padding-top 10px
     padding-bottom 10px
     overflow hidden
     &:hover
-      letter-spacing $unitH * 6
-      &:before
-        transform translateX(-5 * $unitH)
+      transition letter-spacing .4s ease-out-quart
+      letter-spacing $unitH * 8
+      &:before,
       &:after
-        transform translateX(5 * $unitH)
+        transition transform .4s ease-out-quart
+      &:before
+        transform translateX(-7 * $unitH)
+      &:after
+        transform translateX(7 * $unitH)
     .word
       position relative
       width 100 * $unitH
@@ -197,21 +242,28 @@ export default {
       display block
       height 1px
       width $unitH * 22
-      transition transform .5s ease-in-out-quad
+      transition transform .3s ease-in-out-quad
     &.prev
       top 0
-      transform rotate(-90deg) translate(-100%, -50%)
+      transform rotate(-90deg) translate(0%, -50%)
       transform-origin 0% 0%
       &:after
         width $unitH * 40
         margin-right 0
     &.next
       bottom 0
-      transform rotate(-90deg) translate(0%, 50%)
+      transform rotate(-90deg) translate(-100%, 50%)
       transform-origin 0% 100%
       &:before
         width $unitH * 40
         margin-left 0
+  &.ready
+    button
+      transition transform .5s ease-out-quart 1s
+    .prev
+      transform rotate(-90deg) translate(-100%, -50%)
+    .next
+      transform rotate(-90deg) translate(0%, 50%)
   .fade-enter-active, .fade-leave-active
     transition opacity .5s
   .fade-enter-active

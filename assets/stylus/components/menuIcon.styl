@@ -1,10 +1,11 @@
 .MenuButton, .Logo
   .icon
     width 24 * $unitH
-    height 7px
+    height 14 * $unitH
     overflow hidden
+    display block
     span
-      transform translateX(-28 * $unitH)
+      transform translateX(-52 * $unitH)
       height 1px
       width 52 * $unitH
       display block
@@ -16,9 +17,12 @@
       &:nth-child(3)
         transition-delay .2s
         margin-left -10 * $unitH
-  &:hover
+  &.show .icon span
+    transform translateX(-28 * $unitH)
+  &.show:hover
     .icon
       span
+        transition transform .3s ease-in-out-quad
         transform translateX(0px)
         &:nth-child(3)
           transform translateX(20 * $unitH)

@@ -23,7 +23,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'route']),
+    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady']),
     ...mapGetters(['currentPageId', 'getURI'])
   },
   methods: {
@@ -39,6 +39,8 @@ export default {
       },1000)
     },
     tick() {
+      if(this.isMenuVisible) return
+      if(!this.isAppReady) return
       this.pixiBlobs.tick();
       this.renderer.render(this.stage);
     },
@@ -57,8 +59,8 @@ export default {
       this.portraitsContainer.visible = true
       this.background.hide()
       this.pixiBlobs.setTint(pages[this.currentHomeSlideId].color);
-      this.portraits.show(this.currentHomeSlideId, 0.2 * delay);
-      this.titles.show(this.currentHomeSlideId, delay * 0.8, 1);
+      this.portraits.show(this.currentHomeSlideId, 0);
+      this.titles.show(this.currentHomeSlideId, delay * 1.3, 1);
       this.titles.scaleTo(1, delay * 0.6, 1);
     },
     showPage(delay, time) {
@@ -111,6 +113,7 @@ export default {
       width,
       height
     });
+    PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE;
     this.$el.appendChild(this.renderer.view);
     this.stage = new Pixi.Container();
 

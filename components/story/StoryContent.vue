@@ -30,10 +30,9 @@ export default {
   methods:{
     tick(scrollTop){
       this.$refs.speech.tick(scrollTop)
-      this.$refs.media.tick(scrollTop)
     },
     resize(w, h){
-      this.$refs.media.resize(w, h, this.$el.clientHeight)
+      this.$refs.speech.resize(w, h)
     },
     goPart(part = -1) {
       if(part !== -1){
@@ -43,15 +42,16 @@ export default {
       }
       if (this.currentPart===3) return
       this.$refs.speech.showPart(this.currentPart)
-      this.$refs.media.showPart(this.currentPart)
       SoundHelper.createSound(pages[this.currentPageId].id, this.currentPart)
     },
     show(){
       this.currentPart = -1
       this.$refs.speech.show()
+      this.$refs.media.show()
       this.soundTimer = setTimeout(this.goPart.bind(this), 1000)
     },
     hide(){
+      this.$refs.media.hide()
       this.$refs.speech.hide()
     }
   },
@@ -75,5 +75,8 @@ export default {
   position relative
   padding-top 100vh
   .content
+    padding-top 160 * $unitV
+    padding-bottom 160 * $unitV
     background $colors-dBlack
+
 </style>

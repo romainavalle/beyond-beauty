@@ -41,7 +41,6 @@ export default {
       TweenMax.set(this.$refs.timer, {'stroke-dashoffset': pourc * 352})
     },
     showPart() {
-      //TweenMax.to(window, 1, {scrollTo: {y: Utils.offset(this.$el).top}, overwrite: 1, ease: Quad.easeOut})
       TweenMax.to(this.$el, .5,{opacity: 1, ease:Quad.easeInOut})
       TweenMax.staggerTo(this.$spans, .3,{opacity: 1, ease:Quad.easeOut}, 1)
       this.paragraphClass = 'active'

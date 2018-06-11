@@ -7,15 +7,15 @@ class SoundHelper {
   }
   createSound(id, part) {
     if(this.sound)this.sound.unload()
+    const path = process.env.NODE_ENV === 'dev' ? '/' : ''
     this.sound = new Howl({
-      src: `/sounds/${id}-${part}.mp3`,
+      src: `${path}sounds/${id}-${part}.mp3`,
       autoplay: true,
       volume: 1,
       onload: function() {
         Emmiter.emit('SOUND_LOADED')
       },
       onend: function() {
-        console.log('Finished!');
         Emmiter.emit('SOUND_ENDED')
       }
 

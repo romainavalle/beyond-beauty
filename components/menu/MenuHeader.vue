@@ -18,7 +18,6 @@ export default {
     ...mapActions(['setMenuOpen']),
     show(delay) {
       TweenMax.to(this.$el, 1, {delay, autoAlpha: 1, ease: Quad.easeOut})
-      TweenMax.staggerFromTo(this.$el.querySelectorAll('li'), 1, {autoAlpha: 0}, {delay: delay + .2, autoAlpha: 1, ease: Quad.easeOut}, .1)
     },
     hide() {
       TweenMax.to(this.$el, 1, {autoAlpha: 0, ease: Quad.easeOut})
@@ -36,7 +35,8 @@ export default {
   display flex
   flex-wrap nowrap
   width 100%
-  font-size 21 * $unitH
+  font-size 14 * $unitH
+  letter-spacing 3 * $unitH
   text-transform uppercase
   display flex
   top 139 * $unitV // 160 - fontsize
@@ -46,6 +46,7 @@ export default {
     display flex
   button
     width 400 * $unitH
+    letter-spacing 3 * $unitH
   button, a
     font-weight $semi
     display block
