@@ -66,7 +66,7 @@ export default {
       this.stats.begin()
       if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
       if(this.$refs.homeCanvas)this.$refs.homeCanvas.tick()
-      if(this.page)this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
+      //if(this.$refs.page)this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
       this.stats.end()
     },
     onReady(){
@@ -77,10 +77,11 @@ export default {
       this.page = this.$refs.page.$children[0]
       this.setDebug()
       if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady()
-      if(process.browser)this.$refs.homeCanvas.onReady()
-      if(process.browser)this.$refs.siteMenu.onReady()
+      if(process.browser)this.$refs.homeCanvas.load()
       setTimeout(() => {
         this.setAppReady()
+        if(process.browser)this.$refs.homeCanvas.onReady()
+        if(process.browser)this.$refs.siteMenu.onReady()
         if(this.$refs.menuButton)this.$refs.menuButton.show()
         if(this.$refs.logo)this.$refs.logo.show()
           if(process.browser)this.$nextTick(()=>{

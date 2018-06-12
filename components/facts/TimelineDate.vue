@@ -37,4 +37,9 @@ export default {
   width 160 * $unitH
   display block
   text-align center
+  button
+    font-size 20 * $unitH
+    font-weight $semi
+    color $color-black
+    opacity .5
 </style>

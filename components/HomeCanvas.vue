@@ -26,16 +26,23 @@ export default {
     ...mapGetters(['currentPageIdNum', 'getURI'])
   },
   methods: {
-    onReady(){
+    load(){
       this.portraits.load(this.getURI)
       this.titles.load(this.getURI)
+    },
+    onReady(){
+      setTimeout(()=>{
+        this.portraits.doReady()
+        this.titles.doReady()
+        TweenMax.set(this.$el, {'opacity' : 1})
+      },200)
       setTimeout(()=>{
         if(this.route.name !== 'index'){
           this.background.show(0)
           this.showPage(0, 0)
           this.portraitsContainer.visible = false
         }
-      },1000)
+      },500)
     },
     tick() {
       if(this.isMenuVisible) return
@@ -54,20 +61,24 @@ export default {
       this.portraits.hide(id);
       this.titles.hide(id);
     },
-    showHomeSlide(delay) {
-      this.portraitsContainer.visible = true
-      this.background.hide()
+    showHomeSlide(delay = 0) {
+      delay = .5
       this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
-      this.portraits.show(this.currentHomeSlideId, 0);
+      this.portraits.show(this.currentHomeSlideId);
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1);
-      this.titles.scaleTo(1, delay * 0.6, 1);
     },
     showPage(delay, time) {
       this.background.show()
       this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
-      if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId, delay * 1.2);
+      if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId);
       this.titles.show(this.currentPageIdNum, delay * 0.6, time);
       this.titles.scaleTo(.7, delay * 0.6, time);
+    },
+    hidePage(delay) {
+      this.portraitsContainer.visible = true
+      this.background.hide()
+      this.portraits.appear(this.currentHomeSlideId);
+      this.titles.scaleTo(1, delay * 0.6, 1);
     },
     portraitClick() {
       this.$router.push({
@@ -81,19 +92,18 @@ export default {
       if(this.route.name === 'index'){
         if (old != -1) {
           this.hide(old);
-          this.showHomeSlide(1);
-        } else {
-          this.showHomeSlide(0);
+        }else{
+          this.showHomeSlide()
         }
       }
     },
     'route.name'(val, old) {
       if(val !== 'index'){
-        //this.hide(this.currentHomeSlideId)
         this.titles.hide(this.currentHomeSlideId);
         this.showPage(.5, 1)
       }else{
-        this.showHomeSlide(1)
+        if(old && old !== 'index')this.hidePage()
+        //this.showHomeSlide()
       }
     }
   },
@@ -102,13 +112,14 @@ export default {
   },
 
   mounted() {
+    TweenMax.set(this.$el, {'opacity' : .1})
 
     this._portraitClick = this.portraitClick.bind(this);
     const width = ResizeHelper.width();
     const height = ResizeHelper.height();
     this.renderer = Pixi.autoDetectRenderer({
       backgroundColor: 0xe5e3dc,
-      antialias: false,
+      antialias: true,
       width,
       height
     });
@@ -137,6 +148,7 @@ export default {
 
 
     Emitter.on('PORTRAIT_CLICK', this._portraitClick);
+    Emitter.on('TRANSITION:FINISHED', this.showHomeSlide.bind(this))
   }
 };
 </script>

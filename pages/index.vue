@@ -127,7 +127,7 @@ export default {
   },
 
   mounted() {
-    const time = this.currentHomeSlideId === -1 ? 1000 : 10000
+    const time = this.currentHomeSlideId === -1 ? 1100 : 10000
     if(process.browser){
       this.setMouseWheelListener()
       this.setKeyEvents()

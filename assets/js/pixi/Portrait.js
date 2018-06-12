@@ -1,4 +1,5 @@
 import Emitter from '~/assets/js/events'
+import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
 if (process.browser) {
   var Pixi = require('pixi.js')
@@ -10,48 +11,9 @@ class Portait {
     this.color = color
     this.originalW = 1652 / 2
     this.originalH = 2442 / 2
-    this.currentMaskTween = 0
-    this.currentMaskDisappearTween = 0
-    this.currentMask = 0
-    this.currentMaskDisappear = 0
-    this.mask_array = []
-    this.maskDisappearPortrait_array = []
-    this.maskDisappearTint_array = []
-    this.container.visible = false
-    //this.init()
   }
 
-  /*init() {
-    if(!PIXI.loader.resources[this.id]){
-      PIXI.loader.add(this.id, `images/bust/${this.id}.png`)
-    }
-    if(!PIXI.loader.resources[this.id+'_white']){
-      PIXI.loader.add(this.id+'_white', `images/bust/${this.id}-white.png`)
-    }
-    let id
-    if(!PIXI.loader.resources['mask_transition_0']){
-      for (let index = 0; index < 81; index++) {
-        id = index
-        if(index < 10) id = '0' + index
-        PIXI.loader.add("mask_transition_"+index, `images/mask/transition/transition_bust_${id}.png`)
-      }
-    }
-    if(!PIXI.loader.resources['mask_disappear_0']){
-      for (let index = 0; index < 13; index++) {
-        id = index
-        if(index < 10) id = '0' + index
-        PIXI.loader.add("mask_disappear_"+index, `images/mask/disappear/disappear_bust_${id}.png`)
-      }
-    }
-  }*/
-
   load(getter) {
-    //PIXI.loader.load(this.setup.bind(this));
-    //}
-
-    //setup (loader, ressources) {
-    //this.portrait = new Pixi.Sprite(ressources[this.id].texture)
-    //this.portraitTinted = new Pixi.Sprite(ressources[this.id+'_white'].texture)
     this.portrait = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`bust/${this.id}.png`)))
     this.portraitTinted = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`bust/${this.id}-white.png`)))
     TweenMax.set(this.portraitTinted, { colorProps: { tint: this.color, format: "number" } })
@@ -66,50 +28,38 @@ class Portait {
     this.portraitTinted.height = this.originalH
     this.container.addChild(this.portraitTinted)
     this.container.addChild(this.portrait)
-    let id
-    for (let index = 0; index < 81; index++) {
-      id = index
-      if (index < 10) id = '0' + index
-      //const maskStep = new Pixi.Sprite(ressources['mask_transition_'+index].texture)
-      const maskStep = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`mask/transition/transition_bust_${id}.png`)))
-      maskStep.interactive = false
-      maskStep.visible = false
-      maskStep.width = this.originalW
-      maskStep.height = this.originalH
-      this.mask_array.push(maskStep)
-      this.container.addChild(maskStep)
-    }
 
-    for (let index = 0; index < 13; index++) {
-      id = index
-      if (index < 10) id = '0' + index
-      const maskStep = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`mask/disappear/disappear_bust_${id}.png`)))
-      //const maskStep = new Pixi.Sprite(ressources['mask_disappear_'+index].texture)
-      maskStep.interactive = false
-      maskStep.visible = false
-      maskStep.width = this.originalW
-      maskStep.height = this.originalH
-      this.maskDisappearPortrait_array.push(maskStep)
-      this.container.addChild(maskStep)
-    }
-    for (let index = 0; index < 13; index++) {
-      id = index
-      if (index < 10) id = '0' + index
-      const maskStep = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`mask/disappear/disappear_bust_${id}.png`)))
-      //const maskStep = new Pixi.Sprite(ressources['mask_disappear_'+index].texture)
-      maskStep.interactive = false
-      maskStep.visible = false
-      maskStep.width = this.originalW
-      maskStep.scale.x = -1
-      maskStep.position.x = this.originalW
-      maskStep.height = this.originalH
-      this.maskDisappearTint_array.push(maskStep)
-      this.container.addChild(maskStep)
-    }
-    setTimeout(()=>{
-      this.portrait.mask = this.mask_array[0]
-      this.mask_array[this.currentMask].visible = true
-    }, 16)
+  }
+  setMaskTransition(maskIn, maskOut) {
+    this.transitionInTexture = new PIXI.Texture.fromCanvas(maskIn.canvas)
+    this.maskTransitionIn = new PIXI.Sprite(this.transitionInTexture);
+    this.maskTransitionIn.name = 'maskTransitionIn'
+    this.maskTransitionIn.interactive = false
+    this.container.addChild(this.maskTransitionIn)
+    this.transitionOutTexture = new PIXI.Texture.fromCanvas(maskOut.canvas)
+    this.maskTransitionOut = new PIXI.Sprite(this.transitionOutTexture);
+    this.maskTransitionOut.name = 'maskTransitionIn'
+    this.maskTransitionOut.interactive = false
+    this.container.addChild(this.maskTransitionOut)
+  }
+  setMaskDisappear(mask) {
+    this.disappearTexture = new PIXI.Texture.fromCanvas(mask.canvas)
+    this.maskDisappearTint = new PIXI.Sprite(this.disappearTexture);
+    this.maskDisappear = new PIXI.Sprite(this.disappearTexture);
+    this.maskDisappearTint.position.x = this.originalW
+    this.maskDisappearTint.scale.x = -1
+    this.maskDisappear.name = 'maskDisappear'
+    this.maskDisappear.interactive = false
+    this.maskDisappearTint.interactive = false
+    this.container.addChild(this.maskDisappear)
+    this.container.addChild(this.maskDisappearTint)
+  }
+  hideAll() {
+    this.container.visible = false
+    this.maskTransitionIn.visible = false
+    this.maskTransitionOut.visible = false
+    this.maskDisappear.visible = false
+    this.maskDisappearTint.visible = false
   }
   resize(w, h) {
     const ratio = this.originalW / this.originalH
@@ -120,7 +70,6 @@ class Portait {
     } else {
       containerH = h * 8 / 11
       containerW = containerH * ratio
-
     }
     this.container.width = containerW
     this.container.height = containerH
@@ -128,57 +77,66 @@ class Portait {
     this.container.position.y = this.posY = h * .5 - containerH / 2
   }
   show(delay = 0) {
-
+    this.portrait.mask = this.maskTransitionIn
     this.container.visible = true
-    this.currentMaskTween = 0
-    this.currentMask = 0
-    this.portrait.mask = this.mask_array[0]
-    this.mask_array[this.currentMask].visible = true
-    TweenMax.to(this, 42, { useFrames: true, delay: 0, currentMaskTween: 42, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
-    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 50, x: this.posX - 40}, {delay: delay + .5, y: this.posY, x: this.posX, ease: Quart.easeOut})
+    this.maskTransitionIn.visible = true
+    this.maskTransitionOut.visible = false
+    this.maskDisappear.visible = false
+    this.maskDisappearTint.visible = false
+    this.resize(ResizeHelper.width(), ResizeHelper.height())
+    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 50, x: this.posX - 40}, {y: this.posY, x: this.posX, ease: Quart.easeOut, onUpdate: this.tweenTransitionInUpdate.bind(this)})
   }
   hide() {
-    TweenMax.to(this, 38, { useFrames: true, currentMaskTween: 80, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: this.onHideComplete.bind(this) }).timeScale(.5)
-    TweenMax.to(this.container.position, 1, { y: this.posY - 80, x: this.posX + 60, ease: Cubic.easeIn})
+    this.maskTransitionIn.visible = false
+    this.maskTransitionOut.visible = true
+    this.maskDisappear.visible = false
+    this.maskDisappearTint.visible = false
+    this.portrait.mask = this.maskTransitionOut
+    TweenMax.to(this.container.position, 1, { y: this.posY - 80, x: this.posX + 60, ease: Cubic.easeIn,  onUpdate: this.tweenTransitionOutUpdate.bind(this), onComplete: this.onHideComplete.bind(this)})
   }
+
   onHideComplete(){
     this.container.visible = false
-     this.currentMaskTween = 0
+    this.portrait.mask = null
+  }
+  tweenTransitionInUpdate() {
+    this.transitionInTexture.update()
+  }
+  tweenTransitionOutUpdate() {
+    this.transitionOutTexture.update()
   }
   disappear() {
-    this.currentMaskDisappearTween = 0
-    this.currentMaskDisappear = 0
-    this.mask_array[this.currentMask].visible = false
+    this.maskTransitionIn.visible = false
+    this.maskTransitionOut.visible = false
+    this.maskDisappear.visible = true
+    this.maskDisappearTint.visible = true
+    this.portrait.mask = this.maskDisappear
+    this.portraitTinted.mask = this.maskDisappearTint
     this.portraitTinted.visible = true
-    TweenMax.to(this, 12, {
-      useFrames: true, currentMaskDisappearTween: 12, ease: Linear.easeInOut, onUpdate: this.tweenDisappearUpdate.bind(this), onComplete: () => {
-        this.portrait.mask = this.mask_array[0]
-        this.mask_array[0].visible = true
-        this.maskDisappearPortrait_array[this.currentMaskDisappear].visible = false
-        this.maskDisappearTint_array[this.currentMaskDisappear].visible = false
-      }
-    }).timeScale(.5)
+    this.container.visible = true
+    TweenMax.to(this, 1.2, {ease: Quart.easeIn, onUpdate: this.tweenDisappearUpdate.bind(this)})
   }
-  tweenUpdate() {
-    if(this.currentMask === Math.round(this.currentMaskTween))return
-    this.mask_array[this.currentMask].visible = false
-    this.currentMask = Math.round(this.currentMaskTween)
-    this.portrait.mask = this.mask_array[this.currentMask]
-    this.mask_array[this.currentMask].visible = true
+  appear() {
+    this.maskTransitionIn.visible = false
+    this.maskTransitionOut.visible = false
+    this.maskDisappear.visible = true
+    this.maskDisappearTint.visible = true
+    this.portrait.mask = this.maskDisappear
+    this.portraitTinted.mask = this.maskDisappearTint
+    this.portraitTinted.visible = true
+    this.container.visible = true
+    TweenMax.to(this, 1.2, {ease: Quart.easeIn, onUpdate: this.tweenDisappearUpdate.bind(this), onComplete: this.onAppearComplete.bind(this) })
   }
+
   tweenDisappearUpdate() {
-    if(this.currentMaskDisappear === Math.round(this.currentMaskDisappearTween))return
-    this.maskDisappearPortrait_array[this.currentMaskDisappear].visible = false
-    this.maskDisappearTint_array[this.currentMaskDisappear].visible = false
-
-    this.currentMaskDisappear = Math.round(this.currentMaskDisappearTween)
-
-    this.portrait.mask = this.maskDisappearPortrait_array[this.currentMaskDisappear]
-    this.portraitTinted.mask = this.maskDisappearTint_array[this.currentMaskDisappear]
-    this.maskDisappearPortrait_array[this.currentMaskDisappear].visible = true
-    this.maskDisappearTint_array[this.currentMaskDisappear].visible = true
+    this.disappearTexture.update()
   }
 
+  onAppearComplete(){
+    console.log('complete')
+    this.maskDisappearTint.visible = false
+    this.portraitTinted.visible = false
 
+  }
 }
 export default Portait

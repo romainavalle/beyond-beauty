@@ -12,17 +12,7 @@ class Title {
     this.angle = Math.PI / 35
     this.title_array = []
     if(!this.isBordered)this.container.tint = 0xf1f3ee
-    //this.init()
   }
-
-  /*init() {
-    const border = this.isBordered ? '-border' : ''
-    if(!PIXI.loader.resources[this.id+'-title'+border+'-0']){
-      for (let index = 0; index < 3; index++) {
-        PIXI.loader.add(this.id+'-title'+border+'-'+index, `images/titles${border}/${this.id}-${index}.png`)
-      }
-    }
-  }*/
 
   load(getter) {
     this.loaded = 0
@@ -57,8 +47,6 @@ class Title {
     this.originalH = this.container.height
     this.isDisposed = true
     if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
-    setTimeout(this.reset.bind(this), 20)
-
   }
   resize(w, h) {
     this.isFirstResize = true

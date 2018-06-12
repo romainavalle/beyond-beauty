@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import vSlider from '~/components/Facts/Slider.vue'
-import vTimeline from '~/components/Facts/Timeline.vue'
+import vSlider from '~/components/facts/Slider.vue'
+import vTimeline from '~/components/facts/Timeline.vue'
 import { mapActions } from 'vuex'
 export default {
   name: "Facts",
@@ -36,5 +36,6 @@ export default {
 .Facts
   position relative
   width 100%
+  height 100vh
   background $colors-white
 </style>

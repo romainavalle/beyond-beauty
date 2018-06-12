@@ -35,10 +35,20 @@ export default {
 
 <style lang="stylus" scoped>
 .Timeline
-  position relative
+  position absolute
   width 100%
+  bottom 240 * $unitV
   ul
     display flex
     justify-content space-between
     padding 0 320 * $unitH
+    &:before
+      content ''
+      width 100%
+      height 1px
+      background $colors-black
+      display block
+      position absolute
+      left -320 * $unitH
+
 </style>

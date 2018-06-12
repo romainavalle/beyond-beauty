@@ -48,6 +48,13 @@ class Titles {
     })
   }
 
+  doReady(){
+    pages.forEach((page, i) => {
+      this.titlesBorder[i].reset()
+      this.titles[i].reset()
+    })
+  }
+
   resize(w, h) {
     pages.forEach((page, i) => {
       this.titlesBorder[i].resize(w, h)
