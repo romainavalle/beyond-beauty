@@ -13,7 +13,7 @@ class ResizeHelper {
 
   onResize(e) {
     this.dimension = memoize(this._dimension)
-    Emitter.emit('GLOBAL_RESIZE')
+    Emitter.emit('GLOBAL:RESIZE')
   }
 
   clear() {

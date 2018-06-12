@@ -41,7 +41,7 @@ export default {
       this.stats.end()
     },
     onReady(){
-      Emitter.on('GLOBAL_RESIZE', this.resize.bind(this))
+      Emitter.on('GLOBAL:RESIZE', this.resize.bind(this))
       this.page = this.$refs.page.$children[0]
       this.setDebug()
       if(this.page)this.page.onReady && this.page.onReady()

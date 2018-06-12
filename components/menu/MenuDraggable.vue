@@ -11,7 +11,7 @@
 <script>
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import vMenuLink from '~/components/menu/MenuLink.vue'
-import { pages } from '~/assets/data.json'
+import { mapState } from 'vuex'
 if (process.browser) {
   Draggable = require('gsap/Draggable')
   ThrowPropsPlugin = require('gsap/ThrowPropsPlugin')
@@ -20,12 +20,14 @@ export default {
   name: "menuDraggable",
   data(){
     return {
-      pages,
       snapValues: [],
       currentId: 0
     }
   },
   components:{vMenuLink},
+  computed:{
+    ...mapState(['pages'])
+  },
   methods:{
     tick() {
       this.$refs.link.forEach((el, i) => {
@@ -39,7 +41,7 @@ export default {
       this.$refs.link.forEach((el, i)=>{
         el.resize(w,h)
       })
-      for (let i = 0; i< pages.length; i++) {
+      for (let i = 0; i< this.pages.length; i++) {
         this.$set(this.snapValues, i, Math.round(-i * 160 * 7 * ResizeHelper.width() / 2880))
       }
       if(this.draggable && this.draggable[0]){

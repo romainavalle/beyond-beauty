@@ -1,5 +1,5 @@
 <template>
-  <div class="StorySpeechPart" :class="`part-${currentPageId}`" @click="onclick">
+  <div class="StorySpeechPart" @click="onclick">
     <div class="number">
       <svg viewBox="0 0 116 116">
         <circle  cx="58" cy="58" r="56" class="load" ref="load"/>
@@ -29,7 +29,7 @@ export default {
   },
   props:['paragraph', 'id'],
   computed:{
-    ...mapGetters(['currentPageId'])
+    ...mapGetters(['pageData'])
   },
   methods:{
     onclick() {

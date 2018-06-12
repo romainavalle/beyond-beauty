@@ -2,7 +2,8 @@
   <div class="beyond-beauty">
     <v-loader></v-loader>
     <transition name="menuButton" mode="out-in">
-      <component :is="logo" ref="menuButton"></component>
+      <v-logo v-if="logo" ref="logo"></v-logo>
+      <v-menu-button v-else ref="menuButton"></v-menu-button>
     </transition>
     <v-home-canvas ref="homeCanvas"></v-home-canvas>
     <v-menu ref="siteMenu"></v-menu>
@@ -21,7 +22,7 @@ import vLoader from '~/components/common/Loader.vue'
 import vMenu from '~/components/menu/Menu.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 if(process.browser){
   require('gsap/ScrollToPlugin')
   var MMUnpacker = require('mm-unpacker')
@@ -37,15 +38,19 @@ export default {
   },
   computed:{
     ...mapState(['isAppReady']),
+    ...mapGetters(['route']),
     logo(){
-      return this.$route.name === 'index' ? vLogo : vMenuButton
+      return this.route.name === 'index'
+    },
+    menuButtonRef() {
+      return this.$route.name === 'index' ? 'logo' : 'menuButton'
     }
   },
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady']),
     resize(){
-      if(this.page)this.page.resize && this.page.resize(ResizeHelper.width(),ResizeHelper.height())
+      if(this.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(ResizeHelper.width(),ResizeHelper.height())
       this.$refs.homeCanvas.resize(ResizeHelper.width(),ResizeHelper.height())
       this.$refs.siteMenu.resize(ResizeHelper.width(),ResizeHelper.height())
     },
@@ -59,26 +64,37 @@ export default {
     },
     tick(){
       this.stats.begin()
-      this.$refs.siteMenu.tick()
-      this.$refs.homeCanvas.tick()
-      if(this.page)this.page.tick && this.page.tick()
+      if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
+      if(this.$refs.homeCanvas)this.$refs.homeCanvas.tick()
+      if(this.page)this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
       this.stats.end()
     },
     onReady(){
-      Emitter.on('GLOBAL_RESIZE', this.resize.bind(this))
+      this._resize = this.resize.bind(this)
+      this._tick = this.tick.bind(this)
+
+      Emitter.on('GLOBAL:RESIZE', this._resize)
       this.page = this.$refs.page.$children[0]
       this.setDebug()
-      if(this.page)this.page.onReady && this.page.onReady()
+      if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady()
       if(process.browser)this.$refs.homeCanvas.onReady()
       if(process.browser)this.$refs.siteMenu.onReady()
       setTimeout(() => {
         this.setAppReady()
-        this.$refs.menuButton.show()
+        if(this.$refs.menuButton)this.$refs.menuButton.show()
+        if(this.$refs.logo)this.$refs.logo.show()
           if(process.browser)this.$nextTick(()=>{
-            TweenMax.ticker.addEventListener('tick', this.tick.bind(this))
+            TweenMax.ticker.addEventListener('tick', this._tick)
             this.resize()
+
           })
       },500)
+    }
+  },
+  beforeDestroy(){
+    if(process.browser){
+      Emitter.removeListener('GLOBAL:RESIZE', this._resize)
+      TweenMax.ticker.removeEventListener('tick', this._tick)
     }
   },
   created(){
@@ -88,6 +104,13 @@ export default {
     this.$router.beforeEach((to, from, next) => {
       this.setMenuOpen(false)
       next()
+    })
+    this.$router.afterEach((to, from) => {
+      setTimeout(() => {
+        if(this.$refs.menuButton)this.$refs.menuButton.show()
+        if(this.$refs.logo)this.$refs.logo.show()
+        this.resize()
+      }, 1000)
     })
      // todo -> promise polyfill
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
@@ -123,7 +146,7 @@ export default {
     z-index 99999
     mix-blend-mode overlay*/
   .menuButton-enter-active, .menuButton-leave-active
-    transition opacity 1s ease-in-out-quad, transform 1s ease-in-out-quad
+    transition opacity .8s ease-in-out-quad, transform .8s ease-in-out-quad
   .menuButton-enter, .menuButton-leave-to
     opacity 0
     transform scale(0.6, 0.6)

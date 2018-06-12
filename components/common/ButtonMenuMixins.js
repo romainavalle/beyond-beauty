@@ -1,4 +1,4 @@
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -6,7 +6,8 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isAppReady'])
+    ...mapState(['isAppReady']),
+    ...mapGetters(['route'])
   },
   methods: {
     ...mapActions(['setMenuOpen']),

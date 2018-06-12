@@ -1,5 +1,5 @@
 <template>
-  <div class="StorySpeech" :class="`speech-${currentPageId}`">
+  <div class="StorySpeech" :class="`StorySpeech--${pageData.id}`">
     <h3 v-text="story.name" :data-text="story.name" ref="name" :class="nameClass"></h3>
     <strong v-text="`– ${story.date}`" :data-text="`– ${story.date}`" ref="date" :class="dateClass"></strong>
     <div class="text" ref="text">
@@ -8,31 +8,33 @@
   </div>
 </template>
 <script>
-import { pages } from '~/assets/data.json'
 import vStorySpeechPart from '~/components/story/StorySpeechPart.vue'
 import { mapGetters } from 'vuex'
 export default {
   name: 'StorySpeech',
   data(){
     return {
-      pages,
       nameClass: '',
       dateClass: '',
       paragraphClass: ['','',''],
       shown: false,
-      currentPart: -1
+      currentPart: -1,
+      scrollTop: 0
     }
   },
   components: {vStorySpeechPart},
   computed:{
-    ...mapGetters(['currentPageId']),
+    ...mapGetters(['pageData']),
     story(){
-      return this.pages[this.currentPageId].story
+      return this.pageData.story
     }
   },
   methods:{
     tick(scrollTop){
       if(scrollTop < 0) scrollTop = 0
+      if(scrollTop === this.scrollTop)return
+      this.scrollTop = scrollTop
+      console.log(scrollTop,this.contentHeight)
       TweenMax.set(this.$el, {y: scrollTop - (scrollTop * this.contentHeight)})
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].tick()
     },
@@ -127,7 +129,7 @@ export default {
     font-weight normal
     margin 60 * $unitV 0 60 * $unitV 60 * $unitH
     display block
-  &.speech-0
+  &--natalie-portman
     .number span,
     p.html span
       color #f7c8ae
@@ -139,7 +141,7 @@ export default {
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
-  &.speech-1
+  &--emma-watson
     .number span,
     p.html span
       color #f7b8b0
@@ -152,7 +154,7 @@ export default {
       background-position center center
       -webkit-background-clip text
 
-  &.speech-2
+  &--jennifer-lawrence
     .number span,
     p.html span
       color #f7cfae
@@ -165,7 +167,7 @@ export default {
       background-position center center
       -webkit-background-clip text
 
-  &.speech-3
+  &--cara-delevingne
     .number span,
     p.html span
       color #f5d4a4

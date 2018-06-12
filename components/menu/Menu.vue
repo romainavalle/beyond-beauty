@@ -17,14 +17,12 @@ import vMenuHeader from '~/components/menu/MenuHeader.vue'
 import vMenuFooter from '~/components/menu/MenuFooter.vue'
 import vMenuCitations from '~/components/menu/MenuCitations.vue'
 import vMenuDraggable from '~/components/menu/MenuDraggable.vue'
-import { pages } from '~/assets/data.json'
 import { mapState, mapActions } from 'vuex'
 
 export default {
   name: "menuEl",
   data(){
     return {
-      pages
     }
   },
   components: {vMenuLink, vMenuDraggable, vMenuCitations, vMenuHeader, vMenuFooter},

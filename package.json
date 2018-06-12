@@ -16,12 +16,15 @@
   "dependencies": {
     "ajv": "^6.4.0",
     "dat.gui": "^0.7.1",
+    "detect-browser": "^2.5.1",
+    "dom-classes": "^1.0.0",
     "gsap": "git+https://manudurgoni:dibsHk2uRKSe9rsbMKjL@gitlab.upian.com/upian/Tools/gsap.git",
     "load-asset": "^1.2.0",
     "lodash": "^4.17.10",
     "mm-unpacker": "^3.0.3",
     "nuxt": "^1.0.0",
     "pixi.js": "^4.7.3",
+    "smooth-scrolling": "^2.3.9",
     "stats-js": "^1.0.0-alpha1"
   },
   "devDependencies": {
@@ -31,6 +34,7 @@
     "eslint-loader": "^1.7.1",
     "eslint-plugin-vue": "^4.0.0",
     "howler": "^2.0.12",
+    "ify-loader": "^1.1.0",
     "mm-packer": "^4.0.5",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",

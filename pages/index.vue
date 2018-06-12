@@ -24,17 +24,15 @@
   </section>
 </template>
 <script>
-import { pages } from '~/assets/data.json'
 import { mapState, mapActions } from 'vuex';
 export default {
   data(){
     return {
-      isIdle: false,
-      pages
+      isIdle: false
     }
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'isMenuOpen', 'isAppReady'])
+    ...mapState(['currentHomeSlideId', 'isMenuOpen', 'isAppReady', 'pages'])
   },
   methods:{
     ...mapActions(['setCurrentHomeSlideId']),
@@ -42,10 +40,10 @@ export default {
 
     },
     name(id){
-      return this.id !== -1 ? pages[id % 4].name : ''
+      return this.id !== -1 ? this.pages[id % 4].name : ''
     },
     title(id){
-      return this.id !== -1 ? pages[id % 4].pageName : ''
+      return this.id !== -1 ? this.pages[id % 4].pageName : ''
     },
     button(id){
       switch(id % 4) {
@@ -71,8 +69,8 @@ export default {
       this.isIdle = true
 
       let id = this.currentHomeSlideId + increment
-      if(id === pages.length)id = 0
-      if(id === -1)id = pages.length - 1
+      if(id === this.pages.length)id = 0
+      if(id === -1)id = this.pages.length - 1
 
       this.setCurrentHomeSlideId(id)
 

@@ -1,5 +1,4 @@
 import { Howl } from 'Howler'
-import { pages } from '~/assets/data.json'
 import Emmiter from '~/assets/js/events'
 class SoundHelper {
 

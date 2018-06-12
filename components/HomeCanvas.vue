@@ -10,7 +10,6 @@ import PixiBlobs from '~/assets/js/pixi/PixiBlobs';
 import Background from '~/assets/js/pixi/Background';
 import Portraits from '~/assets/js/pixi/Portraits';
 import Titles from '~/assets/js/pixi/Titles';
-import { pages } from '~/assets/data.json';
 import Emitter from '~/assets/js/events';
 import { mapState, mapGetters } from 'vuex';
 
@@ -23,8 +22,8 @@ export default {
     };
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady']),
-    ...mapGetters(['currentPageId', 'getURI'])
+    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady','pages']),
+    ...mapGetters(['currentPageIdNum', 'getURI'])
   },
   methods: {
     onReady(){
@@ -58,22 +57,22 @@ export default {
     showHomeSlide(delay) {
       this.portraitsContainer.visible = true
       this.background.hide()
-      this.pixiBlobs.setTint(pages[this.currentHomeSlideId].color);
+      this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
       this.portraits.show(this.currentHomeSlideId, 0);
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1);
       this.titles.scaleTo(1, delay * 0.6, 1);
     },
     showPage(delay, time) {
       this.background.show()
-      this.pixiBlobs.setTint(pages[this.currentPageId].color);
+      this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
       if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId, delay * 1.2);
-      this.titles.show(this.currentPageId, delay * 0.6, time);
+      this.titles.show(this.currentPageIdNum, delay * 0.6, time);
       this.titles.scaleTo(.7, delay * 0.6, time);
     },
     portraitClick() {
       this.$router.push({
         name: 'story-pageId',
-        params: { pageId: pages[this.currentHomeSlideId].pageId }
+        params: { pageId: this.pages[this.currentHomeSlideId].pageId }
       });
     }
   },

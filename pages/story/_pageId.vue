@@ -1,23 +1,20 @@
 <template>
-  <section class="Story">
-    <v-story-top></v-story-top>
-    <v-story-content ref="content"></v-story-content>
-
-    <div class="slider">
-      <div class="text">
-      <p>ELLE DEVIENT<br>AMBASSADRICE<br>DE L'ESPOIR POUR LA<br>FINCA ET VOYAGE EN<br>OUGANDE AU GUATEMALA<br>ET EN EQUATEUR</p>
-      <p class="bottom">ELLE DEVIENT<br>AMBASSADRICE<br>DE <span>L'ESPOIR</span> POUR LA<br>FINCA ET VOYAGE EN<br><span>OUGANDE</span> AU GUATEMALA<br>ET EN EQUATEUR</p>
-      </div>
+    <div class="Story">
+      <v-story-top></v-story-top>
+      <v-scroll-layout>
+        <v-story-content ref="content"></v-story-content>
+        <v-facts></v-facts>
+      </v-scroll-layout>
     </div>
-  </section>
 </template>
 
 <script>
 import { mapActions, mapGetters } from 'vuex';
 import vStoryTop from '~/components/story/StoryTop.vue'
 import vStoryContent from '~/components/story/StoryContent.vue'
-import ScrollHelper from '~/assets/js/utils/ScrollHelper'
+import vFacts from '~/components/facts/Facts.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+import vScrollLayout from '~/components/layout/ScrollLayout.vue'
 
 export default {
   data(){
@@ -25,27 +22,25 @@ export default {
       scrollTop: 0
     }
   },
-  components: { vStoryTop, vStoryContent },
+  components: { vScrollLayout, vStoryTop, vStoryContent, vFacts },
   computed:{
-    ...mapGetters(['currentPageId'])
+    ...mapGetters(['currentPageIdNum'])
   },
   methods:{
     ...mapActions(['setCurrentHomeSlideId']),
     tick(){
-      if(this.scrollTop != ScrollHelper.scrollTop){
-        this.scrollTop = ScrollHelper.scrollTop
+      if(!window.smooth)return
+      if(this.scrollTop != window.smooth.vars.current){
+        this.scrollTop = window.smooth.vars.current
       }
       if(this.$refs.content) this.$refs.content.tick(this.scrollTop - ResizeHelper.height())
     },
     resize(w, h) {
       if(this.$refs.content) this.$refs.content.resize(w, h)
-      if(this.isShown){
-        TweenMax.to(window, .5, {scrollTo: {y: ResizeHelper.height() + 1, autoKill: false}, overwrite: 1})
-      }
     },
     show(){
-      this.resize(ResizeHelper.width(), ResizeHelper.height())
       this.$refs.content.show()
+      this.$nextTick(this.resize(ResizeHelper.width(), ResizeHelper.height()))
     },
     hide(){
       this.$refs.content.hide()
@@ -66,16 +61,14 @@ export default {
           e.preventDefault();
           if(e.deltaY > 0){
             if(this.isShown)return
-            TweenMax.to(window, 1, {scrollTo: {y: ResizeHelper.height() + 1, autoKill: false}, overwrite: 1, ease: Quad.easeOut, onStart:() => {
+              window.smooth.scrollTo(ResizeHelper.height())
               this.show()
               this.isShown = true
-            }})
           }else{
             if(!this.isShown)return
-            TweenMax.to(window, 1, {scrollTo: {y: 0, autoKill: false}, overwrite: 1, ease: Quad.easeOut, onStart:() => {
+              window.smooth.scrollTo(0)
               this.hide()
               this.isShown = false
-            }})
           }
         }else{
 
@@ -84,8 +77,9 @@ export default {
     }
   },
   mounted(){
-    this.setCurrentHomeSlideId(this.currentPageId)
+    this.setCurrentHomeSlideId(this.currentPageIdNum)
     this.setMouseWheelListener()
+
   }
 }
 
@@ -101,19 +95,5 @@ export default {
     z-index 2
     .text
       position relative
-    p
-      font-size 140 * $unitH
-      text-align center
-      font-family $hawthorn
-      color transparent
-      -webkit-text-stroke-width: 1px;
-      -webkit-text-stroke-color: black;
-      position relative
-      &.bottom
-        position absolute
-        top 0
-        left 0
-        right 0
-        span
-          color $colors-black
+
 </style>

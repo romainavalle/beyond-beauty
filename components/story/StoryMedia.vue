@@ -7,7 +7,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import { pages } from '~/assets/data.json'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 export default {
   name: 'StoryMedia',
@@ -17,12 +16,12 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['currentPageId', 'getURI']),
+    ...mapGetters(['pageData', 'getURI']),
     id() {
-      return pages[this.currentPageId].id
+      return this.pageData.id
     },
     media(){
-      return pages[this.currentPageId].story.media
+      return this.pageData.story.media
     }
   },
   methods:{

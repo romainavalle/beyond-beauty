@@ -29,7 +29,34 @@
           {"src": "natalie-portman-2.png", "width": 1205, "height": 1205},
           {"src": "natalie-portman-3.png", "width": 1395, "height": 1698}
         ]
-      }
+      },
+      "facts":[
+        {
+          "year": 2004,
+          "text": "Natalie joins FINCA and becomes its Ambassador of Hope and travels to Ouganda, Guatemala & in Equator.",
+          "html": "Natalie joins FINCA and becomes its Ambassador of Hope and travels to Ouganda, Guatemala & in Equator."
+        },
+        {
+          "year": 2008,
+          "text": "Natalie Portman designs a collection of luxury vegan shoes in collaboration with Te Casan.",
+          "html": "Natalie Portman designs a collection of luxury vegan shoes in collaboration with Te Casan."
+        },
+        {
+          "year": 2009,
+          "text": "Actively defends PETA and give a conference to support the group’s anti-leather campaign ",
+          "html": "Actively defends PETA and give a conference to support the group’s anti-leather campaign "
+        },
+        {
+          "year": 2010,
+          "text": "Portman supported Obama's re-election campaign and the same-sex marriage legislation",
+          "html": "Portman supported Obama's re-election campaign and the same-sex marriage legislation"
+        },
+        {
+          "year": 2011,
+          "text": "Portman became an ambassador of Free the Children, an international charity and educational partner.",
+          "html": "Portman became an ambassador of Free the Children, an international charity and educational partner."
+        }
+      ]
     },
     {
       "id": "emma-watson",
@@ -60,7 +87,34 @@
           {"src": "emma-watson-2.png", "width": 1205, "height": 1205},
           {"src": "emma-watson-3.png", "width": 1395, "height": 1698}
         ]
-      }
+      },
+      "facts": [
+        {
+          "year": 2014,
+          "text": "Emma Watson becomes UN Women Goodwill Ambassador and is dedicated to furthering gender equality",
+          "html": "Emma Watson becomes UN Women Goodwill Ambassador and is dedicated to furthering gender equality"
+        },
+        {
+          "year": 2015,
+          "text": "Using GoodReads platform, the actress creates a book reading community empowering gender equality",
+          "html": "Using GoodReads platform, the actress creates a book reading community empowering gender equality"
+        },
+        {
+          "year": 2016,
+          "text": "Emma is involved with promoting girls' education and has visited Bangladesh, Uruguay, and Zambia.",
+          "html": "Emma is involved with promoting girls' education and has visited Bangladesh, Uruguay, and Zambia."
+        },
+        {
+          "year": 2017,
+          "text": "Emma Watson dedicates her Instagram account to defend and promote sustainable fashion clothes.",
+          "html": "Emma Watson dedicates her Instagram account to defend and promote sustainable fashion clothes."
+        },
+        {
+          "year": 2018,
+          "text": "Emma Watson has donated £1 million to a British fund to help women facing harassment and abuse at work",
+          "html": "Emma Watson has donated £1 million to a British fund to help women facing harassment and abuse at work"
+        }
+      ]
     },
     {
       "id": "jennifer-lawrence",
@@ -91,7 +145,34 @@
           {"src": "jennifer-lawrence-2.png", "width": 1280, "height": 1280},
           {"src": "jennifer-lawrence-3.png", "width": 1280, "height": 1600}
         ]
-      }
+      },
+      "facts": [
+        {
+          "year": 2012,
+          "text": "Jennifer Lawrence partnered with the United Nations to raise awareness on  poverty and hunger",
+          "html": "Jennifer Lawrence partnered with the United Nations to raise awareness on  poverty and hunger"
+        },
+        {
+          "year": 2015,
+          "text": "She wrote an essay for the Lenny Letter in which she criticized the gender pay gap in Hollywood",
+          "html": "She wrote an essay for the Lenny Letter in which she criticized the gender pay gap in Hollywood"
+        },
+        {
+          "year": 2016,
+          "text": "The Jennifer Lawrence Foundation helps organizations that fulfill children’s vital needs & drives art access",
+          "html": "The Jennifer Lawrence Foundation helps organizations that fulfill children’s vital needs & drives art access"
+        },
+        {
+          "year": 2017,
+          "text": "She is a supporter of Planned Parenthood, and participated in a video against the defunding of the organization",
+          "html": "She is a supporter of Planned Parenthood, and participated in a video against the defunding of the organization"
+        },
+        {
+          "year": 2018,
+          "text": "Jennifer takes a break in acting to focus on anti-corruption activist work and engage young people to politics",
+          "html": "Jennifer takes a break in acting to focus on anti-corruption activist work and engage young people to politics"
+        }
+      ]
     },
     {
       "id": "cara-delevingne",
@@ -122,7 +203,34 @@
           {"src": "cara-delevingne-2.png", "width": 1280, "height": 1280},
           {"src": "cara-delevingne-3.png", "width": 1280, "height": 1600}
         ]
-      }
+      },
+      "facts": [
+        {
+          "year": 2014,
+          "text": "Cara Delevingne stands up for women body positivity and support the FreeTheNipple campaign",
+          "html": "Cara <span>Delevingne</span> stands up for <span>women</span> body <span>positivity</span> and support the <span>FreeTheNipple</span> campaign"
+        },
+        {
+          "year": 2015,
+          "text": "She opens up about her fight with depression as well her struggles in the modelling industry",
+          "html": "She opens up about her <span>fight</span> with <span>depression</span> as well her <span>struggles</span> in the modelling industry"
+        },
+        {
+          "year": 2016,
+          "text": "She embarks on a charity trip to Ouganda to support female refugees in support of the Girl Up Campaign",
+          "html": "She embarks on a <span>charity</span> trip to <span>Ouganda</span> to support female <span>refugees</span> in support of the Girl Up Campaign"
+        },
+        {
+          "year": 2017,
+          "text": "Cara writes a young adult fiction book Mirror, Mirror, which contains and narrate an LGBT story",
+          "html": "Cara writes a young <span>adult</span> fiction book Mirror, Mirror, which contains and narrate an LGBT story"
+        },
+        {
+          "year": 2018,
+          "text": "Cara Delevingne closes Burberry's runway show in a rainbow cape celebrating LGBTQ",
+          "html": "Cara <span>Delevingne</span> closes Burberry's runway show in a <span>rainbow</span> cape celebrating <span>LGBTQ</span>"
+        }
+      ]
     }
   ],
   "citations":[

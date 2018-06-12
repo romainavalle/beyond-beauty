@@ -7,7 +7,6 @@
   </div>
 </template>
 <script>
-import { pages } from '~/assets/data.json'
 import { mapGetters } from 'vuex'
 import Emmiter from '~/assets/js/events'
 import vStorySpeech from '~/components/story/StorySpeech.vue'
@@ -17,7 +16,6 @@ export default {
   name: 'StoryContent',
   data(){
     return {
-      pages,
       className: '',
       scrollTop: 0,
       currentPart: -1
@@ -25,7 +23,7 @@ export default {
   },
   components:{vStorySpeech,vStoryMedia},
   computed:{
-    ...mapGetters(['currentPageId'])
+    ...mapGetters(['pageData'])
   },
   methods:{
     tick(scrollTop){
@@ -42,7 +40,7 @@ export default {
       }
       if (this.currentPart===3) return
       this.$refs.speech.showPart(this.currentPart)
-      SoundHelper.createSound(pages[this.currentPageId].id, this.currentPart)
+      SoundHelper.createSound(this.pageData.id, this.currentPart)
     },
     show(){
       this.currentPart = -1

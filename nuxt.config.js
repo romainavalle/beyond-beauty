@@ -39,7 +39,7 @@ module.exports = {
     /*
     ** Run ESLint on save
     */
-
+    vendor: ['~/assets/js/utils/Scroll'],
     extend (config, { isDev, isClient }) {
       var stylus = config.module.rules[0].options.loaders.stylus.find( e => e.loader == 'stylus-loader');
         // extend default options

@@ -7,9 +7,14 @@ const createStore = () => {
       packer: null,
       isMenuOpen: false,
       isMenuVisible: false,
-      isAppReady: false
+      isAppReady: false,
+      pages,
+      currentFact: 2
     },
     mutations: {
+      SET_CURRENT_FACT (state, id) {
+        state.currentFact = id
+      },
       SET_CURRENT_HOME_SLIDE_ID (state, id) {
         state.currentHomeSlideId = id
       },
@@ -27,6 +32,9 @@ const createStore = () => {
       }
     },
     actions: {
+      setCurrentFact ({ commit }, id) {
+        commit('SET_CURRENT_FACT', id)
+      },
       setMenuOpen ({ commit }, bool) {
         commit('SET_MENU_OPEN', bool)
       },
@@ -50,9 +58,15 @@ const createStore = () => {
       currentHomeSlideId: state => {
         return state.currentHomeSlideId
       },
-      currentPageId: state => {
-        const page = pages.find(p => {return p.pageId === state.route.params.pageId})
-        return pages.indexOf(page)
+      currentPageIdNum: state => {
+        const page = state.pages.find(p => {return p.pageId === state.route.params.pageId})
+        return state.pages.indexOf(page)
+      },
+      currentPageId: (state, getters) => {
+        return getters.currentPageIdNum !== -1 ? state.pages[getters.currentPageIdNum].id : null
+      },
+      pageData: (state, getters) => {
+        return state.pages[getters.currentPageIdNum]
       },
       route: state => {
         return state.route
