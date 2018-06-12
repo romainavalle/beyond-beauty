@@ -3,7 +3,7 @@
       <v-story-top></v-story-top>
       <v-scroll-layout>
         <v-story-content ref="content"></v-story-content>
-        <v-facts></v-facts>
+        <v-facts ref="facts"></v-facts>
       </v-scroll-layout>
     </div>
 </template>
@@ -34,9 +34,12 @@ export default {
         this.scrollTop = window.smooth.vars.current
       }
       if(this.$refs.content) this.$refs.content.tick(this.scrollTop - ResizeHelper.height())
+      if(this.$refs.facts) this.$refs.facts.tick()
+
     },
     resize(w, h) {
       if(this.$refs.content) this.$refs.content.resize(w, h)
+      if(this.$refs.facts) this.$refs.facts.resize(w, h)
     },
     show(){
       this.$refs.content.show()

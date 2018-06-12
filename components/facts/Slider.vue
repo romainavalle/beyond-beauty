@@ -35,16 +35,17 @@ export default {
 
 <style lang="stylus" scoped>
 .Slider
+  padding-top 160 * $unitV
   position relative
   width 100%
-  .fade-fact-enter-active
-    transition all 6s
-  .fade-fact-leave-active
-    transition all 8s
-  .fade-fact-enter
+  .fadeFact-enter-active
+    transition all .8s ease-out-quart .5s
+  .fadeFact-leave-active
+    transition all .5s ease-in-quad
+  .fadeFact-enter
     opacity 0
-    transform translateY(0, 100 * $unitH)
-  .fade-fact-leave-to
+    transform translateY(100 * $unitH)
+  .fadeFact-leave-to
     opacity 0
-    transform translateY(0, 100 * $unitH)
+    transform translateY(-100 * $unitH)
 </style>

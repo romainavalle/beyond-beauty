@@ -84,7 +84,7 @@ class Portait {
     this.maskDisappear.visible = false
     this.maskDisappearTint.visible = false
     this.resize(ResizeHelper.width(), ResizeHelper.height())
-    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 50, x: this.posX - 40}, {y: this.posY, x: this.posX, ease: Quart.easeOut, onUpdate: this.tweenTransitionInUpdate.bind(this)})
+    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 80, x: this.posX - 60}, {y: this.posY, x: this.posX, ease: Quart.easeOut})
   }
   hide() {
     this.maskTransitionIn.visible = false
@@ -92,18 +92,17 @@ class Portait {
     this.maskDisappear.visible = false
     this.maskDisappearTint.visible = false
     this.portrait.mask = this.maskTransitionOut
-    TweenMax.to(this.container.position, 1, { y: this.posY - 80, x: this.posX + 60, ease: Cubic.easeIn,  onUpdate: this.tweenTransitionOutUpdate.bind(this), onComplete: this.onHideComplete.bind(this)})
+    TweenMax.to(this.container.position, 1, { y: this.posY - 80, x: this.posX + 60, ease: Cubic.easeIn,  onComplete: this.onHideComplete.bind(this)})
   }
 
   onHideComplete(){
     this.container.visible = false
     this.portrait.mask = null
   }
-  tweenTransitionInUpdate() {
+  tick() {
     this.transitionInTexture.update()
-  }
-  tweenTransitionOutUpdate() {
     this.transitionOutTexture.update()
+    this.disappearTexture.update()
   }
   disappear() {
     this.maskTransitionIn.visible = false
@@ -114,7 +113,7 @@ class Portait {
     this.portraitTinted.mask = this.maskDisappearTint
     this.portraitTinted.visible = true
     this.container.visible = true
-    TweenMax.to(this, 1.2, {ease: Quart.easeIn, onUpdate: this.tweenDisappearUpdate.bind(this)})
+    TweenMax.to(this, 1.2, {ease: Quart.easeIn})
   }
   appear() {
     this.maskTransitionIn.visible = false
@@ -125,15 +124,11 @@ class Portait {
     this.portraitTinted.mask = this.maskDisappearTint
     this.portraitTinted.visible = true
     this.container.visible = true
-    TweenMax.to(this, 1.2, {ease: Quart.easeIn, onUpdate: this.tweenDisappearUpdate.bind(this), onComplete: this.onAppearComplete.bind(this) })
-  }
-
-  tweenDisappearUpdate() {
-    this.disappearTexture.update()
+    this.resize(ResizeHelper.width(), ResizeHelper.height())
+    TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: this.onAppearComplete.bind(this) })
   }
 
   onAppearComplete(){
-    console.log('complete')
     this.maskDisappearTint.visible = false
     this.portraitTinted.visible = false
 

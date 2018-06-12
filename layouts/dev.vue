@@ -10,7 +10,6 @@ import Stats from 'stats-js'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import { mapActions, mapState } from 'vuex'
 if(process.browser){
-  require('gsap/ScrollToPlugin')
   require('gsap')
 }
 

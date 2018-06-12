@@ -24,6 +24,7 @@
     "mm-unpacker": "^3.0.3",
     "nuxt": "^1.0.0",
     "pixi.js": "^4.7.3",
+    "simplex-noise": "^2.4.0",
     "smooth-scrolling": "^2.3.9",
     "stats-js": "^1.0.0-alpha1"
   },

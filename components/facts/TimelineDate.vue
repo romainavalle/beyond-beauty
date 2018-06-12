@@ -1,13 +1,13 @@
 <template>
   <li class="TimelineDate">
-    <button v-text="fact.year" @click="setCurrentFact(num)"></button>
+    <button @click="setCurrentFact(num)" :class="{'active': currentFact === num}"><span v-text="fact.year" class="text"></span><span class="point"></span></button>
   </li>
 </template>
 
 <script>
 
 
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: "TimelineDate",
   data(){
@@ -16,7 +16,7 @@ export default {
   },
   props: ['fact', 'num'],
   computed:{
-
+    ...mapState(['currentFact'])
   },
   methods:{
     ...mapActions(['setCurrentFact']),
@@ -40,6 +40,44 @@ export default {
   button
     font-size 20 * $unitH
     font-weight $semi
-    color $color-black
-    opacity .5
+    color $colors-black
+    margin 0 auto
+    display flex
+    flex-direction column
+    align-items center
+    justify-content flex-end
+    &.active
+      .text
+        opacity 1
+        transform translateY(-70 * $unitV)
+        transition all .8s ease-out-quart
+      .point:after
+        opacity 1
+        transition opacity .8s ease-out-quart
+    .text
+      display block
+      opacity .5
+      line-height 1
+      transform translateY(-35 * $unitV)
+      transition all .6s ease-in-quad
+    .point
+      height  5px
+      width  5px
+      position relative
+      &:after,
+      &:before
+        display block
+        content ''
+        height  100%
+        width  100%
+        border-radius 50%
+        position absolute
+        top 0
+        left 0
+      &:after
+        transition opacity .6s ease-in-quad
+        background $colors-black
+        opacity 0
+      &:before
+        background $colors-grey
 </style>

@@ -48,6 +48,7 @@ export default {
       if(this.isMenuVisible) return
       if(!this.isAppReady) return
       this.pixiBlobs.tick();
+      this.portraits.tick()
       this.renderer.render(this.stage);
     },
     resize(w, h) {

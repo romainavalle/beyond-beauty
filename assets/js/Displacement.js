@@ -1,4 +1,4 @@
-import DisplacementPoint from './DisplacementPoint'
+// import DisplacementPoint from './DisplacementPoint'
 //import PerlinNoise from '~/assets/js/PerlinNoise'
 class Displacement {
   constructor(debug = false) {
@@ -26,18 +26,18 @@ class Displacement {
     this.canvas.width = 100
     this.img =  new Image()
     this.img.src = require('~/assets/images/t3.png')
-    this.setDisplacement()
+    // this.setDisplacement()
     if(this.debug){
       window.gui.add(this, 'speed', 0.001, 1)
       window.gui.add(this, 'scale', 0.01, 10)
     }
   }
-  setDisplacement() {
+  /*setDisplacement() {
     for(let i = 0; i < this.width * this.height; i++) {
       let point = new DisplacementPoint(i, i % this.width, Math.floor(i / this.width));
       this.points.push(point);
     }
-  }
+  }*/
 
   fill() {
     this.ctx.drawImage(this.img, -40 + Math.sin(this.time)  * 40, -40 + Math.cos(this.time)  * 40);

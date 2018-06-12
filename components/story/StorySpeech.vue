@@ -34,7 +34,6 @@ export default {
       if(scrollTop < 0) scrollTop = 0
       if(scrollTop === this.scrollTop)return
       this.scrollTop = scrollTop
-      console.log(scrollTop,this.contentHeight)
       TweenMax.set(this.$el, {y: scrollTop - (scrollTop * this.contentHeight)})
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].tick()
     },
@@ -115,7 +114,7 @@ export default {
     background-size 1000px 1000px !important
     transition background-size 1s ease-in-out-quad
   p.text:before
-    background radial-gradient(rgba(#4e4e4b,1) 50%,rgba(#4e4e4b,0) 100%) no-repeat
+    background radial-gradient(rgba($colors-grey,1) 50%,rgba($colors-grey,0) 100%) no-repeat
     background-size 0px 0px
     background-position center center
     -webkit-background-clip text
@@ -132,24 +131,24 @@ export default {
   &--natalie-portman
     .number span,
     p.html span
-      color #f7c8ae
+      color $colors-natalie-portman
     .number svg .timer
-      stroke #f7c8ae
+      stroke $colors-natalie-portman
     h3:before,
     strong:before
-      background radial-gradient(rgba(#f7c8ae,1) 50%,rgba(#f7c8ae,0) 100%) no-repeat
+      background radial-gradient(rgba($colors-natalie-portman,1) 50%,rgba($colors-natalie-portman,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
   &--emma-watson
     .number span,
     p.html span
-      color #f7b8b0
+      color $colors-emma-watson
     .number svg .timer
-      stroke #f7b8b0
+      stroke $colors-emma-watson
     h3:before,
     strong:before
-      background radial-gradient(rgba(#f7b8b0,1) 50%,rgba(#f7b8b0,0) 100%) no-repeat
+      background radial-gradient(rgba($colors-emma-watson,1) 50%,rgba($colors-emma-watson,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
@@ -157,12 +156,12 @@ export default {
   &--jennifer-lawrence
     .number span,
     p.html span
-      color #f7cfae
+      color $colors-jennifer-lawrence
     .number svg .timer
-      stroke #f7cfae
+      stroke $colors-jennifer-lawrence
     h3:before,
     strong:before
-      background radial-gradient(rgba(#f7cfae,1) 50%,rgba(#f7cfae,0) 100%) no-repeat
+      background radial-gradient(rgba($colors-jennifer-lawrence,1) 50%,rgba($colors-jennifer-lawrence,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text
@@ -170,12 +169,12 @@ export default {
   &--cara-delevingne
     .number span,
     p.html span
-      color #f5d4a4
+      color $colors-cara-delevingne
     .number svg .timer
-      stroke #f5d4a4
+      stroke $colors-cara-delevingne
     h3:before,
     strong:before
-      background radial-gradient(rgba(#f5d4a4,1) 50%,rgba(#f5d4a4,0) 100%) no-repeat
+      background radial-gradient(rgba($colors-cara-delevingne,1) 50%,rgba($colors-cara-delevingne,0) 100%) no-repeat
       background-size 0px 0px
       background-position center center
       -webkit-background-clip text

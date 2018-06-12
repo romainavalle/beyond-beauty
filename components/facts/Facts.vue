@@ -1,7 +1,8 @@
 <template>
   <section class="Facts">
+    <p>She did more than just a speech...</p>
     <v-slider></v-slider>
-    <v-timeline></v-timeline>
+    <v-timeline ref="timeline"></v-timeline>
   </section>
 </template>
 
@@ -16,16 +17,22 @@ export default {
     }
   },
   components: { vSlider, vTimeline },
-  computed:{
+  computed: {
   },
-  methods:{
+  methods: {
     ...mapActions(['setCurrentFact']),
-    show(){
+    tick() {
+      if(this.$refs.timeline)this.$refs.timeline.tick()
     },
-    hide(){
+    resize(w, h) {
+      if(this.$refs.timeline)this.$refs.timeline.resize(w, h)
+    },
+    show() {
+    },
+    hide() {
     }
   },
-  mounted(){
+  mounted() {
     this.setCurrentFact(2)
   }
 }
@@ -38,4 +45,9 @@ export default {
   width 100%
   height 100vh
   background $colors-white
+  p
+    font-size 20 * $unitH
+    padding-top 320 * $unitV
+    font-weight $semi
+    text-align center
 </style>

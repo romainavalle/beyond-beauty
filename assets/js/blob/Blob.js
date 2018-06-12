@@ -1,6 +1,5 @@
 import BlobPoint from '~/assets/js/blob/BlobPoint'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
-import { TweenMax } from 'gsap'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 class Blob {
   constructor(ctx, index, debug = false) {

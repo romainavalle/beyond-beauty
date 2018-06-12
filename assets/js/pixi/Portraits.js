@@ -38,20 +38,20 @@ class Portraits {
     this.transitionInMask.loadMask(getter)
     this.transitionOutMask.loadMask(getter)
     this.disappearMask.loadMask(getter)
-    pages.forEach((page, i) => {
-      this.portraits[i].load(getter)
-      this.portraits[i].setMaskTransition(this.transitionInMask,this.transitionOutMask)
-      this.portraits[i].setMaskDisappear(this.disappearMask)
+    this.portraits.forEach(el => {
+      el.load(getter)
+      el.setMaskTransition(this.transitionInMask,this.transitionOutMask)
+      el.setMaskDisappear(this.disappearMask)
     })
   }
   doReady(){
-    pages.forEach((page, i) => {
-      this.portraits[i].hideAll()
+    this.portraits.forEach(el => {
+      el.hideAll()
     })
   }
   resize(w, h) {
-    pages.forEach((page, i) => {
-      this.portraits[i].resize(w, h)
+    this.portraits.forEach(el => {
+      el.resize(w, h)
     })
   }
 
@@ -63,6 +63,12 @@ class Portraits {
   show(id) {
     this.transitionInMask.playIn()
     this.portraits[id].show();
+  }
+
+  tick(){
+    this.portraits.forEach((el, i) => {
+      el.tick()
+    })
   }
 
   disappear(id) {

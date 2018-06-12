@@ -76,7 +76,7 @@ export default {
 
       clearTimeout(this.idleTimer)
       this.setTimer(10000)
-      this.idleTimer = setTimeout(() => { this.isIdle = false}, 2000)
+      this.idleTimer = setTimeout(() => { this.isIdle = false}, 1200)
     },
     setTimer(time){
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)

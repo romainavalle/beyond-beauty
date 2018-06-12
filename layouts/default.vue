@@ -14,7 +14,7 @@
 <script>
 import Emitter from '~/assets/js/events'
 import Stats from 'stats-js'
-
+import { TweenMax } from 'gsap'
 import vHomeCanvas from '~/components/HomeCanvas.vue'
 import vLogo from '~/components/common/Logo.vue'
 import vMenuButton from '~/components/common/MenuButton.vue'
@@ -24,7 +24,6 @@ import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
 import { mapActions, mapState, mapGetters } from 'vuex'
 if(process.browser){
-  require('gsap/ScrollToPlugin')
   var MMUnpacker = require('mm-unpacker')
 }
 const load = require('load-asset');
@@ -66,7 +65,7 @@ export default {
       this.stats.begin()
       if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
       if(this.$refs.homeCanvas)this.$refs.homeCanvas.tick()
-      //if(this.$refs.page)this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
+      if(this.$refs.page && this.$refs.page.$children[0])this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
       this.stats.end()
     },
     onReady(){

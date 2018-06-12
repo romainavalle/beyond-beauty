@@ -1,7 +1,5 @@
 import { $colors } from '~/assets/variables.json';
-if (process.browser) {
-  var Pixi = require('pixi.js')
-}
+
 class Background {
   constructor(container) {
     this.container = container
