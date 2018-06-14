@@ -10,6 +10,7 @@
 <script>
 import vStorySpeechPart from '~/components/story/StorySpeechPart.vue'
 import { mapGetters } from 'vuex'
+import ioMixins from '~/components/ioMixins'
 export default {
   name: 'StorySpeech',
   data(){
@@ -22,6 +23,7 @@ export default {
       scrollTop: 0
     }
   },
+  mixins:[ioMixins],
   components: {vStorySpeechPart},
   computed:{
     ...mapGetters(['pageData']),
@@ -31,6 +33,7 @@ export default {
   },
   methods:{
     tick(scrollTop){
+      if(!this.active) return
       if(scrollTop < 0) scrollTop = 0
       if(scrollTop === this.scrollTop)return
       this.scrollTop = scrollTop
@@ -38,8 +41,7 @@ export default {
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].tick()
     },
     resize(w, h) {
-      this.contentHeight = this.$el.clientHeight / (this.$parent.$el.clientHeight - h)
-      this.parentHeight = this.$parent.$el.clientHeight - h
+      this.contentHeight = this.$el.clientHeight / (this.$parent.$el.clientHeight)
     },
     showPart(part) {
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].hidePart()

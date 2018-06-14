@@ -19,6 +19,7 @@
     "detect-browser": "^2.5.1",
     "dom-classes": "^1.0.0",
     "gsap": "git+https://manudurgoni:dibsHk2uRKSe9rsbMKjL@gitlab.upian.com/upian/Tools/gsap.git",
+    "intersection-observer": "^0.5.0",
     "load-asset": "^1.2.0",
     "lodash": "^4.17.10",
     "mm-unpacker": "^3.0.3",

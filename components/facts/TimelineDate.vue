@@ -34,13 +34,13 @@ export default {
 <style lang="stylus" scoped>
 .TimelineDate
   position relative
-  width 160 * $unitH
+  width 60 * $unitH
   display block
   text-align center
   button
     font-size 20 * $unitH
     font-weight $semi
-    color $colors-black
+    color $colors-timelineBlack
     margin 0 auto
     display flex
     flex-direction column
@@ -76,7 +76,7 @@ export default {
         left 0
       &:after
         transition opacity .6s ease-in-quad
-        background $colors-black
+        background $colors-timelineBlack
         opacity 0
       &:before
         background $colors-grey

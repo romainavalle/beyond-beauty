@@ -4,10 +4,11 @@ class Displacement {
   constructor(debug = false) {
     this.debug = debug
     this.color = 'black'
-    this.width = 250
-    this.height = 250
+    this.width = 500
+    this.height = 500
     this.time = 0
-    this.speed = 1/60
+    this.amplitude = 80
+    this.speed = .11
     this.scale = 1.8
     this.points = []
     this.init()
@@ -22,14 +23,14 @@ class Displacement {
       this.canvas.style.bottom = '0px'
       this.canvas.style.left = '0px'
     }
-    this.canvas.height = 100
-    this.canvas.width = 100
+    this.canvas.height = this.height
+    this.canvas.width = this.width
     this.img =  new Image()
-    this.img.src = require('~/assets/images/t3.png')
+    this.img.src = require('~/assets/images/t9.png')
     // this.setDisplacement()
     if(this.debug){
-      window.gui.add(this, 'speed', 0.001, 1)
-      window.gui.add(this, 'scale', 0.01, 10)
+      window.gui.add(this, 'speed', 0.01, .2)
+      window.gui.add(this, 'amplitude', 10, 100)
     }
   }
   /*setDisplacement() {
@@ -40,7 +41,7 @@ class Displacement {
   }*/
 
   fill() {
-    this.ctx.drawImage(this.img, -40 + Math.sin(this.time)  * 40, -40 + Math.cos(this.time)  * 40);
+    this.ctx.drawImage(this.img, -this.amplitude + Math.sin(this.time * this.speed)  * this.amplitude, -this.amplitude + Math.cos(this.time * this.speed)  * this.amplitude);
       /*var i, n, prevPoint, currentPoint, nextPoint, x, y;
       for (i = 0; i < this.width * this.height; i++) {
         currentPoint = this.points[i]

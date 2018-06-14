@@ -9,8 +9,10 @@ class Title {
     this.id = id
     this.idNum = idNum
     this.isBordered = isBordered
+    this.scale = 1
     this.angle = Math.PI / 35
     this.title_array = []
+    this.size_array = []
     if(!this.isBordered)this.container.tint = 0xf1f3ee
   }
 
@@ -30,28 +32,43 @@ class Title {
     this.loaded++
     if (this.loaded != 3) return
     for (let index = 0; index < 3; index++) {
-      const imgSprite = new Pixi.Sprite.from(this.img_array[index])
+      this.imgSprite = new Pixi.Sprite.from(this.img_array[index])
       const title = new Pixi.Sprite()
-      title.addChild(imgSprite)
-      imgSprite.position.x = -this.img_array[index].width / 4
-      imgSprite.position.y = 5000 + pages[this.idNum].titlePosition[index]
-      imgSprite.scale.x = .5
-      imgSprite.scale.y = .5
+      const titleContainer = new Pixi.Sprite()
+      titleContainer.addChild(this.imgSprite)
+      title.addChild(titleContainer)
+      this.imgSprite.position.x = 0
+      this.imgSprite.position.y = 5000 + pages[this.idNum].titlePosition[index]
+      this.imgSprite.scale.x = .5
+      this.imgSprite.scale.y = .5
+      this.imgSprite.anchor.x = .5
+      this.imgSprite.anchor.y = .5
+      this.imgSprite.pivot.x = .5
+      this.imgSprite.pivot.y = .5
+      titleContainer.anchor.x = .5
+      titleContainer.anchor.y = .5
+      titleContainer.pivot.x = .5
+      titleContainer.pivot.y = .5
+      title.anchor.x = .5
+      title.anchor.y = .5
+      title.pivot.x = .5
+      title.pivot.y = .5
       title.interactive = false
       title.position.y = -5035
 
       this.container.addChild(title)
       this.title_array.push(title)
+      this.size_array.push({w: this.imgSprite.width, h: this.imgSprite.height})
     }
     this.originalW = this.container.width
     this.originalH = this.container.height
     this.isDisposed = true
+
     if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
   }
   resize(w, h) {
     this.isFirstResize = true
     if (!this.isDisposed) return
-    this.container.position.x = w * .5
     const ratio = this.originalW / this.originalH
     let containerW, containerH, screenRatio
     if (w > h) {
@@ -59,10 +76,14 @@ class Title {
     } else {
       screenRatio = h / (1760 / 2) * 0.7
     }
-    this.container.width = this.originalW * screenRatio
-    this.container.height = this.originalH * screenRatio
+    this.size_array.forEach((el, i) => {
+      //const img = this.title_array[i].children[0].children[0]
+      //el.width = el.w * screenRatio
+      //el.height = el.h * screenRatio
+    })
+
     this.container.position.x = w * .5
-    this.container.position.y = h * .5 - (this.container.height - 5000 * screenRatio) * .5
+    this.container.position.y = h - (this.container.height - 5000 * screenRatio) * .5
   }
   reset() {
     this.title_array.forEach(title => {
@@ -76,6 +97,13 @@ class Title {
   }
   hide() {
     TweenMax.staggerTo(this.title_array, .7, { rotation: -this.angle, alpha: 0, ease: Cubic.easeIn }, .1, this.reset.bind(this))
+  }
+  scaleTo(scale, delay, time) {
+    this.scale = scale
+    this.title_array.forEach((el, i) => {
+      TweenMax.to(el.children[0].children[0].scale, .7, { x: .5 * scale, y: .5 * scale, delay: delay + i * .2 })
+    })
+
   }
 }
 export default Title

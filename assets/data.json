@@ -6,7 +6,7 @@
       "pageName": "The Revolution of Desire",
       "name": "Natalie Portman",
       "color": "#f7c8ae",
-      "titlePosition": [0, 190, 420],
+      "titlePosition": [0, 202, 420],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -64,7 +64,7 @@
       "pageName": "True Version of Yourself",
       "name": "Emma Watson",
       "color": "#f7b8b0",
-      "titlePosition": [0, 190, 420],
+      "titlePosition": [0, 190, 405],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -91,28 +91,28 @@
       "facts": [
         {
           "year": 2014,
-          "text": "Emma Watson becomes UN Women Goodwill Ambassador and is dedicated to furthering gender equality",
-          "html": "Emma Watson becomes UN Women Goodwill Ambassador and is dedicated to furthering gender equality"
+          "text": "Emma Watson becomes<br>United Nation Women<br>Goodwill Ambassador<br>and is dedicated to<br>furthering gender<br>equality",
+          "html": "Emma Watson becomes<br>United Nation Women<br>Goodwill <span>Ambassador</span><br>and is dedicated to<br>furthering gender<br>equality"
         },
         {
           "year": 2015,
-          "text": "Using GoodReads platform, the actress creates a book reading community empowering gender equality",
-          "html": "Using GoodReads platform, the actress creates a book reading community empowering gender equality"
+          "text": "Using GoodReads<br>platform, the actress<br>creates a book<br>reading community<br>empowering gender equality",
+          "html": "Using GoodReads<br>platform, the actress<br>creates a book<br>reading <span>community</span><br>empowering gender equality"
         },
         {
           "year": 2016,
-          "text": "Emma is involved with promoting girls' education and has visited Bangladesh, Uruguay, and Zambia.",
-          "html": "Emma is involved with promoting girls' education and has visited Bangladesh, Uruguay, and Zambia."
+          "text": "She is involved<br>with promoting girls'<br>education and has<br>visited <span>emerging</span><br><span>countries</span> such as<br>Bangladesh & Uruguay.",
+          "html": "She is involved<br>with promoting girls'<br>education and has<br>visited <span>emerging</span><br><span>countries</span> such as<br>Bangladesh & Uruguay."
         },
         {
           "year": 2017,
-          "text": "Emma Watson dedicates her Instagram account to defend and promote sustainable fashion clothes.",
-          "html": "Emma Watson dedicates her Instagram account to defend and promote sustainable fashion clothes."
+          "text": "Emma Watson<br>dedicates her<br>Instagram<br>account to defend and<br>promote sustainable<br>fashion clothes.",
+          "html": "Emma Watson<br>dedicates her<br>Instagram<br>account to <span>defend and</span><br><span>promote</span> sustainable<br>fashion clothes."
         },
         {
           "year": 2018,
-          "text": "Emma Watson has donated £1 million to a British fund to help women facing harassment and abuse at work",
-          "html": "Emma Watson has donated £1 million to a British fund to help women facing harassment and abuse at work"
+          "text": "Emma Watson has<br>donated £1 million<br>to a British fund to<br>help women facing<br>harassment and abuse<br>at work",
+          "html": "Emma Watson has<br>donated £1 million<br>to a British fund to<br><span>help women</span> facing<br>harassment and abuse<br>at work"
         }
       ]
     },
@@ -122,7 +122,7 @@
       "pageName": "Our Pursuit of Happiness",
       "name": "Jennifer Lawrence",
       "color": "#f7cfae",
-      "titlePosition": [0, 190, 420],
+      "titlePosition": [0, 190, 395],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",
@@ -180,7 +180,7 @@
       "pageName": "Just Wonderfull Creatures",
       "name": "Cara Delevingne",
       "color": "#f5d4a4",
-      "titlePosition": [0, 190, 420],
+      "titlePosition": [0, 205, 415],
       "story":{
         "name": "Woman March",
         "date": "16.12.18",

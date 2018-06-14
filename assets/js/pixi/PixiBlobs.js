@@ -25,6 +25,9 @@ class PixiBlobs {
     this.stage.addChild(blobContainer)
     this.stage.addChild(this.mask)
     this.titleBorderSprite.filters = [this.displacementFilter];
+
+    this.displacementFilter.scale.x = 80
+    this.displacementFilter.scale.y = 80
   }
   tick() {
     this.blobs.tick()

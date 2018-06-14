@@ -25,6 +25,7 @@ import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import { mapActions, mapState, mapGetters } from 'vuex'
 if(process.browser){
   var MMUnpacker = require('mm-unpacker')
+  require('intersection-observer')
 }
 const load = require('load-asset');
 

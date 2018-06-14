@@ -19,6 +19,7 @@ if (process.browser) {
 export default {
   data() {
     return {
+      tempCurrentPageIdNum: -1
     };
   },
   computed: {
@@ -47,6 +48,7 @@ export default {
     tick() {
       if(this.isMenuVisible) return
       if(!this.isAppReady) return
+      if(window.smooth && window.smooth.vars.current > ResizeHelper.height())return
       this.pixiBlobs.tick();
       this.portraits.tick()
       this.renderer.render(this.stage);
@@ -69,17 +71,18 @@ export default {
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1);
     },
     showPage(delay, time) {
+      this.tempCurrentPageIdNum = this.currentHomeSlideId
       this.background.show()
-      this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
+      this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
       if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId);
       this.titles.show(this.currentPageIdNum, delay * 0.6, time);
-      this.titles.scaleTo(.7, delay * 0.6, time);
+      this.titles.scaleTo(this.currentHomeSlideId, .7, delay * 0.6, time);
     },
     hidePage(delay) {
       this.portraitsContainer.visible = true
       this.background.hide()
       this.portraits.appear(this.currentHomeSlideId);
-      this.titles.scaleTo(1, delay * 0.6, 1);
+      this.titles.scaleTo(this.tempCurrentPageIdNum, 1, delay * 0.6, 1);
     },
     portraitClick() {
       this.$router.push({
@@ -100,7 +103,7 @@ export default {
     },
     'route.name'(val, old) {
       if(val !== 'index'){
-        this.titles.hide(this.currentHomeSlideId);
+        // this.titles.hide(this.currentHomeSlideId);
         this.showPage(.5, 1)
       }else{
         if(old && old !== 'index')this.hidePage()
@@ -119,8 +122,8 @@ export default {
     const width = ResizeHelper.width();
     const height = ResizeHelper.height();
     this.renderer = Pixi.autoDetectRenderer({
-      backgroundColor: 0xe5e3dc,
-      antialias: true,
+      backgroundColor: 0xe1dfd7,
+      antialias: false,
       width,
       height
     });
@@ -146,7 +149,6 @@ export default {
     this.portraitsContainer = new Pixi.Container();
     this.portraits = new Portraits(this.portraitsContainer);
     this.stage.addChild(this.portraitsContainer);
-
 
     Emitter.on('PORTRAIT_CLICK', this._portraitClick);
     Emitter.on('TRANSITION:FINISHED', this.showHomeSlide.bind(this))

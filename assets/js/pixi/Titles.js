@@ -12,6 +12,7 @@ class Titles {
     this.titles = []
     this.titlesBorder = []
     this.scale = 1
+    this.isShown = false
     this.init()
   }
 
@@ -65,19 +66,25 @@ class Titles {
   }
 
   hide(id) {
+    if(!this.isShown) return
+    this.isShown = false
     this.titlesBorder[id].hide()
     this.titles[id].hide()
   }
 
   show(id, delay, time) {
+    if(this.isShown) return
+    this.isShown = true
     this.titlesBorder[id].show(delay * .6, time)
     this.titles[id].show(delay * .6, time)
   }
 
-  scaleTo(scale, delay, time) {
+  scaleTo(id, scale, delay, time) {
     this.scale = scale
-    TweenMax.to([this.titleBorderSprite.scale, this.titleSprite.scale], time, { delay, x: scale, y: scale, ease:Quad.easeInOut })
-    TweenMax.to([this.titleBorderSprite.position, this.titleSprite.position], time, { delay, x: (1 - this.scale) * ResizeHelper.width() / 2, y: (1 - this.scale) * ResizeHelper.height() / 2, ease:Quad.easeInOut })
+    //TweenMax.to([this.titleBorderSprite.scale, this.titleSprite.scale], time, { delay, x: scale, y: scale, ease:Quad.easeInOut })
+    this.titlesBorder[id].scaleTo(scale, delay, time)
+    this.titles[id].scaleTo(scale, delay, time)
+    //TweenMax.to([this.titleBorderSprite.position, this.titleSprite.position], time, { delay, x: (1 - this.scale) * ResizeHelper.width() / 2, y: (1 - this.scale) * ResizeHelper.height() / 2, ease:Quad.easeInOut })
   }
 }
 export default Titles

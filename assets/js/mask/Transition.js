@@ -7,8 +7,8 @@ class TransitionMask {
     this.imgW = 872 / 4
     this.imgH = 1289 / 4
     this.frameW = 9
-    this.currentMask = -1
-    this.currentMaskTween = 0
+    this.currentFrame = -1
+    this.currentFrameTween = 0
     this.init()
   }
 
@@ -24,22 +24,22 @@ class TransitionMask {
     this.img.addEventListener('load', this.tweenUpdate.bind(this))
   }
   playIn() {
-    this.currentMaskTween = 0
+    this.currentFrameTween = 0
     this.tweenUpdate()
-    TweenMax.to(this, 35, { useFrames: true,  currentMaskTween: 35, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+    TweenMax.to(this, 35, { useFrames: true,  currentFrameTween: 35, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
   }
   playOut() {
-    this.currentMaskTween = 36
+    this.currentFrameTween = 36
     this.tweenUpdate()
-    TweenMax.to(this, 23, { useFrames: true, currentMaskTween: 59, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+    TweenMax.to(this, 23, { useFrames: true, currentFrameTween: 59, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
   }
   tweenUpdate() {
-    if (this.currentMask === Math.round(this.currentMaskTween)) return
+    if (this.currentFrame === Math.round(this.currentFrameTween)) return
     this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
-    this.currentMask = Math.round(this.currentMaskTween)
-    if(this.currentMask === 45)Emitter.emit('TRANSITION:FINISHED')
-    const x = this.currentMask % this.frameW * this.imgW
-    const y = Math.floor(this.currentMask / this.frameW) * this.imgH
+    this.currentFrame = Math.round(this.currentFrameTween)
+    if(this.currentFrame === 45)Emitter.emit('TRANSITION:FINISHED')
+    const x = this.currentFrame % this.frameW * this.imgW
+    const y = Math.floor(this.currentFrame / this.frameW) * this.imgH
     this.ctx.drawImage(this.img, x, y, this.imgW, this.imgH, 0, 0, this.canvasWidth, this.canvasHeight);
   }
 

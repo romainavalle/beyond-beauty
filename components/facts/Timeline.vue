@@ -45,18 +45,19 @@ export default {
 .Timeline
   position absolute
   width 100%
-  bottom 240 * $unitV
+  height 350 * $unitH
+  bottom 0 * $unitV
   &:before
     content ''
     width 100%
     height 1px
-    background $colors-grey
+    background $colors-timelineBlack
     display block
     position absolute
-    bottom 2px
+    bottom 166 * $unitH
   ul
     display flex
     justify-content space-between
-    padding 0 320 * $unitH
+    padding 160 * $unitH 160 * $unitH
 
 </style>

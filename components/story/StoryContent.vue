@@ -71,7 +71,6 @@ export default {
 <style lang="stylus" scoped>
 .StoryContent
   position relative
-  padding-top 100vh
   .content
     padding-top 160 * $unitV
     padding-bottom 160 * $unitV

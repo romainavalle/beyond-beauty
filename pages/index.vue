@@ -153,7 +153,7 @@ export default {
   .title
     bottom 180 * $unitH
     font-size 20 * $unitH
-    left 170 * $unitH
+    left 180 * $unitH
     position absolute
     font-weight normal
     .innerTitle
@@ -169,13 +169,13 @@ export default {
         height 3px
         background $colors-grey
         border-radius 50%
-        margin-top 8 * $unitH
+        margin-top 10 * $unitH
       span
         display block
       span:nth-child(1)
-        transform translateX(-10 * $unitH)
+        transform translateX(-20 * $unitH)
       span ~ span
-        transform translateX(10 * $unitH)
+        transform translateX(20 * $unitH)
     .name-enter-active, .name-leave-active
       transition opacity .5s
     .name-enter-active
@@ -202,7 +202,7 @@ export default {
     position absolute
     text-transform uppercase
     pointer-events auto
-    transition letter-spacing .3s ease-in-quad
+    transition letter-spacing .3s ease-in-quad, transform .5s ease-out-quart 1s
     padding-top 10px
     padding-bottom 10px
     overflow hidden
@@ -256,8 +256,6 @@ export default {
         width $unitH * 40
         margin-left 0
   &.ready
-    button
-      transition transform .5s ease-out-quart 1s
     .prev
       transform rotate(-90deg) translate(-100%, -50%)
     .next

@@ -7,6 +7,7 @@
 </template>
 
 <script>
+
 import vSlider from '~/components/facts/Slider.vue'
 import vTimeline from '~/components/facts/Timeline.vue'
 import { mapActions } from 'vuex'
@@ -22,6 +23,7 @@ export default {
   methods: {
     ...mapActions(['setCurrentFact']),
     tick() {
+
       if(this.$refs.timeline)this.$refs.timeline.tick()
     },
     resize(w, h) {
@@ -34,6 +36,7 @@ export default {
   },
   mounted() {
     this.setCurrentFact(2)
+
   }
 }
 
@@ -44,10 +47,11 @@ export default {
   position relative
   width 100%
   height 100vh
-  background $colors-white
+  background $colors-bgWhite
   p
     font-size 20 * $unitH
-    padding-top 320 * $unitV
+    line-height 1
+    padding-top 300 * $unitV
     font-weight $semi
     text-align center
 </style>

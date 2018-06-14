@@ -11,6 +11,9 @@ class Portait {
     this.color = color
     this.originalW = 1652 / 2
     this.originalH = 2442 / 2
+    this.maskInCurrent = 0
+    this.maskOutCurrent = 0
+    this.maskDisappearCurrent = 0
   }
 
   load(getter) {
@@ -31,6 +34,8 @@ class Portait {
 
   }
   setMaskTransition(maskIn, maskOut) {
+    this.maskIn = maskIn
+    this.maskOut = maskOut
     this.transitionInTexture = new PIXI.Texture.fromCanvas(maskIn.canvas)
     this.maskTransitionIn = new PIXI.Sprite(this.transitionInTexture);
     this.maskTransitionIn.name = 'maskTransitionIn'
@@ -43,6 +48,7 @@ class Portait {
     this.container.addChild(this.maskTransitionOut)
   }
   setMaskDisappear(mask) {
+    this.disappearMask = mask
     this.disappearTexture = new PIXI.Texture.fromCanvas(mask.canvas)
     this.maskDisappearTint = new PIXI.Sprite(this.disappearTexture);
     this.maskDisappear = new PIXI.Sprite(this.disappearTexture);
@@ -77,8 +83,10 @@ class Portait {
     this.container.position.y = this.posY = h * .5 - containerH / 2
   }
   show(delay = 0) {
+    this.isActive = true
     this.portrait.mask = this.maskTransitionIn
     this.container.visible = true
+    this.container.alpha = 0
     this.maskTransitionIn.visible = true
     this.maskTransitionOut.visible = false
     this.maskDisappear.visible = false
@@ -87,6 +95,7 @@ class Portait {
     TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 80, x: this.posX - 60}, {y: this.posY, x: this.posX, ease: Quart.easeOut})
   }
   hide() {
+    this.isActive = true
     this.maskTransitionIn.visible = false
     this.maskTransitionOut.visible = true
     this.maskDisappear.visible = false
@@ -100,11 +109,22 @@ class Portait {
     this.portrait.mask = null
   }
   tick() {
-    this.transitionInTexture.update()
-    this.transitionOutTexture.update()
-    this.disappearTexture.update()
+    if(!this.container.visible) return
+    if(this.maskIn.currentFrame !== this.maskInCurrent) {
+      this.maskInCurrent = this.maskIn.currentFrame
+      this.transitionInTexture.update()
+    }
+    if(this.maskOut.currentFrame !== this.maskOutCurrent) {
+      this.maskOutCurrent = this.maskOut.currentFrame
+      this.transitionOutTexture.update()
+    }
+    if(this.disappearMask.currentFrame !== this.maskDisappearCurrent) {
+      this.maskDisappearCurrent = this.disappearMask.currentFrame
+      this.disappearTexture.update()
+    }
   }
   disappear() {
+    this.isActive = true
     this.maskTransitionIn.visible = false
     this.maskTransitionOut.visible = false
     this.maskDisappear.visible = true
@@ -116,6 +136,7 @@ class Portait {
     TweenMax.to(this, 1.2, {ease: Quart.easeIn})
   }
   appear() {
+    this.isActive = true
     this.maskTransitionIn.visible = false
     this.maskTransitionOut.visible = false
     this.maskDisappear.visible = true

@@ -2,6 +2,7 @@
     <div class="Story">
       <v-story-top></v-story-top>
       <v-scroll-layout>
+        <div class="padding"></div>
         <v-story-content ref="content"></v-story-content>
         <v-facts ref="facts"></v-facts>
       </v-scroll-layout>
@@ -92,11 +93,8 @@ export default {
 .Story
   position relative
   width 100%
-  .slider
-    background white
+  .padding
     position relative
-    z-index 2
-    .text
-      position relative
-
+    width 100%
+    height 100vh
 </style>

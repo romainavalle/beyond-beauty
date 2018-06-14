@@ -11,11 +11,17 @@ if (process.browser) {
 }
 export default {
   layout:'dev',
+  data(){
+    return {
+      scaleX: 70,
+      scaleY: 70
+    }
+  },
   methods:{
     setup () {
       let width = window.innerWidth
       let height = window.innerHeight
-      this.renderer = Pixi.autoDetectRenderer({ backgroundColor: 0xFFFFFF, antialias: true, width, height})
+      this.renderer = Pixi.autoDetectRenderer({ backgroundColor: 0xccccccc, antialias: true, width, height})
       this.renderer.plugins.interaction.destroy()
       this.$el.appendChild(this.renderer.view)
       this.stage = new Pixi.Container()
@@ -42,6 +48,8 @@ export default {
       this.displacement.tick();
       this.displacementTexture.texture.update();
       this.renderer.render(this.stage)
+      this.displacementFilter.scale.x = this.scaleX
+      this.displacementFilter.scale.y = this.scaleY
     }
 
   },
@@ -49,6 +57,8 @@ export default {
     //console.log(window)
     window.gui = new dat.default.GUI({name: 'Blob'});
     this.displacement = new Displacement(true)
+    window.gui.add(this, 'scaleX', 1, 200)
+    window.gui.add(this, 'scaleY', 1, 200)
     this.setup()
   }
 }
