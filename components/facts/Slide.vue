@@ -1,13 +1,15 @@
 <template>
   <div class="Slide" :class="readyClass">
-    <p class="bottom" v-html="fact.text"></p>
-    <p class="top" v-html="fact.html"></p>
+    <p class="bottom" v-html="fact.text" ref="bottom"></p>
+    <p class="top" v-html="fact.html" ref="top"></p>
   </div>
 </template>
 
 <script>
 
-
+if (process.browser) {
+  var SplitText = require('gsap/SplitText')
+}
 
 export default {
   name: "Slide",
@@ -29,7 +31,8 @@ export default {
   mounted(){
     setTimeout(() => {
       this.readyClass = 'ready'
-    }, 1000)
+    }, 2200)
+    new SplitText(this.$refs.bottom, {type: 'lines', linesClass: 'line'})
   }
 }
 
@@ -37,10 +40,9 @@ export default {
 
 <style lang="stylus" scoped>
 .Slide
-  position relative
-  width 100%
-  max-width 9 * 160 * $unitH
-  margin 0 auto
+  position absolute
+  top 0
+  left 0
   p
     color transparent
     font-family $hawthorn
@@ -63,11 +65,12 @@ export default {
       right 0
       background radial-gradient(rgba($colors-timelineBlack, 1) 30%,rgba($colors-timelineBlack,0) 100%) no-repeat
       background-size 0px 0px
-      transition background-size 3s ease-out-quad
       background-position center center
       -webkit-background-clip text
+      will-change background, opacity
   &.ready p.top
     background-size 120vw 120vw
+    transition background-size 3s ease-out-quart
 
 
 </style>
@@ -79,4 +82,6 @@ export default {
       -webkit-color transparent
       -webkit-text-stroke-color transparent
       -webkit-text-stroke-width 0px
+
 </style>
+

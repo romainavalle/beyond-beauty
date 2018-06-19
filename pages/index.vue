@@ -106,6 +106,9 @@ export default {
       e.preventDefault()
       if(e.deltaY > 0) this.nextPage(1)
       if(e.deltaY < 0) this.nextPage(-1)
+    },
+    onReady(){
+      this.setTimer(1000)
     }
   },
   beforeDestroy(){
@@ -127,12 +130,12 @@ export default {
   },
 
   mounted() {
-    const time = this.currentHomeSlideId === -1 ? 1100 : 10000
+    if(this.currentHomeSlideId === -1) this.setTimer(10000)
     if(process.browser){
       this.setMouseWheelListener()
       this.setKeyEvents()
     }
-    this.setTimer(time)
+
     window.addEventListener("focus", this.setTimer.bind(this, 10000), false);
     window.addEventListener("blur", () => {
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)

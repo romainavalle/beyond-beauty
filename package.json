@@ -14,6 +14,7 @@
     "pack": "mm-packer -s ./imagesToPack -o static/packed"
   },
   "dependencies": {
+    "@merci-michel/mm-utils-math": "^1.0.0",
     "ajv": "^6.4.0",
     "dat.gui": "^0.7.1",
     "detect-browser": "^2.5.1",

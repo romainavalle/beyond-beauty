@@ -9,7 +9,7 @@
 
 <script>
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions, mapState } from 'vuex';
 import vTimelineDate from '~/components/facts/TimelineDate.vue'
 import vDrag from '~/components/facts/Drag.vue'
 
@@ -21,9 +21,11 @@ export default {
   },
   components: { vTimelineDate, vDrag },
   computed:{
-    ...mapGetters(['pageData'])
+    ...mapGetters(['pageData']),
+    ...mapState(['currentFact'])
   },
   methods:{
+    ...mapActions(['setCurrentFact']),
     tick() {
       if(this.$refs.drag) this.$refs.drag.tick()
     },
@@ -33,9 +35,18 @@ export default {
     show() {
     },
     hide() {
+    },
+    onKey(e) {
+      if(e.keyCode === 37) this.setCurrentFact(Math.max(this.currentFact - 1, 0))
+      if(e.keyCode === 39) this.setCurrentFact(Math.min(this.currentFact + 1, 4))
     }
   },
+  beforeDestroy(){
+    document.addEventListener("keydown", this._onKey, false);
+  },
   mounted() {
+    this._onKey = this.onKey.bind(this)
+    document.addEventListener("keydown", this._onKey, false);
   }
 }
 
@@ -45,8 +56,8 @@ export default {
 .Timeline
   position absolute
   width 100%
-  height 350 * $unitH
-  bottom 0 * $unitV
+  height 320 * $unitV
+  bottom 0
   &:before
     content ''
     width 100%
@@ -54,10 +65,15 @@ export default {
     background $colors-timelineBlack
     display block
     position absolute
-    bottom 166 * $unitH
+    bottom 111 * $unitV
   ul
     display flex
     justify-content space-between
-    padding 160 * $unitH 160 * $unitH
+    padding 0 160 * $unitH
+    position absolute
+    left 0
+    width 100%
+    bottom 107 * $unitV
+    pointer-events none
 
 </style>

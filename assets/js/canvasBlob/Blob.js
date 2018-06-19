@@ -1,4 +1,4 @@
-import BlobPoint from '~/assets/js/blob/BlobPoint'
+import BlobPoint from '~/assets/js/canvasBlob/BlobPoint'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 class Blob {

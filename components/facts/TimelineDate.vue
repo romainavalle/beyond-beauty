@@ -1,6 +1,6 @@
 <template>
   <li class="TimelineDate">
-    <button @click="setCurrentFact(num)" :class="{'active': currentFact === num}"><span v-text="fact.year" class="text"></span><span class="point"></span></button>
+    <button @click="setCurrentFact(num)" :class="{'active': currentFact === num, 'grab': grabClass}"><span v-text="fact.year" class="text"></span><span class="point"></span></button>
   </li>
 </template>
 
@@ -8,10 +8,12 @@
 
 
 import { mapActions, mapState } from 'vuex'
+// import Emitter from '~/assets/js/events'
 export default {
   name: "TimelineDate",
   data(){
     return {
+      grabClass: false
     }
   },
   props: ['fact', 'num'],
@@ -25,7 +27,13 @@ export default {
     hide(){
     }
   },
+  beforeDestroy(){
+    // Emitter.off('CURSOR:GRAB')
+    // Emitter.off('CURSOR:NOTGRAB')
+  },
   mounted(){
+    // Emitter.on('CURSOR:GRAB', () => { this.grabClass = true })
+    // Emitter.on('CURSOR:NOTGRAB', () => { this.grabClass = false })
   }
 }
 
@@ -43,22 +51,28 @@ export default {
     color $colors-timelineBlack
     margin 0 auto
     display flex
+    height 90 * $unitV
+    width 100 * $unitH
+    transform translateX(-20 * $unitV)// 100 / 2 - 60 / 2
     flex-direction column
     align-items center
-    justify-content flex-end
+    justify-content space-between
+    pointer-events auto
     &.active
+      pointer-events none
       .text
         opacity 1
-        transform translateY(-70 * $unitV)
+        transform translateY(0 * $unitV)
         transition all .8s ease-out-quart
       .point:after
         opacity 1
         transition opacity .8s ease-out-quart
     .text
       display block
+      position relative
       opacity .5
       line-height 1
-      transform translateY(-35 * $unitV)
+      transform translateY(35 * $unitV)
       transition all .6s ease-in-quad
     .point
       height  5px

@@ -1,4 +1,4 @@
-import Blob from '~/assets/js/blob/Blob'
+import Blob from '~/assets/js/canvasBlob/Blob'
 class Blobs {
   constructor(debug = false) {
     this.debug = debug

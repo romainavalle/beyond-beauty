@@ -11,7 +11,6 @@
 </template>
 
 <script>
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import vMenuLink from '~/components/menu/MenuLink.vue'
 import vMenuHeader from '~/components/menu/MenuHeader.vue'
 import vMenuFooter from '~/components/menu/MenuFooter.vue'
@@ -32,10 +31,14 @@ export default {
   methods:{
     ...mapActions(['setMenuVisible']),
     tick() {
-      if(this.isMenuVisible)this.$refs.menuDraggable.tick()
+      if(this.isMenuVisible) {
+        this.$refs.menuDraggable.tick()
+        this.$refs.header.tick()
+      }
     },
     resize(w, h) {
       this.$refs.menuDraggable.resize(w,h)
+      this.$refs.header.resize(w,h)
     },
     show(){
       TweenMax.set(this.$el, {xPercent: 100, autoAlpha: 1})

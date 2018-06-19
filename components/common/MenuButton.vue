@@ -1,5 +1,7 @@
 <template>
-  <button class="MenuButton" @click="setMenuOpen(true)" :class="readyClass">
+<div class="MenuButton">
+  <canvas ref="canvas"></canvas>
+  <button @click="setMenuOpen(true)" :class="readyClass">
     <no-ssr>
       <span class="icon">
         <span></span>
@@ -7,29 +9,48 @@
         <span></span>
       </span>
     </no-ssr>
-    menu
   </button>
+</div>
 </template>
 
 <script>
+import MenuButtonBlob from '~/assets/js/blobs/MenuButtonBlob'
+import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import MenuButtonMixin from './ButtonMenuMixins'
 export default {
   name: 'MenuButton',
-  mixins: [MenuButtonMixin]
-
+  mixins: [MenuButtonMixin],
+  mounted(){
+    this.ctx = this.$refs.canvas.getContext('2d')
+    const shapeW = ResizeHelper.width() / 2880 * 100
+    this.blob = new MenuButtonBlob(shapeW, this.canvasSize.w, this.canvasSize.h, this.canvasSize.w / 2, this.canvasSize.h / 2)
+  }
 }
 
 </script>
 
 <style lang="stylus" scoped>
 .MenuButton
-  background $colors-white
-  cursor pointer
   left 160 * $unitH
-  pointer-events auto
   position fixed
-  display flex
   top 160 * $unitV
   z-index 10
-  color transparent
+  canvas
+    height 320 * $unitH
+    margin-left -160 * $unitH
+    margin-top -160 * $unitH
+    position absolute
+    width 320 * $unitH
+  button
+    align-items center
+    cursor pointer
+    display flex
+    height 160 * $unitH
+    justify-content center
+    margin-left -80 * $unitH
+    margin-top -80 * $unitH
+    pointer-events auto
+    position relative
+    width 160 * $unitH
+    z-index 10
 </style>

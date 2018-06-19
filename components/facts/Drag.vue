@@ -1,111 +1,101 @@
 <template>
-    <canvas class="Drag" ref="canvas"></canvas>
+  <div class="Drag">
+    <canvas ref="canvas" :class="{'grab': grabClass}"></canvas>
+  </div>
 </template>
 <script>
 
-import SimplexNoise from 'simplex-noise'
-import MouseHelper from '~/assets/js/utils/MouseHelper'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+import DragBlob from '~/assets/js/blobs/DragBlob'
 import { $colors } from '~/assets/variables.json'
 import ioMixins from '~/components/ioMixins'
+import Emitter from '~/assets/js/events'
+import { mapActions, mapState } from 'vuex';
+
 
 export default {
   name: "Drag",
   data(){
     return {
-      w: ResizeHelper.width() / 2880 * 720,
-      shapeW: ResizeHelper.width() / 2880 * 100,
-      time: 0,
-      centerX: (ResizeHelper.width() / 2880 * 720) / 2,
-      centerY: (ResizeHelper.width() / 2880 * 720) / 2
+      grabClass: false
     }
   },
   mixins:[ioMixins],
   computed:{
+    ...mapState(['currentFact']),
+    canvasSize() {
+      return {w: ResizeHelper.width() / 2880 * 320, h: ResizeHelper.width() / 2880 * 320}
+    }
   },
   methods:{
+    ...mapActions(['setCurrentFact']),
     tick() {
       if(!this.active)return
-      const mouseX = MouseHelper.x - (ResizeHelper.width() / 2)
-      const mouseY = MouseHelper.y - (ResizeHelper.height() - (210 * ResizeHelper.width() / 2880))
-      let dX = 0, dY = 0
-      if(Math.abs(mouseY) < this.w / 2 - this.shapeW) {
-        dY = mouseY - this.centerY
-      } else {
-        dY = - this.centerY
-      }
-      if(Math.abs(mouseX) < this.w / 2 - this.shapeW) {
-        dX = mouseX - this.centerX
-      } else {
-        dX = - this.centerX
-      }
-      this.centerX += dX / 50
-      this.centerY += dY / 50
-      this.ctx.clearRect(0, 0, this.w, this.w)
-      this.ctx.save()
-      this.ctx.translate(this.w / 2, this.w / 2)
-      this.ctx.scale(1.2, 1.2)
-      this.ctx.beginPath()
-      this.drawShape()
-      this.ctx.fillStyle = $colors.bgWhite
-      this.ctx.fill()
-      this.ctx.restore()
-
-      this.ctx.save()
-      this.ctx.translate(this.w / 2, this.w / 2)
-      this.ctx.beginPath()
-      this.drawShape()
-      this.ctx.strokeColor = $colors.black
-      this.ctx.fillStyle = $colors.bgWhite
-      this.ctx.stroke()
-      this.ctx.fill()
-      this.ctx.restore()
+      this.blob.tick()
+      const x = this.oldX - this.draggable[0].x
+      this.oldX = this.draggable[0].x
+      this.blob.setDeformation(x)
+      this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
+      this.ctx.drawImage(this.blob.canvas, 0, 0, this.canvasSize.w, this.canvasSize.h);
     },
-
-    drawShape() {
-      let angle = 0
-      let count = 40
-      let slice = Math.PI * 2 / count
-      let radius = this.shapeW
-      let points = []
-      this.time++
-
-      for(let i = 0; i < count; i++) {
-        let x = Math.cos(angle)
-        let y = Math.sin(angle)
-        let displacement = radius + (this.noise.noise3D(x, y, this.time * 0.005) * 5)
-        x = this.centerX + x * displacement
-        y = this.centerY + y * displacement
-        points.push({ x, y })
-        angle += slice
-      }
-      this.ctx.moveTo(points[0].x, points[0].y)
-      this.curveThrough(points)
+    setDragBlob() {
+      const shapeW = ResizeHelper.width() / 2880 * 100
+      this.blob = new DragBlob(shapeW, this.canvasSize.w, this.canvasSize.h, this.canvasSize.w / 2, this.canvasSize.h / 2)
     },
-
-    curveThrough(points) {
-      var i, n, a, b, x, y
-      for (i = 1, n = points.length - 1; i < n; i++) {
-          a = points[i]
-          b = points[i + 1] || points[0]
-          x = (a.x + b.x) * 0.5
-          y = (a.y + b.y) * 0.5
-          this.ctx.quadraticCurveTo(a.x, a.y, x, y)
-      }
-      a = points[i]
-      b = points[i + 1] || points[0]
-      this.ctx.quadraticCurveTo(a.x, a.y, b.x, b.y)
-    },
-
     resize(w, h) {
-      this.w = w / 2880 * 720
-      this.$refs.canvas.width = this.w
-      this.$refs.canvas.height = this.w
+      this.$refs.canvas.width = this.canvasSize.w
+      this.$refs.canvas.height = this.canvasSize.h
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h)
+      this.setSnapValue()
+
+    },
+    setSnapValue(){
+      const padding = (ResizeHelper.width() / 2880 * 160) + (ResizeHelper.width() / 2880 * 25)
+      const timelineW = ResizeHelper.width() - padding * 2 // width - padding
+      this.snapValues = []
+      for (let index = 0; index < 5; index++) {
+        this.snapValues.push(Math.round(padding + timelineW / 4 * index))
+      }
+    },
+    setBlobDeformation(){
+    }
+  },
+  watch: {
+    currentFact(val) {
+      if(val === this.snapValues.indexOf(Math.round(this.draggable[0].x))) return
+      TweenMax.to(this.$el, .5,{x: this.snapValues[val], ease: Quad.easeOut, onComplete: () => {
+        this.draggable[0].update()
+      }})
     }
   },
   mounted(){
+    this.setSnapValue()
+    this.oldX = this.snapValues[this.currentFact]
+    TweenMax.set(this.$el, {x: this.oldX})
+     this.draggable = Draggable.create(this.$el , {
+        type:"x",
+        cursor: '-webkit-grab',
+        dragClickables: true,
+        allowNativeTouchScrolling: false,
+        force3D: true,
+        edgeResistance:1,
+        dragResistance:.3,
+        maxDuration: .6,
+        zIndexBoost: false,
+        lockAxis:true,
+        throwProps:true,
+        snap: {
+          x: this.snapValues
+        },
+        onThrowComplete: () => {
+          this.setCurrentFact( this.snapValues.indexOf(Math.round(this.draggable[0].x)))
+        },
+        onDragEnd: () => {
+        }
+      });
     this.ctx = this.$refs.canvas.getContext('2d')
-    this.noise = new SimplexNoise(Math.random())
+    this.setDragBlob()
+    Emitter.on('DRAG:GOTO', (e) => { this.setCurrentFact(e.val) })
   }
 }
 
@@ -114,9 +104,12 @@ export default {
 <style lang="stylus" scoped>
 .Drag
   position absolute
-  width 720 * $unitH
-  height 720 * $unitH
-  left 50%
-  margin-left -360 * $unitH
-  margin-top -200 * $unitH
+  //width 100vw
+  //height 400 * $unitV
+  height 320 * $unitH
+  width 320 * $unitH
+  bottom 0 * $unitH
+  canvas
+    position relative
+    margin-left -160 * $unitH
 </style>

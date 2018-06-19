@@ -1,4 +1,4 @@
-import Blobs from '~/assets/js/blob/Blobs'
+import Blobs from '~/assets/js/canvasBlob/Blobs'
 import Displacement from '~/assets/js/Displacement'
 import 'gsap/ColorPropsPlugin';
 if (process.browser) {

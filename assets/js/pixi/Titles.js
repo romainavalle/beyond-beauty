@@ -61,8 +61,8 @@ class Titles {
       this.titlesBorder[i].resize(w, h)
       this.titles[i].resize(w, h)
     })
-    this.titleSprite.position.x = this.titleBorderSprite.position.x = (1 - this.scale) * w / 2
-    this.titleSprite.position.y = this.titleBorderSprite.position.y = (1 - this.scale) * h / 2
+    this.titleSprite.position.x = this.titleBorderSprite.position.x = w / 2
+    this.titleSprite.position.y = this.titleBorderSprite.position.y = h / 2
   }
 
   hide(id) {

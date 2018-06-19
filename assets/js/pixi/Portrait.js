@@ -86,7 +86,6 @@ class Portait {
     this.isActive = true
     this.portrait.mask = this.maskTransitionIn
     this.container.visible = true
-    this.container.alpha = 0
     this.maskTransitionIn.visible = true
     this.maskTransitionOut.visible = false
     this.maskDisappear.visible = false

@@ -1,18 +1,19 @@
 <template>
   <div class="beyond-beauty">
     <v-loader></v-loader>
-    <transition name="menuButton" mode="out-in">
+    <transition name="menuButton" mode="out-in" @beforeEnter="beforeEnter" @enter="enter" @leave="leave" @css="false" v-show="isAppReady">
       <v-logo v-if="logo" ref="logo"></v-logo>
       <v-menu-button v-else ref="menuButton"></v-menu-button>
     </transition>
     <v-home-canvas ref="homeCanvas"></v-home-canvas>
     <v-menu ref="siteMenu"></v-menu>
-    <nuxt v-if="isLoaded" ref="page"/>
+    <nuxt ref="page"/>
   </div>
 </template>
 
 <script>
 import Emitter from '~/assets/js/events'
+import NoisePosition from '~/assets/js/blobs/NoisePosition.js'
 import Stats from 'stats-js'
 import { TweenMax } from 'gsap'
 import vHomeCanvas from '~/components/HomeCanvas.vue'
@@ -26,6 +27,8 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 if(process.browser){
   var MMUnpacker = require('mm-unpacker')
   require('intersection-observer')
+  require('gsap/Draggable')
+  require('gsap/ThrowPropsPlugin')
 }
 const load = require('load-asset');
 
@@ -49,10 +52,24 @@ export default {
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady']),
-    resize(){
-      if(this.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(ResizeHelper.width(),ResizeHelper.height())
-      this.$refs.homeCanvas.resize(ResizeHelper.width(),ResizeHelper.height())
-      this.$refs.siteMenu.resize(ResizeHelper.width(),ResizeHelper.height())
+    beforeEnter(el){
+      TweenMax.set(el, {opacity: 0})
+      TweenMax.set(el.querySelector('canvas'), {scaleX: 0, scaleY: 0})
+    },
+    enter(el, done){
+      TweenMax.to(el, 1, {opacity: 1, delay: .5, ease: Quad.easeOut, clearProps: 'all'})
+      TweenMax.to(el.querySelector('canvas'), 1, {delay: .5, scaleX: 1, scaleY: 1, ease: Quad.easeOut, clearProps: 'all', onComplete: done})
+    },
+    leave(el, done){
+      TweenMax.to(el.querySelector('canvas'), .8, {delay: .2, scaleX: 0.5, scaleY: 0.5, ease: Quad.easeIn})
+      TweenMax.to(el, 1, {opacity: 0, ease: Quad.easeIn, onComplete: done})
+    },
+    resize(forceAfterRoute = false){
+      if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(ResizeHelper.width(),ResizeHelper.height())
+      if(!forceAfterRoute)this.$refs.homeCanvas.resize(ResizeHelper.width(),ResizeHelper.height())
+      if(!forceAfterRoute)this.$refs.siteMenu.resize(ResizeHelper.width(),ResizeHelper.height())
+      if(this.$refs.logo && !forceAfterRoute )this.$refs.logo.resize(ResizeHelper.width(),ResizeHelper.height())
+      if(this.$refs.menuButton && !forceAfterRoute )this.$refs.menuButton.resize(ResizeHelper.width(),ResizeHelper.height())
     },
     setDebug() {
       this.stats = new Stats();
@@ -63,8 +80,11 @@ export default {
       this.stats.domElement.style.zIndex = 100;
     },
     tick(){
+      NoisePosition.tick()
       this.stats.begin()
+      if(this.$refs.logo)this.$refs.logo.tick()
       if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
+      if(this.$refs.menuButton)this.$refs.menuButton.tick()
       if(this.$refs.homeCanvas)this.$refs.homeCanvas.tick()
       if(this.$refs.page && this.$refs.page.$children[0])this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
       this.stats.end()
@@ -87,7 +107,6 @@ export default {
           if(process.browser)this.$nextTick(()=>{
             TweenMax.ticker.addEventListener('tick', this._tick)
             this.resize()
-
           })
       },500)
     }
@@ -107,15 +126,17 @@ export default {
       next()
     })
     this.$router.afterEach((to, from) => {
+      this.resize(true)
+
       setTimeout(() => {
         if(this.$refs.menuButton)this.$refs.menuButton.show()
         if(this.$refs.logo)this.$refs.logo.show()
-        this.resize()
       }, 1000)
     })
      // todo -> promise polyfill
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
     const assets =  await load.all([{ url: `${path}packed/pack.json`, type: 'json' },{ url: `${path}packed/pack.pack`, type: 'binary' }])
+
     if(process.browser){
       const unpacker = new MMUnpacker(assets[1], assets[0]);
       window.unpacker = unpacker
@@ -123,6 +144,11 @@ export default {
     }
     this.isLoaded = true
     this.$nextTick(this.onReady.bind(this))
+    console.log('%cMade with ❤️ 🧡 💛 💚 💙 💜', "font-weight: bold; color: #f7c8ae;");
+    console.log('%c🖌 @LouisAnsa', "font-weight: bold; color: #f7b8b0;");
+    console.log('%c🖌 @NahelMoussi', "font-weight: bold; color: #f7cfae;");
+    console.log('%c⌨️ @Romaindr', "font-weight: bold; color: #f5d4a4;");
+
   }
 }
 </script>
@@ -146,9 +172,4 @@ export default {
     width 100vw
     z-index 99999
     mix-blend-mode overlay*/
-  .menuButton-enter-active, .menuButton-leave-active
-    transition opacity .8s ease-in-out-quad, transform .8s ease-in-out-quad
-  .menuButton-enter, .menuButton-leave-to
-    opacity 0
-    transform scale(0.6, 0.6)
 </style>

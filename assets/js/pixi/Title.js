@@ -32,23 +32,26 @@ class Title {
     this.loaded++
     if (this.loaded != 3) return
     for (let index = 0; index < 3; index++) {
-      this.imgSprite = new Pixi.Sprite.from(this.img_array[index])
+      const resizeSprite = new Pixi.Sprite.from(this.img_array[index])
+      const scaleContainer = new Pixi.Sprite()
+      const imgContainer = new Pixi.Sprite()
       const title = new Pixi.Sprite()
-      const titleContainer = new Pixi.Sprite()
-      titleContainer.addChild(this.imgSprite)
-      title.addChild(titleContainer)
-      this.imgSprite.position.x = 0
-      this.imgSprite.position.y = 5000 + pages[this.idNum].titlePosition[index]
-      this.imgSprite.scale.x = .5
-      this.imgSprite.scale.y = .5
-      this.imgSprite.anchor.x = .5
-      this.imgSprite.anchor.y = .5
-      this.imgSprite.pivot.x = .5
-      this.imgSprite.pivot.y = .5
-      titleContainer.anchor.x = .5
-      titleContainer.anchor.y = .5
-      titleContainer.pivot.x = .5
-      titleContainer.pivot.y = .5
+      imgContainer.addChild(resizeSprite)
+      scaleContainer.addChild(imgContainer)
+      title.addChild(scaleContainer)
+      imgContainer.position.y = 5000 + pages[this.idNum].titlePosition[index]
+      resizeSprite.anchor.x = .5
+      resizeSprite.anchor.y = .5
+      resizeSprite.pivot.x = .5
+      resizeSprite.pivot.y = .5
+      imgContainer.anchor.x = .5
+      imgContainer.anchor.y = .5
+      imgContainer.pivot.x = .5
+      imgContainer.pivot.y = .5
+      scaleContainer.anchor.x = .5
+      scaleContainer.anchor.y = .5
+      scaleContainer.pivot.x = .5
+      scaleContainer.pivot.y = .5
       title.anchor.x = .5
       title.anchor.y = .5
       title.pivot.x = .5
@@ -58,7 +61,7 @@ class Title {
 
       this.container.addChild(title)
       this.title_array.push(title)
-      this.size_array.push({w: this.imgSprite.width, h: this.imgSprite.height})
+      this.size_array.push({w: resizeSprite.width, h: resizeSprite.height})
     }
     this.originalW = this.container.width
     this.originalH = this.container.height
@@ -67,6 +70,7 @@ class Title {
     if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
   }
   resize(w, h) {
+
     this.isFirstResize = true
     if (!this.isDisposed) return
     const ratio = this.originalW / this.originalH
@@ -77,13 +81,11 @@ class Title {
       screenRatio = h / (1760 / 2) * 0.7
     }
     this.size_array.forEach((el, i) => {
-      //const img = this.title_array[i].children[0].children[0]
-      //el.width = el.w * screenRatio
-      //el.height = el.h * screenRatio
+      const img = this.title_array[i].children[0].children[0].children[0]
+      img.width = el.w * screenRatio / 2
+      img.height = el.h * screenRatio / 2
     })
-
-    this.container.position.x = w * .5
-    this.container.position.y = h - (this.container.height - 5000 * screenRatio) * .5
+    this.container.position.y = - (this.originalH - 5000) * .5 + (this.size_array[0].h  * screenRatio / 2) * .5
   }
   reset() {
     this.title_array.forEach(title => {
@@ -101,7 +103,10 @@ class Title {
   scaleTo(scale, delay, time) {
     this.scale = scale
     this.title_array.forEach((el, i) => {
-      TweenMax.to(el.children[0].children[0].scale, .7, { x: .5 * scale, y: .5 * scale, delay: delay + i * .2 })
+      TweenMax.to(el.children[0].children[0].scale, 1.2 - (i * .2), { x: scale, y: scale, delay: delay + i * .2, ease: Quad.easeInOut })
+      const posY =  200 * (1 - scale)
+      if(i===0)TweenMax.to(el.children[0].children[0].position, 1.2 - (i * .2), { y: 5000 + pages[this.idNum].titlePosition[i] + posY, delay: delay + i * .2, ease: Quad.easeInOut })
+      if(i===2)TweenMax.to(el.children[0].children[0].position, 1.2 - (i * .2), { y: 5000 + pages[this.idNum].titlePosition[i] - posY, delay: delay + i * .2, ease: Quad.easeInOut })
     })
 
   }

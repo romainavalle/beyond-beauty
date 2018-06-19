@@ -1,28 +1,52 @@
-.MenuButton, .Logo
+.MenuButton button, .Logo h1
   .icon
     width 24 * $unitH
     height 14 * $unitH
     overflow hidden
     display block
     span
-      transform translateX(-52 * $unitH)
       height 1px
       width 52 * $unitH
       display block
+      position relative
       margin-bottom 2px
-      background linear-gradient(to left, $colors-black, $colors-black 24 * $unitH, transparent 24 * $unitH, transparent 28 * $unitH, $colors-black 28 * $unitH, $colors-black 52 * $unitH)
-      transition transform .3s ease-in-out-quad
-      &:nth-child(2)
+      &:after,
+      &:before
+        display block
+        content ''
+        height 100%
+        width 100%
+        display block
+        transition transform .3s ease-in-out-quad
+        position absolute
+        top 0
+        left 0
+      &:before
+        background $colors-natalie-portman
+        transition opacity .3s ease-in-out-quad 1s
+        transform translateX(-28 * $unitH)
+      &:after
+        background linear-gradient(to left, $colors-black, $colors-black 24 * $unitH, transparent 24 * $unitH, transparent 28 * $unitH, $colors-black 28 * $unitH, $colors-black 52 * $unitH)
+        transition transform .3s ease-in-out-quad
+        transform translateX(-52 * $unitH)
+      &:nth-child(2):after
+      &:nth-child(2):before
         transition-delay .1s
-      &:nth-child(3)
+      &:nth-child(3):after
+      &:nth-child(3):before
         transition-delay .2s
         margin-left -10 * $unitH
+
   &.show .icon span
-    transform translateX(-28 * $unitH)
+    &:before
+      opacity 0
+    &:after
+      transform translateX(-28 * $unitH)
   &.show:hover
     .icon
       span
-        transition transform .3s ease-in-out-quad
-        transform translateX(0px)
-        &:nth-child(3)
+        &:after
+          transition transform .3s ease-in-out-quad
+          transform translateX(0px)
+        &:nth-child(3):after
           transform translateX(20 * $unitH)

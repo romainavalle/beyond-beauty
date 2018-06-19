@@ -69,10 +69,10 @@ export default {
           x: this.snapValues
         },
         onThrowUpdate: ()=>{
-          this.getNearestEl()
+          //this.getNearestEl()
         },
         onDrag: () => {
-          this.getNearestEl()
+          //this.getNearestEl()
         },
         onThrowComplete: () => {
           this.currentId = this.snapValues.indexOf(Math.round(this.draggable[0].x))
