@@ -1,11 +1,13 @@
 <template>
     <div class="Story">
       <v-story-top></v-story-top>
-      <v-scroll-layout>
-        <div class="padding"></div>
-        <v-story-content ref="content"></v-story-content>
-        <v-facts ref="facts"></v-facts>
-      </v-scroll-layout>
+      <div class="scrollContent" ref="scrollContent">
+        <v-scroll-layout>
+          <div class="padding"></div>
+          <v-story-content ref="content"></v-story-content>
+          <v-facts ref="facts"></v-facts>
+        </v-scroll-layout>
+      </div>
     </div>
 </template>
 
@@ -28,7 +30,7 @@ export default {
     ...mapGetters(['currentPageIdNum'])
   },
   methods:{
-    ...mapActions(['setCurrentHomeSlideId']),
+    ...mapActions(['setCurrentHomeSlideId', 'setStoryVisible']),
     tick(){
       if(!window.smooth)return
       if(this.scrollTop != window.smooth.vars.current){
@@ -59,30 +61,39 @@ export default {
       this.$el.removeEventListener("DOMMouseScroll", this._onWheel, false);
     },
     onWheel(e) {
-      if(this.wheelTimout) clearTimeout(this.wheelTimout)
-      this.wheelTimout = setTimeout(() => {
-        if(this.scrollTop <= ResizeHelper.height()){
-          e.preventDefault();
-          if(e.deltaY > 0){
-            if(this.isShown)return
-              window.smooth.scrollTo(ResizeHelper.height())
-              this.show()
-              this.isShown = true
-          }else{
-            if(!this.isShown)return
-              window.smooth.scrollTo(0)
-              this.hide()
-              this.isShown = false
-          }
+      if(this.scrollTop < 3){
+        e.preventDefault();
+        if(e.deltaY > 0){
+          if(this.isShown)return
+            this.show()
+            TweenMax.to(this.$refs.scrollContent, 1, {yPercent: 0, ease: Circ.easeOut, onComplete: () => {
+              if(window.smooth)window.smooth.addEvents()
+              this.setStoryVisible(true)
+            }})
+            this.isShown = true
         }else{
+          if(!this.isShown)return
+            this.setStoryVisible(false)
+            if(window.smooth)window.smooth.removeEvents()
+            TweenMax.to(this.$refs.scrollContent, 1, {yPercent: 100, ease: Cubic.easeIn})
+            this.isShown = false
+            this.hide()
 
         }
-      }, 30)
+      }else{
+
+      }
     }
   },
   mounted(){
     this.setCurrentHomeSlideId(this.currentPageIdNum)
     this.setMouseWheelListener()
+    TweenMax.set(this.$refs.scrollContent,  {yPercent: 100})
+
+    this.$nextTick(()=>{
+
+      if(window.smooth)window.smooth.removeEvents()
+    })
 
   }
 }
@@ -93,8 +104,11 @@ export default {
 .Story
   position relative
   width 100%
-  .padding
+  .scrollContent
     position relative
     width 100%
     height 100vh
+  .padding
+    position relative
+    width 100%
 </style>

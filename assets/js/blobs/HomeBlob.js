@@ -1,10 +1,10 @@
 import { $colors } from '~/assets/variables.json'
 
-import BlobMixin from '~/assets/js/blobs/BlobMixin'
+import BlobMixinNoise from '~/assets/js/blobs/BlobMixinNoise'
 
-class HomeBlob extends BlobMixin{
-  constructor(shapeW, w, h, centerX, centerY) {
-    super(shapeW, w, h, centerX, centerY)
+class HomeBlob extends BlobMixinNoise{
+  constructor(w, h, shapeW) {
+    super(w, h, shapeW)
   }
 
   tick() {

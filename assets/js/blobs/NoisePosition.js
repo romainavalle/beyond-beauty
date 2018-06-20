@@ -3,7 +3,7 @@ import SimplexNoise from 'simplex-noise'
 class NoisePosition {
   constructor() {
     this.totalPoints = 40
-    this.noiseValues = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20]
+    this.noiseValues = []
     this.time = 0
     this.init()
   }

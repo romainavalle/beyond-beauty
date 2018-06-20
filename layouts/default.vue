@@ -54,14 +54,14 @@ export default {
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady']),
     beforeEnter(el){
       TweenMax.set(el, {opacity: 0})
-      TweenMax.set(el.querySelector('canvas'), {scaleX: 0, scaleY: 0})
+      TweenMax.set(el.querySelector('canvas'), {scale: 0})
     },
     enter(el, done){
       TweenMax.to(el, 1, {opacity: 1, delay: .5, ease: Quad.easeOut, clearProps: 'all'})
-      TweenMax.to(el.querySelector('canvas'), 1, {delay: .5, scaleX: 1, scaleY: 1, ease: Quad.easeOut, clearProps: 'all', onComplete: done})
+      TweenMax.to(el.querySelector('canvas'), 1, {delay: .5, scale: 1, ease: Quad.easeOut, clearProps: 'all', onComplete: done})
     },
     leave(el, done){
-      TweenMax.to(el.querySelector('canvas'), .8, {delay: .2, scaleX: 0.5, scaleY: 0.5, ease: Quad.easeIn})
+      TweenMax.to(el.querySelector('canvas'), .8, {delay: .2, scale: 0.5, ease: Quad.easeIn})
       TweenMax.to(el, 1, {opacity: 0, ease: Quad.easeIn, onComplete: done})
     },
     resize(forceAfterRoute = false){

@@ -20,10 +20,10 @@ export default {
   data() {
     return {
       tempCurrentPageIdNum: -1
-    };
+    }
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady','pages']),
+    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady','pages','storyVisible']),
     ...mapGetters(['currentPageIdNum', 'getURI'])
   },
   methods: {
@@ -48,7 +48,7 @@ export default {
     tick() {
       if(this.isMenuVisible) return
       if(!this.isAppReady) return
-      if(window.smooth && window.smooth.vars.current > ResizeHelper.height())return
+      if(this.storyVisible)return
       this.pixiBlobs.tick();
       this.portraits.tick()
       this.renderer.render(this.stage);

@@ -40,7 +40,7 @@ export default {
     },
     setDragBlob() {
       const shapeW = ResizeHelper.width() / 2880 * 100
-      this.blob = new DragBlob(shapeW, this.canvasSize.w, this.canvasSize.h, this.canvasSize.w / 2, this.canvasSize.h / 2)
+      this.blob = new DragBlob(this.canvasSize.w, this.canvasSize.h, shapeW)
     },
     resize(w, h) {
       this.$refs.canvas.width = this.canvasSize.w

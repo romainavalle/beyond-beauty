@@ -117,7 +117,7 @@ class Blob {
       })
       if(nearestPoint) {
         let strengthVec = { x: this.oldMousePoint.x - mouseX, y: this.oldMousePoint.y - mouseY };
-        let strength = Math.min(Math.sqrt((strengthVec.x * strengthVec.x) + (strengthVec.y * strengthVec.y)) / 20 , 50);
+        let strength = Math.min(Math.sqrt((strengthVec.x * strengthVec.x) + (strengthVec.y * strengthVec.y)) / 20 , 5);
         //
         nearestPoint.color = 'blue'
         nearestPoint.acceleration = (strength * (this.hover ? -1 : 1));

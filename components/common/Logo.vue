@@ -24,7 +24,7 @@ export default {
   mounted(){
     this.ctx = this.$refs.canvas.getContext('2d')
     const shapeW = ResizeHelper.width() / 2880 * 80
-    this.blob = new HomeBlob(shapeW, this.canvasSize.w, this.canvasSize.h, this.canvasSize.w / 2, this.canvasSize.h / 2)
+    this.blob = new HomeBlob(this.canvasSize.w, this.canvasSize.h, shapeW)
   }
 }
 

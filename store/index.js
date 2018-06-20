@@ -8,6 +8,7 @@ const createStore = () => {
       isMenuOpen: false,
       isMenuVisible: false,
       isAppReady: false,
+      storyVisible: false,
       pages,
       currentFact: 2
     },
@@ -29,6 +30,9 @@ const createStore = () => {
       },
       SET_APP_READY (state){
         state.isAppReady = true
+      },
+      SET_STORY_VISIBLE (state, bool){
+        state.storyVisible = bool
       }
     },
     actions: {
@@ -49,6 +53,9 @@ const createStore = () => {
       },
       setAppReady ({ commit }) {
         commit('SET_APP_READY')
+      },
+      setStoryVisible ({ commit }, bool) {
+        commit('SET_STORY_VISIBLE', bool)
       }
     },
     getters: {

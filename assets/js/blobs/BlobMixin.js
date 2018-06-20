@@ -1,16 +1,23 @@
-import NoisePosition from '~/assets/js/blobs/NoisePosition.js'
-
+import BlobPoint from '~/assets/js/canvasBlob/BlobPoint'
+import MouseHelper from '~/assets/js/utils/MouseHelper'
+import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 class BlobMixin {
-  constructor(shapeW, w, h, centerX, centerY) {
+  constructor(w, h, shapeW, numPoints) {
     this.w = w
     this.h = h
-    this.shapeW = shapeW
-    this.totalPoints = 40
-    this.centerX = centerX
-    this.centerY = centerY
-    this.centerOutsideX = centerX
-    this.centerOutsideY = centerY
+    this.centerX = w / 2
+    this.centerY = h / 2
+    this.numPoints = numPoints
+    this.radius = shapeW
+    this.position = { x: this.centerX, y: this.centerY}
+    this.canvasPos = { x: this.centerX, y: this.centerY}
+    this.elasticity = .0005
+    this.friction = .08
+    this.time = 0
+    this.hover = false
+    this.oldMousePoint = {x:0, y :0}
     this.init()
+    this.setBlob()
   }
 
   init(){
@@ -21,60 +28,102 @@ class BlobMixin {
   }
 
 
+  setBlob() {
+    this.divisional = Math.PI * 2 / this.numPoints
+    this.points = []
+    for(let i = 0; i < this.numPoints; i++) {
+      let point = new BlobPoint(this.divisional * i, this, i, this.elasticity, this.friction);
+      this.points.push(point);
+    }
+  }
+
+  onValueChange() {
+    for (let i = 0; i < this.numPoints; i++) {
+      this.points[i].friction = this.friction
+      this.points[i].elasticity = this.elasticity
+    }
+  }
+
+  prepareStroke() {
+      var i, n, prevPoint, currentPoint, nextPoint, x, y;
+      for (i = 0; i < this.numPoints; i++) {
+        prevPoint = this.points[i-1] || this.points[this.numPoints - 1]
+        nextPoint = this.points[i+1] || this.points[0]
+        currentPoint = this.points[i]
+        currentPoint.calcSpring(prevPoint, nextPoint)
+      }
+  }
+
+  curveThrough() {
+      var i, max = this.points.length, currentPoint, nextPoint, x, y;
+      for (i = 0; i < max ; i++) {
+        currentPoint = this.points[i % this.numPoints]
+        nextPoint = this.points[(i+1) % this.numPoints]
+        x = (currentPoint.position.x + nextPoint.position.x) * .5;
+        y = (currentPoint.position.y + nextPoint.position.y) * .5;
+        this.ctx.quadraticCurveTo(currentPoint.position.x, currentPoint.position.y, x, y);
+      }
+  }
+
+  checkMouse(){
+    const mouseX = MouseHelper.x
+    const mouseY = MouseHelper.y
+    let diff = { x: mouseX - this.canvasPos.x, y: mouseY - this.canvasPos.y };
+    let dist = Math.sqrt((diff.x * diff.x) + (diff.y * diff.y));
+    let angle = null;
+    if(dist < this.radius && this.hover === false) {
+      let vector = { x: mouseX - this.canvasPos.x, y: mouseY - this.canvasPos.y };
+      angle = Math.atan2(vector.y, vector.x);
+      this.hover = true;
+    } else if (dist > this.radius && this.hover === true){
+      let vector = { x: mouseX - this.canvasPos.x, y: mouseY - this.canvasPos.y };
+      angle = Math.atan2(vector.y, vector.x);
+      this.hover = false;
+    }
+
+    if(typeof angle == 'number') {
+      let nearestPoint = null;
+      let distanceFromPoint = 10 ;
+      this.points.forEach((point)=> {
+        point.color = 'red'
+        if(Math.abs(angle - point.angle) < distanceFromPoint) {
+          nearestPoint = point;
+          distanceFromPoint = Math.abs(angle - point.angle);
+        }
+      })
+      if(nearestPoint) {
+        let strengthVec = { x: this.oldMousePoint.x - mouseX, y: this.oldMousePoint.y - mouseY };
+        let strength = Math.min(Math.sqrt((strengthVec.x * strengthVec.x) + (strengthVec.y * strengthVec.y)) / 20 , 4);
+        //
+        nearestPoint.color = 'blue'
+        nearestPoint.acceleration = (strength * (this.hover ? -1 : 1));
+        nearestPoint.render()
+      }
+    }
+
+    this.oldMousePoint.x = mouseX;
+    this.oldMousePoint.y = mouseY;
+  }
+
   tick() {
-    this.noiseValues = NoisePosition.noiseValues
+    if(process.browser) this.checkMouse()
     this.ctx.clearRect(0, 0, this.w, this.h)
+    this.time += 0.01
   }
 
-  getNoiseValues(id) {
-    this.noiseValues = NoisePosition.getValuesFrom(id)
+  drawShape() {
+    this.ctx.moveTo(this.points[0].position.x, this.points[0].position.y)
+    this.prepareStroke()
+    this.curveThrough()
   }
-
-  drawShape(radius, centerX, centerY) {
-    let points = []
-    let x = 0, y = 0, angle = 0
-    const slice = Math.PI * 2 / this.totalPoints
-    for(let i = 0; i < this.totalPoints; i++) {
-      x = Math.cos(angle)
-      y = Math.sin(angle)
-      x = centerX + (radius + this.noiseValues[i].x) * x
-      y = centerY + (radius + this.noiseValues[i].y) * y
-      points.push({ x, y })
-      angle += slice
-    }
-    this.ctx.moveTo(points[0].x, points[0].y)
-    this.curveThrough(points)
-  }
-
-  curveThrough(points) {
-    var i, n, a, b, x, y
-    for (i = 1, n = points.length - 1; i < n; i++) {
-        a = points[i]
-        b = points[i + 1] || points[0]
-        x = (a.x + b.x) * 0.5
-        y = (a.y + b.y) * 0.5
-        this.ctx.quadraticCurveTo(a.x, a.y, x, y)
-    }
-    a = points[i]
-    b = points[i + 1] || points[0]
-    this.ctx.quadraticCurveTo(a.x, a.y, b.x, b.y)
-  }
-
-  resize(w,h) {
+  resize(w,h, canvasPos) {
     this.w = w
     this.h = h
     this.canvas.width = this.w
     this.canvas.height = this.h
+    this.canvasPos = {...canvasPos}
   }
 
 }
-
-
-
-
-
-
-
-
 
 export default BlobMixin

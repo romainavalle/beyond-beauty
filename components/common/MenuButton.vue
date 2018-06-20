@@ -23,7 +23,7 @@ export default {
   mounted(){
     this.ctx = this.$refs.canvas.getContext('2d')
     const shapeW = ResizeHelper.width() / 2880 * 100
-    this.blob = new MenuButtonBlob(shapeW, this.canvasSize.w, this.canvasSize.h, this.canvasSize.w / 2, this.canvasSize.h / 2)
+    this.blob = new MenuButtonBlob(this.canvasSize.w, this.canvasSize.h, shapeW)
   }
 }
 

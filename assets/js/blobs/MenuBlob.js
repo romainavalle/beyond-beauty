@@ -1,30 +1,23 @@
 import { $colors } from '~/assets/variables.json'
 
-import BlobMixin from '~/assets/js/blobs/BlobMixin'
+import BlobMixinNoise from '~/assets/js/blobs/BlobMixinNoise'
 
-class MenuBlob extends BlobMixin{
-  constructor(shapeW, w, h, centerX, centerY) {
-    super(shapeW, w, h, centerX, centerY)
+class MenuBlob extends BlobMixinNoise{
+  constructor(w, h, radius /*, numPoints*/) {
+    super(w, h, radius/*, numPoints*/)
   }
 
   tick() {
     super.tick()
-
     this.ctx.save()
     this.ctx.beginPath()
-    this.drawShape(this.shapeW, this.centerOutsideX, this.centerOutsideY)
+    //this.drawShape()
+    this.drawShape(this.shapeW, this.centerX, this.centerY)
     this.ctx.fillStyle = $colors['white']//0XCC0000//
     this.ctx.fill()
     this.ctx.restore()
   }
 }
-
-
-
-
-
-
-
 
 
 export default MenuBlob

@@ -26,11 +26,11 @@ export default {
     ...mapActions(['setMenuOpen']),
     show(delay) {
       TweenMax.to(this.$elToAnimate, 1, {delay: delay + .2, autoAlpha: 1, ease: Quad.easeOut})
-      TweenMax.to(this.$refs.canvas, .7,{delay, scaleX: 1, scaleY:1, ease: Quad.easeOut})
+      TweenMax.to(this.$refs.canvas, .7,{delay, scale:1, ease: Quad.easeOut})
     },
     hide() {
       TweenMax.to(this.$elToAnimate, .8, {autoAlpha: 0, ease: Quad.easeIn})
-      TweenMax.to(this.$refs.canvas, .6,{scaleX: 0, scaleY: 0, ease: Quad.easeIn})
+      TweenMax.to(this.$refs.canvas, .6,{scale: 0, ease: Quad.easeIn})
     },
     tick() {
       this.blob.tick()
@@ -40,16 +40,17 @@ export default {
     resize(w, h) {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
-      this.blob.resize(this.canvasSize.w, this.canvasSize.h)
+      //const canvasPos = {x: (-130 + 640 / 2) * 2880 / w, y: (640 / 2) * (2880 / w) - 400 * (1780 / h)}
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h/*, canvasPos*/)
     }
   },
   mounted() {
     this.$elToAnimate = this.$el.querySelectorAll('button, li')
     TweenMax.set(this.$elToAnimate, {autoAlpha: 0})
-    TweenMax.set(this.$refs.canvas, {scaleX: 0, scaleY: 0})
+    TweenMax.set(this.$refs.canvas, {scale: 0})
     this.ctx = this.$refs.canvas.getContext('2d')
-    const shapeW = ResizeHelper.width() / 2880 * 300
-    this.blob = new MenuBlob(shapeW, this.canvasSize.w, this.canvasSize.h, this.canvasSize.w / 2, this.canvasSize.h / 2)
+    const shapeW = ResizeHelper.width() / 2880 * 250
+    this.blob = new MenuBlob(this.canvasSize.w, this.canvasSize.h, shapeW/*, 20*/)
   }
 }
 </script>
@@ -73,7 +74,7 @@ export default {
     width 640 * $unitH
     height 640 * $unitH
     margin-left -130 * $unitH
-    margin-top -310 * $unitH
+    margin-top -400 * $unitV
     transform rotate(180deg)
   ul
     display flex

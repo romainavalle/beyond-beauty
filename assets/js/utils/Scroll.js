@@ -17,8 +17,6 @@ class Scroll extends SmoothScroll {
     this.vars.automatic = false
     this.vars.oldTarget = false
 
-    this.disableHeaderHidden = opt.disableHeaderHidden
-
     this.onScroll = () => {}
     this.onBeforeDebounce = () => {}
     this.onDebounce = () => {}
@@ -180,7 +178,6 @@ class Scroll extends SmoothScroll {
   }
 
   setDirection () {
-    if (this.disableHeaderHidden) return
 
     if (this.vars.target > 60) {
       if (this.vars.target > this.vars.oldTarget) {

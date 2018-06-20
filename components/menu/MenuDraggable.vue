@@ -31,9 +31,10 @@ export default {
   methods:{
     tick() {
       this.$refs.link.forEach((el, i) => {
-        let t = (-this.snapValues[i] + this.draggable[0].x) / (ResizeHelper.width())
+        let t = (-this.snapValues[i] + this.draggable[0].x) / (ResizeHelper.width() / 2)
         const ease = t > 0 ? (--t)*t*t+1 :t*t*t
-        el.tick(ease * 100)
+
+        el.tick(ease * 200)
       })
     },
     resize(w, h) {
