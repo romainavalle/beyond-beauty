@@ -1,5 +1,5 @@
 <template>
-  <div class="beyond-beauty">
+  <div class="beyond-beauty" :class="{'overflow': process.browser}">
     <v-loader></v-loader>
     <transition name="menuButton" mode="out-in" @beforeEnter="beforeEnter" @enter="enter" @leave="leave" @css="false" v-show="isAppReady">
       <v-logo v-if="logo" ref="logo"></v-logo>
@@ -7,7 +7,9 @@
     </transition>
     <v-home-canvas ref="homeCanvas"></v-home-canvas>
     <v-menu ref="siteMenu"></v-menu>
-    <nuxt ref="page"/>
+    <transition name="pageTrans" mode="out-in" @enter="pageEnter" @leave="pageLeave" @css="false">
+      <nuxt ref="page" :key="route.params.pageId || route.name"/>
+    </transition>
   </div>
 </template>
 
@@ -36,11 +38,12 @@ const load = require('load-asset');
 export default {
   data(){
     return {
-      isLoaded: false
+      isLoaded: false,
+      process
     }
   },
   computed:{
-    ...mapState(['isAppReady']),
+    ...mapState(['isAppReady', 'isPageTransition']),
     ...mapGetters(['route']),
     logo(){
       return this.route.name === 'index'
@@ -51,7 +54,24 @@ export default {
   },
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader},
   methods:{
-    ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady']),
+    ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady','setPageTransition']),
+    pageEnter(el, done) {
+      TweenMax.set(this.$refs.page.$children[0].$el, {yPercent: 0})
+      this.setPageTransition(false)
+      this.$refs.homeCanvas.showPage(0,1)
+      done()
+    },
+    pageLeave(el, done) {
+      if(this.isPageTransition){
+        TweenMax.to(this.$refs.page.$children[0].$el, .8,{yPercent: -50, ease: Expo.easeOut})
+        this.$refs.homeCanvas.pageTrans()
+        setTimeout(() => {
+          done()
+        }, 800)
+      }else{
+        done()
+      }
+    },
     beforeEnter(el){
       TweenMax.set(el, {opacity: 0})
       TweenMax.set(el.querySelector('canvas'), {scale: 0})
@@ -158,6 +178,8 @@ export default {
   height 100%
   position relative
   width 100%
+  &.overflow
+    overflow hidden
   /*&:after
     background url('~/assets/images/noise.jpg')
     background-size 256px 256px

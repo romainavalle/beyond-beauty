@@ -57,6 +57,7 @@ export default {
     position relative
     width 100%
     max-width 9 * 160 * $unitH
+    height 6 * 140 * .9 * $unitH // 6 line * 140 unit font-size * line height
     margin 0 auto
 
 </style>

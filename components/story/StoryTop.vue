@@ -42,7 +42,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['pages']),
+    ...mapState(['pages','isStoryVisible']),
     ...mapGetters(['currentPageIdNum']),
     color() {
       return this.pages[this.currentPageIdNum].color
@@ -65,6 +65,11 @@ export default {
 
     }
   },
+  watch: {
+    isStoryVisible(val) {
+      TweenMax.set(this.$el, {autoAlpha: val ? 0 : 1})
+    }
+  },
   mounted(){
     this.reset()
     setTimeout(this.show.bind(this), 1000)
@@ -77,7 +82,7 @@ export default {
 .StoryTop
   height 100vh
   overflow hidden
-  position fixed
+  position absolute
   width 100vw
   top 0
   left 0

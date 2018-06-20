@@ -8,17 +8,15 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import Emmiter from '~/assets/js/events'
+import Emitter from '~/assets/js/events'
 import vStorySpeech from '~/components/story/StorySpeech.vue'
 import vStoryMedia from '~/components/story/StoryMedia.vue'
-import SoundHelper from '~/assets/js/utils/SoundHelper'
 export default {
   name: 'StoryContent',
   data(){
     return {
       className: '',
-      scrollTop: 0,
-      currentPart: -1
+      scrollTop: 0
     }
   },
   components:{vStorySpeech,vStoryMedia},
@@ -32,21 +30,11 @@ export default {
     resize(w, h){
       this.$refs.speech.resize(w, h)
     },
-    goPart(part = -1) {
-      if(part !== -1){
-        this.currentPart = part
-      }else{
-        this.currentPart++
-      }
-      if (this.currentPart===3) return
-      this.$refs.speech.showPart(this.currentPart)
-      SoundHelper.createSound(this.pageData.id, this.currentPart)
-    },
+
     show(){
-      this.currentPart = -1
       this.$refs.speech.show()
       this.$refs.media.show()
-      this.soundTimer = setTimeout(this.goPart.bind(this), 1000)
+      this.soundTimer = setTimeout(() => {this.$refs.speech.showPart(0)}, 1000)
     },
     hide(){
       this.$refs.media.hide()
@@ -55,13 +43,8 @@ export default {
   },
   beforeDestroy(){
     clearTimeout(this.soundTimer)
-    Emmiter.removeListener('PART_CLICKED', this._goPart)
-    Emmiter.removeListener('SOUND_ENDED', this._goPart)
   },
   mounted(){
-    this._goPart = this.goPart.bind(this)
-    Emmiter.on('PART_CLICKED', this._goPart)
-    Emmiter.removeListener('SOUND_ENDED', this._goPart)
 
   }
 }

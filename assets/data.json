@@ -18,7 +18,7 @@
         "texts": [
           {
             "text": "I keep hearing a particular gripe about this culture shift, and maybe you have too. Some people have been calling this movement ‘puritanical’ or ‘a return to Victorian values,’ where men can’t behave or speak sexually around dainty, delicate, fragile women. To these people, I want to say: the current system is puritanical. Maybe men can say and do whatever they want, but women cannot. The current system inhibits women from expressing our desires, wants, and needs; from seeking our pleasure. Let me tell you about my own experience.",
-            "html": "<span data-time=\"0\">I keep hearing a particular gripe about this culture shift,</span><span data-time=\"0\"> and maybe you have too.</span><span data-time=\"0\"> Some people have been calling this movement ‘puritanical’ or ‘a return to Victorian values’,</span><span data-time=\"0\"> where men can’t behave or speak sexually around dainty,</span><span data-time=\"0\"> delicate,</span><span data-time=\"0\"> fragile women.</span><span data-time=\"0\"> To these people,</span><span data-time=\"0\"> I want to say:</span><span data-time=\"0\"> the current system is puritanical.</span><span data-time=\"0\"> Maybe men can say and do whatever they want,</span><span data-time=\"0\"> but women cannot.</span><span data-time=\"0\"> The current system inhibits women from expressing our desires,</span><span data-time=\"0\"> wants,</span><span data-time=\"0\"> and needs;</span><span data-time=\"0\"> from seeking our pleasure.</span><span data-time=\"0\"> Let me tell you about my own experience.</span>"
+            "html": "<span data-time=\"1\">I keep hearing a particular gripe about this culture shift,</span><span data-time=\"4.3\"> and maybe you have too.</span><span data-time=\"5.7\"> Some people have been calling this movement ‘puritanical’</span><span data-time=\"8.8\"> or ‘a return to Victorian values’,</span><span data-time=\"10.5\"> where men can’t behave or speak sexually</span><span data-time=\"14\"> around dainty, delicate, fragile women.</span><span data-time=\"17.1\"> To these people,</span><span data-time=\"18.5\"> I want to say:</span><span data-time=\"19.8\"> the current system is puritanical.</span><span data-time=\"22\"> Maybe men can say and do whatever they want,</span><span data-time=\"24.7\"> but women cannot.</span><span data-time=\"26.7\"> The current system inhibits women</span><span data-time=\"28.9\"> from expressing our desires, wants, and needs;</span><span data-time=\"32.9\"> from seeking our pleasure.</span><span data-time=\"35.5\"> Let me tell you about my own experience.</span>"
           },
           {
             "text": "I turned 12 on the set of my first film, The Professional, in which I played a young girl who befriends a hit man and hopes to avenge the murder of her family. [...] I was so excited at 13 when the film was released, and my work and my art would have a human response. I excitedly opened my first fan mail to read a rape fantasy that a man had written me. A countdown was started on my local radio show to my 18th birthday, euphemistically the date that I would be legal to sleep with. Movie reviewers talked about my budding breasts in reviews. [...] At 13 years old, the message from our culture was clear to me. I felt the need to cover my body and to inhibit my expression and my work in order to send my own message to the world that I’m someone worthy of safety and respect. The response to my expression—from small comments about my body to more threatening, deliberate statements, served to control my behavior through an environment of sexual terrorism.",
@@ -38,28 +38,23 @@
       "facts":[
         {
           "year": 2004,
-          "text": "Natalie joins FINCA and becomes its Ambassador of Hope and travels to Ouganda, Guatemala & in Equator.",
-          "html": "Natalie joins FINCA and becomes its Ambassador of Hope and travels to Ouganda, Guatemala & in Equator."
+          "html": "Natalie joins FINCA<br>& becomes its<br><strong>Ambassador of Hope</strong>,<br>she travels to<br>Ouganda, Guatemala<br>& in Equator"
         },
         {
           "year": 2008,
-          "text": "Natalie Portman designs a collection of luxury vegan shoes in collaboration with Te Casan.",
-          "html": "Natalie Portman designs a collection of luxury vegan shoes in collaboration with Te Casan."
+          "html": "Natalie Portman<br>designs an entire<br>collection of luxury<br><strong>vegan shoes</strong> in<br>collaboration with<br>Te Casan"
         },
         {
           "year": 2009,
-          "text": "Actively defends PETA and give a conference to support the group’s anti-leather campaign ",
-          "html": "Actively defends PETA and give a conference to support the group’s anti-leather campaign "
+          "html": "She Actively<br><strong>defends PETA</strong> &<br>gives a conference<br>to support the<br>group’s anti-leather<br>campaign "
         },
         {
           "year": 2010,
-          "text": "Portman supported Obama's re-election campaign and the same-sex marriage legislation",
-          "html": "Portman supported Obama's re-election campaign and the same-sex marriage legislation"
+          "html": "Natalie Portman<br>supported <strong>Obama's</strong><br><strong>re-election</strong> campaign<br>as well as the<br>same-sex marriage<br>legislation"
         },
         {
           "year": 2011,
-          "text": "Portman became an ambassador of Free the Children, an international charity and educational partner.",
-          "html": "Portman became an ambassador of Free the Children, an international charity and educational partner."
+          "html": "Portman became<br>an ambassador of <strong>Free</strong><br><strong>the Children</strong>, an<br>international charity<br>and educational<br>partner"
         }
       ]
     },
@@ -101,28 +96,23 @@
       "facts": [
         {
           "year": 2014,
-          "text": "Emma Watson becomes<br>United Nation Women<br>Goodwill Ambassador<br>and is dedicated to<br>furthering gender<br>equality",
-          "html": "Emma Watson becomes<br>United Nation Women<br>Goodwill <span>Ambassador</span><br>and is dedicated to<br>furthering gender<br>equality"
+          "html": "Emma Watson becomes<br>United Nation Women<br>Goodwill <strong>Ambassador</strong><br>and is dedicated to<br>furthering gender<br>equality"
         },
         {
           "year": 2015,
-          "text": "Using GoodReads<br>platform, the actress<br>creates a book<br>reading community<br>empowering gender equality",
-          "html": "Using GoodReads<br>platform, the actress<br>creates a book<br>reading <span>community</span><br>empowering gender equality"
+          "html": "Using GoodReads<br>platform, the actress<br>creates a book<br>reading <strong>community</strong><br>empowering gender equality"
         },
         {
           "year": 2016,
-          "text": "She is involved<br>with promoting girls'<br>education and has<br>visited <span>emerging</span><br><span>countries</span> such as<br>Bangladesh & Uruguay.",
-          "html": "She is involved<br>with promoting girls'<br>education and has<br>visited <span>emerging</span><br><span>countries</span> such as<br>Bangladesh & Uruguay."
+          "html": "She is involved<br>with promoting girls'<br>education and has<br>visited <strong>emerging</strong><br><strong>countries</strong> such as<br>Bangladesh & Uruguay."
         },
         {
           "year": 2017,
-          "text": "Emma Watson<br>dedicates her<br>Instagram<br>account to defend and<br>promote sustainable<br>fashion clothes.",
-          "html": "Emma Watson<br>dedicates her<br>Instagram<br>account to <span>defend and</span><br><span>promote</span> sustainable<br>fashion clothes."
+          "html": "Emma Watson<br>dedicates her<br>Instagram<br>account to <strong>defend and</strong><br><strong>promote</strong> sustainable<br>fashion clothes."
         },
         {
           "year": 2018,
-          "text": "Emma Watson has<br>donated £1 million<br>to a British fund to<br>help women facing<br>harassment and abuse<br>at work",
-          "html": "Emma Watson has<br>donated £1 million<br>to a British fund to<br><span>help women</span> facing<br>harassment and abuse<br>at work"
+          "html": "Emma Watson has<br>donated £1 million<br>to a British fund to<br><strong>help women</strong> facing<br>harassment and abuse<br>at work"
         }
       ]
     },
@@ -164,28 +154,23 @@
       "facts": [
         {
           "year": 2012,
-          "text": "Jennifer Lawrence partnered with the United Nations to raise awareness on poverty and hunger",
-          "html": "Jennifer Lawrence partnered with the United Nations to raise awareness on poverty and hunger"
+          "html": "Jennifer Lawrence<br>partnered with<br>the <strong>United Nations</strong><br>to raise awareness<br>on poverty and<br>hunger"
         },
         {
           "year": 2015,
-          "text": "She wrote an essay for the Lenny Letter in which she criticized the gender pay gap in Hollywood",
-          "html": "She wrote an essay for the Lenny Letter in which she criticized the gender pay gap in Hollywood"
+          "html": "She writes an essay<br>for the Lenny<br>Letter in which<br>she criticized the<br><strong>gender pay gap</strong><br>in Hollywood"
         },
         {
           "year": 2016,
-          "text": "The Jennifer Lawrence Foundation helps organizations that fulfill children’s vital needs & drives art access",
-          "html": "The Jennifer Lawrence Foundation helps organizations that fulfill children’s vital needs & drives art access"
+          "html": "The Jennifer Lawrence<br>Foundation helps<br>organizations that<br>fulfill <strong>children’s</strong><br><strong>vital needs</strong> & drives<br>art access"
         },
         {
           "year": 2017,
-          "text": "She is a supporter of Planned Parenthood, and participated in a video against the defunding of the organization",
-          "html": "She is a supporter of Planned Parenthood, and participated in a video against the defunding of the organization"
+          "html": "She is a supporter<br>of Planned Parenthood,<br>and <strong>participated in</strong><br><strong>a video</strong> against the<br>defunding of the<br>organization"
         },
         {
           "year": 2018,
-          "text": "Jennifer takes a break in acting to focus on anti-corruption activist work and engage young people to politics",
-          "html": "Jennifer takes a break in acting to focus on anti-corruption activist work and engage young people to politics"
+          "html": "Jennifer takes<br>a <strong>break in acting</strong><br>to really focus on<br>anti-corruption<br>activist and engage<br>youngsters to politics"
         }
       ]
     },
@@ -228,28 +213,23 @@
       "facts": [
         {
           "year": 2014,
-          "text": "Cara Delevingne stands up for women body positivity and support the FreeTheNipple campaign",
-          "html": "Cara <span>Delevingne</span> stands up for <span>women</span> body <span>positivity</span> and support the <span>FreeTheNipple</span> campaign"
+          "html": "Cara Delevingne<br>stands up for women<br>body positivity and<br>support the<br><strong>FreeTheNipple</strong><br>campaign"
         },
         {
           "year": 2015,
-          "text": "She opens up about her fight with depression as well her struggles in the modelling industry",
-          "html": "She opens up about her <span>fight</span> with <span>depression</span> as well her <span>struggles</span> in the modelling industry"
+          "html": "She opens up about<br>her <strong>fight with</strong><br><strong>depression</strong> as well<br>her struggles in the modeling<br>industry"
         },
         {
           "year": 2016,
-          "text": "She embarks on a charity trip to Ouganda to support female refugees in support of the Girl Up Campaign",
-          "html": "She embarks on a <span>charity</span> trip to <span>Ouganda</span> to support female <span>refugees</span> in support of the Girl Up Campaign"
+          "html": "She embarks on a<br>charity trip to<br><strong>Ouganda</strong> to help<br>female refugees in<br>support of the Girl<br>Up Campaign"
         },
         {
           "year": 2017,
-          "text": "Cara writes a young adult fiction book Mirror, Mirror, which contains and narrate an LGBT story",
-          "html": "Cara writes a young <span>adult</span> fiction book Mirror, Mirror, which contains and narrate an LGBT story"
+          "html": "Cara writes a young<br>adult <strong>fiction book</strong><br>Mirror, Mirror,<br>which contains and<br>narrate an LGBT<br>story"
         },
         {
           "year": 2018,
-          "text": "Cara Delevingne closes Burberry's runway show in a rainbow cape celebrating LGBTQ",
-          "html": "Cara <span>Delevingne</span> closes Burberry's runway show in a <span>rainbow</span> cape celebrating <span>LGBTQ</span>"
+          "html": "Cara Delevingne<br>closes Burberry's<br>runway show in<br>a <strong>rainbow cape</strong><br>celebrating &<br>supporting LGBTQ"
         }
       ]
     }

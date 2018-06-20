@@ -1,7 +1,9 @@
 <template>
   <div class="Slide" :class="readyClass">
-    <p class="bottom" v-html="fact.text" ref="bottom"></p>
-    <p class="top" v-html="fact.html" ref="top"></p>
+    <p class="bottom" ref="bottom">
+      <span v-for="(line,i) in textArray" :key="i" v-html="line" class="line"></span>
+    </p>
+    <p class="top" ref="top" v-html="fact.html"></p>
   </div>
 </template>
 
@@ -20,7 +22,9 @@ export default {
   },
   props: ['fact'],
   computed:{
-
+    textArray(){
+      return this.fact.html.split('<br>')
+    }
   },
   methods:{
     show(){
@@ -32,7 +36,7 @@ export default {
     setTimeout(() => {
       this.readyClass = 'ready'
     }, 2200)
-    new SplitText(this.$refs.bottom, {type: 'lines', linesClass: 'line'})
+
   }
 }
 
@@ -51,13 +55,15 @@ export default {
     position relative
     text-align center
     text-transform uppercase
+    span
+      display block
     &.bottom
       -webkit-text-stroke-color $colors-timelineBlack
       -webkit-text-stroke-width .5px
       z-index 2
     &.top
       -webkit-text-stroke-color transparent
-      -webkit-text-stroke-width .5px
+      -webkit-text-stroke-width 0
       position absolute
       color $colors-bgWhite
       top 0
@@ -76,8 +82,9 @@ export default {
 </style>
 <style lang="stylus">
 .Slide
-  p.top
-    span
+  strong
+    font-weight normal
+  p.top strong
       color transparent
       -webkit-color transparent
       -webkit-text-stroke-color transparent

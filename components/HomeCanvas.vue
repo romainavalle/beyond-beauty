@@ -19,12 +19,13 @@ if (process.browser) {
 export default {
   data() {
     return {
-      tempCurrentPageIdNum: -1
+      tempCurrentPageIdNum: -1,
+      storyPushSwitched: false
     }
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady','pages','storyVisible']),
-    ...mapGetters(['currentPageIdNum', 'getURI'])
+    ...mapState(['currentHomeSlideId', 'route', 'isMenuVisible', 'isAppReady','pages','isStoryVisible', 'isPageTransition']),
+    ...mapGetters(['currentPageIdNum', 'getURI', 'getPageIdNum'])
   },
   methods: {
     load(){
@@ -46,12 +47,42 @@ export default {
       },500)
     },
     tick() {
+      if(window.smooth && this.route.name !== 'index')this.checkStory()
       if(this.isMenuVisible) return
       if(!this.isAppReady) return
-      if(this.storyVisible)return
+      if(this.isStoryVisible && this.scrollTop < this.bounding)return
       this.pixiBlobs.tick();
       this.portraits.tick()
       this.renderer.render(this.stage);
+    },
+    checkStory() {
+      if(window.smooth.vars.current === 0)this.storyPushSwitched = false
+      if(window.smooth.vars.current > 500) {
+        if(this.storyPushSwitched) return
+        this.storyPushSwitched = true
+        this.doSwitch()
+      }else{
+        if(!this.storyPushSwitched) return
+        this.storyPushSwitched = false
+        this.doSwitch()
+      }
+    },
+    doSwitch() {
+      let nextPageNum = this.currentPageIdNum + 1
+      if(nextPageNum > 3)nextPageNum = 0
+      if(this.storyPushSwitched) {
+        TweenMax.set(this.titlesContainer.position, {y: ResizeHelper.height() * .3})
+        this.titles.hide(this.currentPageIdNum, true)
+        this.titles.scaleTo(null, .4);
+        this.titles.show(nextPageNum, 0, 0);
+        this.pixiBlobs.setTint(this.pages[nextPageNum].color);
+      }else{
+        this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
+        TweenMax.set(this.titlesContainer.position, {y: 0})
+        this.titles.scaleTo(null, .7);
+        this.titles.hide(nextPageNum , true)
+        this.titles.show(this.currentPageIdNum, 0, 0);
+      }
     },
     resize(w, h) {
       this.pixiBlobs.resize(w, h);
@@ -59,10 +90,7 @@ export default {
       this.titles.resize(w, h);
       this.background.resize(w, h);
       this.renderer.resize(w, h);
-    },
-    hide(id) {
-      this.portraits.hide(id);
-      this.titles.hide(id);
+      if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
       delay = .5
@@ -71,43 +99,49 @@ export default {
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1);
     },
     showPage(delay, time) {
-      this.tempCurrentPageIdNum = this.currentHomeSlideId
       this.background.show()
-      this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
-      if(this.currentHomeSlideId !== -1)this.portraits.disappear(this.currentHomeSlideId);
+      this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
       this.titles.show(this.currentPageIdNum, delay * 0.6, time);
-      this.titles.scaleTo(this.currentHomeSlideId, .7, delay * 0.6, time);
+      this.titles.scaleTo(this.currentPageIdNum, .7, delay * 0.6, time);
     },
     hidePage(delay) {
       this.portraitsContainer.visible = true
       this.background.hide()
       this.portraits.appear(this.currentHomeSlideId);
-      this.titles.scaleTo(this.tempCurrentPageIdNum, 1, delay * 0.6, 1);
+      this.titles.scaleTo(this.currentHomeSlideId, 1, delay * 0.6, 1);
     },
     portraitClick() {
       this.$router.push({
         name: 'story-pageId',
         params: { pageId: this.pages[this.currentHomeSlideId].pageId }
       });
+    },
+    pageTrans() {
+      TweenMax.to(this.titlesContainer.position, 1.7,{y: 0, ease: Expo.easeInOut})
+      this.titles.scaleTo(this.currentPageIdNum , 1, 0, 1);
     }
   },
   watch: {
     currentHomeSlideId(val, old) {
       if(this.route.name === 'index'){
         if (old != -1) {
-          this.hide(old);
+          this.portraits.hide(old);
+          this.titles.hide(old);
         }else{
           this.showHomeSlide()
         }
       }
     },
     'route.name'(val, old) {
-      if(val !== 'index'){
-        // this.titles.hide(this.currentHomeSlideId);
-        this.showPage(.5, 1)
-      }else{
-        if(old && old !== 'index')this.hidePage()
-        //this.showHomeSlide()
+      if(old && old !== 'index' && val === 'index')this.hidePage()
+      if(old && old === 'index' && val !== 'index')this.portraits.disappear(this.currentHomeSlideId);
+    },
+    'route.params.pageId'(val, old) {
+      if(old && val) {
+        this.titles.hide(this.getPageIdNum(old), this.isMenuVisible)
+      }
+      if(val){
+        if(!this.isPageTransition) this.showPage(2, 1)
       }
     }
   },

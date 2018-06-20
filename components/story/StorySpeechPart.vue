@@ -16,7 +16,7 @@
 <script>
 import { mapGetters } from 'vuex'
 //import Utils from '~/assets/js/utils/Utils'
-import Emmiter from '~/assets/js/events'
+import Emitter from '~/assets/js/events'
 import SoundHelper from '~/assets/js/utils/SoundHelper'
 export default {
   name: 'StorySpeechPart',
@@ -24,7 +24,8 @@ export default {
     return {
       paragraphClass: '',
       duration: 0,
-      isActive: false
+      isActive: false,
+      currentSpan: 0
     }
   },
   props:['paragraph', 'id'],
@@ -33,19 +34,24 @@ export default {
   },
   methods:{
     onclick() {
-      Emmiter.emit('PART_CLICKED', this.id)
+      Emitter.emit('PART_CLICKED', this.id)
     },
     tick() {
       if(!this.isActive) return
-      const pourc = 1 - (SoundHelper.getPos() / this.duration)
+      const pos = SoundHelper.getPos()
+      const pourc = 1 - (pos / this.duration)
       TweenMax.set(this.$refs.timer, {'stroke-dashoffset': pourc * 352})
+      if(pos > this.time_array[this.currentSpan]){
+        TweenMax.to(this.$spans[this.currentSpan], .3,{opacity: 1, ease:Quad.easeOut})
+        this.currentSpan++
+      }
     },
     showPart() {
+      this.currentSpan = 0
       TweenMax.to(this.$el, .5,{opacity: 1, ease:Quad.easeInOut})
-      TweenMax.staggerTo(this.$spans, .3,{opacity: 1, ease:Quad.easeOut}, 1)
       this.paragraphClass = 'active'
       TweenMax.to(this.$refs.load, 3, {'stroke-dashoffset': 60, ease: Quad.easeOut})
-      Emmiter.on('SOUND_LOADED', this.activateSound.bind(this))
+      Emitter.on('SOUND_LOADED', this._activateSound)
     },
     hidePart() {
       this.paragraphClass = ''
@@ -53,11 +59,11 @@ export default {
       TweenMax.to(this.$el, .5,{opacity: .5, ease:Quad.easeInOut})
       this.isActive = false
       TweenMax.to(this.$spans, .3,{opacity: 0, ease:Quad.easeOut, overwrite: 1}, 1)
-      Emmiter.removeListener('SOUND_LOADED', this.activateSound.bind(this))
+      Emitter.removeListener('SOUND_LOADED', this._activateSound)
     },
     activateSound() {
       this.duration = SoundHelper.getDuration()
-      Emmiter.removeListener('SOUND_LOADED', this.activateSound.bind(this))
+      Emitter.removeListener('SOUND_LOADED', this._activateSound)
       this.isActive = true
       TweenMax.to(this.$refs.load, .3, {'stroke-dashoffset': 0, ease: Quad.easeOut})
     },
@@ -67,13 +73,14 @@ export default {
   },
   beforeDestory() {
     TweenMax.killAllTweensOf(this.spans)
-    Emmiter.removeListener('SOUND_LOADED', this.activateSound.bind(this))
+    Emitter.removeListener('SOUND_LOADED', this._activateSound)
   },
   mounted(){
     this._activateSound = this.activateSound.bind(this)
     this._deactivateSound = this.deactivateSound.bind(this)
     TweenMax.set(this.$el, {opacity: 0.3})
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
+    this.time_array = this.$spans.map(el => {return el.dataset.time})
     TweenMax.set(this.$spans, {opacity: 0})
   }
 }

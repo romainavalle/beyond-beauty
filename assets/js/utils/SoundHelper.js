@@ -1,5 +1,5 @@
 import { Howl } from 'Howler'
-import Emmiter from '~/assets/js/events'
+import Emitter from '~/assets/js/events'
 class SoundHelper {
 
   constructor () {
@@ -10,15 +10,29 @@ class SoundHelper {
     this.sound = new Howl({
       src: `${path}sounds/${id}-${part}.mp3`,
       autoplay: true,
-      volume: 1,
+      volume: 0,
       onload: function() {
-        Emmiter.emit('SOUND_LOADED')
+        Emitter.emit('SOUND_LOADED')
       },
       onend: function() {
-        Emmiter.emit('SOUND_ENDED')
+        Emitter.emit('SOUND_ENDED')
       }
 
     })
+    this.sound.on('play', ()=>{
+      this.sound.fade(0, 1, 1000)
+    })
+  }
+  playPause() {
+    if(this.sound.playing()) {
+      this.sound.fade(1, 0, 300)
+      this.sound.once('fade', () => {
+        this.sound.pause()
+      });
+    } else {
+      this.sound.play()
+      this.sound.fade(0, 1, 300)
+    }
   }
   getPos() {
     return this.sound.seek()
@@ -26,8 +40,13 @@ class SoundHelper {
   getDuration() {
     return this.sound.duration()
   }
-
-
+  fadeOut() {
+    if(this.sound.volume() !== 1) return
+    this.sound.fade(1, 0, 1000)
+    this.sound.once('fade', () => {
+      this.sound.stop()
+    });
+  }
 }
 
 export default new SoundHelper()

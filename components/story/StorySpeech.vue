@@ -11,6 +11,8 @@
 import vStorySpeechPart from '~/components/story/StorySpeechPart.vue'
 import { mapGetters } from 'vuex'
 import ioMixins from '~/components/ioMixins'
+import Emitter from '~/assets/js/events'
+import SoundHelper from '~/assets/js/utils/SoundHelper'
 export default {
   name: 'StorySpeech',
   data(){
@@ -34,24 +36,34 @@ export default {
   methods:{
     tick(scrollTop){
       if(!this.active) return
+      if(this.currentPart !== -1)this.$refs.parts[this.currentPart].tick()
       if(scrollTop < 0) scrollTop = 0
       if(scrollTop === this.scrollTop)return
       this.scrollTop = scrollTop
       TweenMax.set(this.$el, {y: scrollTop - (scrollTop * this.contentHeight)})
-      if(this.currentPart !== -1)this.$refs.parts[this.currentPart].tick()
     },
     resize(w, h) {
       this.contentHeight = this.$el.clientHeight / (this.$parent.$el.clientHeight)
     },
     showPart(part) {
+
+      if (this.currentPart===3) return
+      if(this.currentPart === part){
+        SoundHelper.playPause()
+        return
+      }
       if(this.currentPart !== -1)this.$refs.parts[this.currentPart].hidePart()
       this.currentPart = part
+      const top = this.$refs.parts[this.currentPart].$el.offsetTop * (1/this.contentHeight)
+      if(window.smooth) window.smooth.scrollTo(top)
       this.$refs.parts[this.currentPart].showPart()
+      SoundHelper.createSound(this.pageData.id, this.currentPart)
     },
     reset() {
       TweenMax.set([this.$refs.name, this.$refs.date, this.$refs.text], {opacity: 0, y: 50})
     },
     show() {
+      this.currentPart = -1
       TweenMax.to(this.$refs.name, 1, {delay: .3, opacity: 1, y: 0, ease: Quad.easeOut})
       setTimeout(() => {this.nameClass = 'active'}, 600)
       TweenMax.to(this.$refs.date, 1, {delay: .6, opacity: 1, y: 0, ease: Quad.easeOut})
@@ -62,13 +74,39 @@ export default {
     hide() {
       this.nameClass = ''
       this.dateClass = ''
+      SoundHelper.fadeOut()
       for (let index = 0; index < 3; index++) {
         this.$set(this.paragraphClass, index, '')
       }
       TweenMax.to([this.$refs.name, this.$refs.date, this.$refs.text], .5, {opacity: 0, y: 50, ease: Quad.easeIn})
+    },
+    onSoundEnded() {
+      if(this.currentPart < 2){
+        this.showPart(this.currentPart + 1)
+      }else{
+        this.$refs.parts[this.currentPart].hidePart()
+      }
     }
   },
+  watch: {
+    active: function(val) {
+      if(!val) {
+        SoundHelper.fadeOut()
+        this.$refs.parts.forEach(el => {
+          el.hidePart()
+        })
+      }
+    }
+  },
+  beforeDestroy() {
+    Emitter.removeListener('SOUND_ENDED', this._onSoundEnded)
+    Emitter.removeListener('PART_CLICKED', this._showPart)
+  },
   mounted(){
+    this._onSoundEnded =  this.onSoundEnded.bind(this)
+    this._showPart =  this.showPart.bind(this)
+    Emitter.on('SOUND_ENDED', this._onSoundEnded)
+    Emitter.on('PART_CLICKED', this._showPart)
     this.reset()
   }
 }

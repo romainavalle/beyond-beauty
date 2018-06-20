@@ -3,16 +3,16 @@
       <v-story-top></v-story-top>
       <div class="scrollContent" ref="scrollContent">
         <v-scroll-layout>
-          <div class="padding"></div>
           <v-story-content ref="content"></v-story-content>
           <v-facts ref="facts"></v-facts>
+          <router-link :to="{name:'story-pageId', params: { pageId: pages[nextPageIdNum].pageId }}" class="push" v-text="pages[nextPageIdNum].pageName" @click.native="setPageTransition(true)"></router-link>
         </v-scroll-layout>
       </div>
     </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import vStoryTop from '~/components/story/StoryTop.vue'
 import vStoryContent from '~/components/story/StoryContent.vue'
 import vFacts from '~/components/facts/Facts.vue'
@@ -27,18 +27,18 @@ export default {
   },
   components: { vScrollLayout, vStoryTop, vStoryContent, vFacts },
   computed:{
-    ...mapGetters(['currentPageIdNum'])
+    ...mapState(['pages']),
+    ...mapGetters(['currentPageIdNum', 'nextPageIdNum'])
   },
   methods:{
-    ...mapActions(['setCurrentHomeSlideId', 'setStoryVisible']),
+    ...mapActions(['setCurrentHomeSlideId', 'setStoryVisible', "setPageTransition"]),
     tick(){
       if(!window.smooth)return
       if(this.scrollTop != window.smooth.vars.current){
         this.scrollTop = window.smooth.vars.current
       }
-      if(this.$refs.content) this.$refs.content.tick(this.scrollTop - ResizeHelper.height())
+      if(this.$refs.content) this.$refs.content.tick(this.scrollTop)
       if(this.$refs.facts) this.$refs.facts.tick()
-
     },
     resize(w, h) {
       if(this.$refs.content) this.$refs.content.resize(w, h)
@@ -89,9 +89,8 @@ export default {
     this.setCurrentHomeSlideId(this.currentPageIdNum)
     this.setMouseWheelListener()
     TweenMax.set(this.$refs.scrollContent,  {yPercent: 100})
-
+    this.setStoryVisible(false)
     this.$nextTick(()=>{
-
       if(window.smooth)window.smooth.removeEvents()
     })
 
@@ -108,7 +107,10 @@ export default {
     position relative
     width 100%
     height 100vh
-  .padding
+  .push
+    display block
     position relative
     width 100%
+    height 50vh
+    text-indent -50000px
 </style>

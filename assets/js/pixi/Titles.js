@@ -65,11 +65,11 @@ class Titles {
     this.titleSprite.position.y = this.titleBorderSprite.position.y = h / 2
   }
 
-  hide(id) {
+  hide(id, isFast = false) {
     if(!this.isShown) return
     this.isShown = false
-    this.titlesBorder[id].hide()
-    this.titles[id].hide()
+    this.titlesBorder[id].hide(isFast)
+    this.titles[id].hide(isFast)
   }
 
   show(id, delay, time) {
@@ -81,10 +81,15 @@ class Titles {
 
   scaleTo(id, scale, delay, time) {
     this.scale = scale
-    //TweenMax.to([this.titleBorderSprite.scale, this.titleSprite.scale], time, { delay, x: scale, y: scale, ease:Quad.easeInOut })
-    this.titlesBorder[id].scaleTo(scale, delay, time)
-    this.titles[id].scaleTo(scale, delay, time)
-    //TweenMax.to([this.titleBorderSprite.position, this.titleSprite.position], time, { delay, x: (1 - this.scale) * ResizeHelper.width() / 2, y: (1 - this.scale) * ResizeHelper.height() / 2, ease:Quad.easeInOut })
+    for (let index = 0; index < this.titles.length; index++) {
+      if(id === index) {
+        this.titlesBorder[id].scaleTo(scale, delay, time)
+        this.titles[id].scaleTo(scale, delay, time)
+      }else{
+        this.titles[index].scaleTo(this.scale, 0, 0)
+        this.titlesBorder[index].scaleTo(this.scale, 0, 0)
+      }
+    }
   }
 }
 export default Titles

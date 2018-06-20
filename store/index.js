@@ -8,7 +8,8 @@ const createStore = () => {
       isMenuOpen: false,
       isMenuVisible: false,
       isAppReady: false,
-      storyVisible: false,
+      isStoryVisible: false,
+      isPageTransition: false,
       pages,
       currentFact: 2
     },
@@ -32,7 +33,10 @@ const createStore = () => {
         state.isAppReady = true
       },
       SET_STORY_VISIBLE (state, bool){
-        state.storyVisible = bool
+        state.isStoryVisible = bool
+      },
+      SET_PAGE_TRANSITION (state, bool){
+        state.isPageTransition = bool
       }
     },
     actions: {
@@ -56,7 +60,10 @@ const createStore = () => {
       },
       setStoryVisible ({ commit }, bool) {
         commit('SET_STORY_VISIBLE', bool)
-      }
+      },
+      setPageTransition ({ commit }, bool) {
+        commit('SET_PAGE_TRANSITION', bool)
+      },
     },
     getters: {
       getURI: (state) => (id) => {
@@ -71,6 +78,15 @@ const createStore = () => {
       },
       currentPageId: (state, getters) => {
         return getters.currentPageIdNum !== -1 ? state.pages[getters.currentPageIdNum].id : null
+      },
+      nextPageIdNum: (state, getters) => {
+        let pageIdNum = getters.currentPageIdNum + 1
+        if(pageIdNum > 3)pageIdNum = 0
+        return pageIdNum
+      },
+      getPageIdNum: (state, getters) => (id) => {
+        const page = state.pages.find(p => {return p.pageId === id})
+        return state.pages.indexOf(page)
       },
       pageData: (state, getters) => {
         return state.pages[getters.currentPageIdNum]

@@ -97,16 +97,22 @@ class Title {
     this.container.visible = true
     TweenMax.staggerTo(this.title_array, time, { delay, rotation: 0, alpha: 1, ease: Quart.easeOut }, .1)
   }
-  hide() {
-    TweenMax.staggerTo(this.title_array, .7, { rotation: -this.angle, alpha: 0, ease: Cubic.easeIn }, .1, this.reset.bind(this))
+  hide(isFast) {
+    const time = isFast ? 0 : .7
+    const stagger = isFast ? 0 : .1
+    TweenMax.staggerTo(this.title_array, time, { rotation: -this.angle, alpha: 0, ease: Cubic.easeIn }, stagger, this.reset.bind(this))
   }
   scaleTo(scale, delay, time) {
     this.scale = scale
+    let t = 0
+    let d = delay
     this.title_array.forEach((el, i) => {
-      TweenMax.to(el.children[0].children[0].scale, 1.2 - (i * .2), { x: scale, y: scale, delay: delay + i * .2, ease: Quad.easeInOut })
+      if(time != 0)t = time - (i * .2)
+      if(time != 0)d = delay + i * .2
+      TweenMax.to(el.children[0].children[0].scale, t, { x: scale, y: scale, delay: d, ease: Quad.easeInOut })
       const posY =  200 * (1 - scale)
-      if(i===0)TweenMax.to(el.children[0].children[0].position, 1.2 - (i * .2), { y: 5000 + pages[this.idNum].titlePosition[i] + posY, delay: delay + i * .2, ease: Quad.easeInOut })
-      if(i===2)TweenMax.to(el.children[0].children[0].position, 1.2 - (i * .2), { y: 5000 + pages[this.idNum].titlePosition[i] - posY, delay: delay + i * .2, ease: Quad.easeInOut })
+      if(i===0)TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + pages[this.idNum].titlePosition[i] + posY, delay: d, ease: Quad.easeInOut })
+      if(i===2)TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + pages[this.idNum].titlePosition[i] - posY, delay: d, ease: Quad.easeInOut })
     })
 
   }
