@@ -6,6 +6,8 @@
     "black": "#212121",
     "grey": "#4e4e4b",
     "dGrey": "#363636",
+    "speechGrey": "#757575",
+    "speechdGrey": "#464646",
     "white": "#e2e5df",
     "natalie-portman": "#f7c8ae",
     "emma-watson": "#f7b8b0",

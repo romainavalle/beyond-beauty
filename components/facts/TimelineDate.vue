@@ -1,5 +1,5 @@
 <template>
-  <li class="TimelineDate">
+  <li class="TimelineDate" :class = "{'show' : showClass}">
     <button @click="setCurrentFact(num)" :class="{'active': currentFact === num, 'grab': grabClass}"><span v-text="fact.year" class="text"></span><span class="point"></span></button>
   </li>
 </template>
@@ -13,7 +13,8 @@ export default {
   name: "TimelineDate",
   data(){
     return {
-      grabClass: false
+      grabClass: false,
+      showClass: false
     }
   },
   props: ['fact', 'num'],
@@ -22,12 +23,17 @@ export default {
   },
   methods:{
     ...mapActions(['setCurrentFact']),
-    show(){
+    show(delay){
+      this.showTimeout = setTimeout(() => {
+        this.showClass = true
+      }, delay * 1000)
     },
     hide(){
+       this.showClass = false
     }
   },
   beforeDestroy(){
+    clearTimeout(this.showTimeout)
     // Emitter.off('CURSOR:GRAB')
     // Emitter.off('CURSOR:NOTGRAB')
   },
@@ -58,26 +64,20 @@ export default {
     align-items center
     justify-content space-between
     pointer-events auto
-    &.active
-      pointer-events none
-      .text
-        opacity 1
-        transform translateY(0 * $unitV)
-        transition all .8s ease-out-quart
-      .point:after
-        opacity 1
-        transition opacity .8s ease-out-quart
     .text
       display block
       position relative
-      opacity .5
+      opacity 0
       line-height 1
-      transform translateY(35 * $unitV)
-      transition all .6s ease-in-quad
+      transform translateY(50 * $unitV)
+      transition transform .8s ease-out-quart .5s, opacity .8s ease-out-quart .5s
+      letter-spacing 4 * $unitH
     .point
       height  5px
       width  5px
       position relative
+      opacity 0
+      transition opacity .8s ease-out-quart
       &:after,
       &:before
         display block
@@ -93,5 +93,21 @@ export default {
         background $colors-timelineBlack
         opacity 0
       &:before
-        background $colors-grey
+        background $colors-speechGrey
+  &.show button
+    .text
+      opacity .5
+      transform translateY(35 * $unitV)
+      transition all .6s ease-in-quad
+    .point
+      opacity 1
+    &.active
+      pointer-events none
+      .text
+        opacity 1
+        transform translateY(0 * $unitV)
+        transition transform .8s ease-out-quart, opacity .8s ease-out-quart
+      .point:after
+        opacity 1
+        transition opacity .8s ease-out-quart
 </style>

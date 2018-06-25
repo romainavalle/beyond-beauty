@@ -1,5 +1,6 @@
 import ResizeHelper from '../utils/ResizeHelper';
 import { pages } from '~/assets/data.json'
+import CustomEase from "gsap/CustomEase";
 if (process.browser) {
   var Pixi = require('pixi.js')
 }
@@ -32,6 +33,8 @@ class Title {
     this.loaded++
     if (this.loaded != 3) return
     for (let index = 0; index < 3; index++) {
+
+      PIXI.Texture.addToCache(this.img_array[index])
       const resizeSprite = new Pixi.Sprite.from(this.img_array[index])
       const scaleContainer = new Pixi.Sprite()
       const imgContainer = new Pixi.Sprite()
@@ -39,7 +42,7 @@ class Title {
       imgContainer.addChild(resizeSprite)
       scaleContainer.addChild(imgContainer)
       title.addChild(scaleContainer)
-      imgContainer.position.y = 5000 + pages[this.idNum].titlePosition[index]
+      imgContainer.position.y = 5000 + pages[this.idNum].titlePosition[index] * (ResizeHelper.height() / 1440)
       resizeSprite.anchor.x = .5
       resizeSprite.anchor.y = .5
       resizeSprite.pivot.x = .5
@@ -57,7 +60,7 @@ class Title {
       title.pivot.x = .5
       title.pivot.y = .5
       title.interactive = false
-      title.position.y = -5035
+      title.position.y = -5100
 
       this.container.addChild(title)
       this.title_array.push(title)
@@ -69,51 +72,79 @@ class Title {
 
     if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
   }
+  getLineHeightArray () {
+    let lhArray = []
+    if(this.scale === 1){
+      lhArray = pages[this.idNum].titlePosition
+    }else if(this.scale === .65){
+      lhArray = pages[this.idNum].titlePositionMid
+    }else{
+      lhArray = pages[this.idNum].titlePositionSml
+    }
+    return lhArray
+  }
   resize(w, h) {
 
     this.isFirstResize = true
     if (!this.isDisposed) return
     const ratio = this.originalW / this.originalH
     let containerW, containerH, screenRatio
-    if (w > h) {
-      screenRatio = w / (2280 / 2) * 0.7
+    if (w / h > ratio) {
+      screenRatio = w / (2880 / 2)
     } else {
-      screenRatio = h / (1760 / 2) * 0.7
+      screenRatio = h / (1760 / 2)
     }
+    this.screenRatio = screenRatio
+    const lhArray = this.getLineHeightArray()
     this.size_array.forEach((el, i) => {
-      const img = this.title_array[i].children[0].children[0].children[0]
-      img.width = el.w * screenRatio / 2
-      img.height = el.h * screenRatio / 2
+      const title = this.title_array[i]
+      const resizeSprite = this.title_array[i].children[0].children[0].children[0]
+      const imgContainer = this.title_array[i].children[0].children[0]
+      imgContainer.position.y = 5000 + lhArray[i] * screenRatio
+      resizeSprite.width = el.w * screenRatio
+      resizeSprite.height = el.h * screenRatio
+      title.position.y = -5000 - 100 * screenRatio
     })
-    this.container.position.y = - (this.originalH - 5000) * .5 + (this.size_array[0].h  * screenRatio / 2) * .5
+    this.container.position.y = - (this.originalH - 5000) * .5 + (this.size_array[0].h * screenRatio / 2) * .5
   }
   reset() {
-    this.title_array.forEach(title => {
-      TweenMax.set(title, { rotation: this.angle, alpha: 0 })
-    });
     this.container.visible = false
   }
-  show(delay = 0, time) {
-    this.container.visible = true
-    TweenMax.staggerTo(this.title_array, time, { delay, rotation: 0, alpha: 1, ease: Quart.easeOut }, .1)
+  show(delay = 0, time, direction = 'forward') {
+    if(direction !== 'none'){
+
+      const dir = direction === "forward" ? 1  : -1
+      this.title_array.forEach(title => {
+        TweenMax.set(title, { rotation: dir * this.angle, alpha: 0 })
+      });
+      this.container.visible = true
+      TweenMax.staggerTo(this.title_array, time, { delay, rotation: 0, alpha: 1, ease: Quart.easeOut }, .1)
+    }
   }
-  hide(isFast) {
+  hide(isFast, direction = 'forward') {
     const time = isFast ? 0 : .7
     const stagger = isFast ? 0 : .1
-    TweenMax.staggerTo(this.title_array, time, { rotation: -this.angle, alpha: 0, ease: Cubic.easeIn }, stagger, this.reset.bind(this))
+    const dir = direction === "forward" ? 1  : -1
+    TweenMax.staggerTo(this.title_array, time, { rotation: -dir * this.angle, alpha: 0, ease: Cubic.easeIn }, stagger, this.reset.bind(this))
   }
-  scaleTo(scale, delay, time) {
+  scaleTo(scale, delay, time, isPageTransition) {
     this.scale = scale
     let t = 0
     let d = delay
+    const stagger = isPageTransition ? .3 : .1
+    const ease = isPageTransition ? CustomEase.create("custom", "M0,0,C0.254,0.12,0.312,2.108,0.574,2.108,0.854,2.108,0.832,0.986,1,1") : Power4.easeInOut
     this.title_array.forEach((el, i) => {
-      if(time != 0)t = time - (i * .2)
-      if(time != 0)d = delay + i * .2
-      TweenMax.to(el.children[0].children[0].scale, t, { x: scale, y: scale, delay: d, ease: Quad.easeInOut })
-      const posY =  200 * (1 - scale)
-      if(i===0)TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + pages[this.idNum].titlePosition[i] + posY, delay: d, ease: Quad.easeInOut })
-      if(i===2)TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + pages[this.idNum].titlePosition[i] - posY, delay: d, ease: Quad.easeInOut })
+      if(time != 0)t = time - (i * stagger)
+      //if(isPageTransition)t = time
+      if(time != 0)d= delay + (i * stagger)
+      TweenMax.to(el.children[0].children[0].scale, t, { x: scale, y: scale, delay: d, ease})
+
+      const lhArray = this.getLineHeightArray()
+      TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + lhArray[i] * this.screenRatio, delay: d, ease})
     })
+  }
+
+  pageTransition(){
 
   }
 }

@@ -1,7 +1,7 @@
 <template>
-  <div class="Logo" @click="setMenuOpen(true)" >
+  <div class="Logo">
     <canvas ref="canvas"></canvas>
-    <h1 :class="readyClass">
+    <h1 :class="readyClass" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave" @click="doClick">
       <no-ssr>
         <span class="icon">
           <span></span>
@@ -9,7 +9,7 @@
           <span></span>
         </span>
       </no-ssr>
-      Beyond<br>Beauty
+      <span ref="titre">Beyond<br>Beauty</span>
     </h1>
   </div>
 </template>
@@ -21,10 +21,22 @@ import MenuButtonMixin from './ButtonMenuMixins'
 export default {
   name: 'Logo',
   mixins: [MenuButtonMixin],
+  methods:{
+    show(){
+      TweenMax.set(this.$refs.titre, {opacity: 0, x: 30})
+      TweenMax.to(this.$refs.titre, 1,{opacity: 1, x: 0})
+      MenuButtonMixin.methods.show.call(this)
+    },
+    hide(){
+      TweenMax.to(this.$refs.titre, 1,{opacity: 0, x: -30})
+      MenuButtonMixin.methods.hide.call(this)
+    }
+  },
   mounted(){
+    TweenMax.set(this.$refs.titre, {opacity: 0, x: 30})
+    this.rot = 0
     this.ctx = this.$refs.canvas.getContext('2d')
-    const shapeW = ResizeHelper.width() / 2880 * 80
-    this.blob = new HomeBlob(this.canvasSize.w, this.canvasSize.h, shapeW)
+    this.blob = new HomeBlob(160, 160)
   }
 }
 
@@ -41,10 +53,10 @@ export default {
   z-index 5
   canvas
     position absolute
-    top -25 * $unitV
-    left 0 * $unitH
-    height 320 * $unitH
-    width 320 * $unitH
+    top 0 * $unitH
+    left 10 * $unitH
+    height 160px
+    width 160px
   .icon
     margin-right 20 * $unitH
   h1
@@ -52,7 +64,7 @@ export default {
     color $colors-black
     display flex
     font-family $hawthorn
-    font-size 40 * $unitH
+    font-size 20px
     font-weight normal
     left 160 * $unitH
     line-height 1

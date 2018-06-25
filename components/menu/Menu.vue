@@ -29,7 +29,7 @@ export default {
     ...mapState(['isMenuOpen','isMenuVisible'])
   },
   methods:{
-    ...mapActions(['setMenuVisible']),
+    ...mapActions(['setMenuVisible', 'setMenuCompletlyVisible']),
     tick() {
       if(this.isMenuVisible) {
         this.$refs.menuDraggable.tick()
@@ -44,17 +44,18 @@ export default {
       TweenMax.set(this.$el, {xPercent: 100, autoAlpha: 1})
       TweenMax.set(this.$refs.content, {xPercent: 0})
       TweenMax.set(this.$refs.line, {xPercent: 100})
-      TweenMax.to(this.$el, .9, {xPercent: 0, ease: Expo.easeOut, onComplete: () => { this.setMenuVisible(true) }})
+      this.setMenuVisible(true)
+      TweenMax.to(this.$el, .9, {xPercent: 0, ease: Expo.easeOut, onComplete: () => { this.setMenuCompletlyVisible(true) }})
       TweenMax.to(this.$refs.line, .9, {delay: .3, xPercent: 0, ease: Expo.easeOut})
       this.$refs.menuDraggable.show()
-      this.$refs.header.show(1)
+      this.$refs.header.show(.7)
       this.$refs.menuCitations.show(1.5)
       this.$refs.footer.show(2)
     },
     hide() {
       //TweenMax.to(this.$el, .7, {autoAlpha: 0})
-      this.setMenuVisible(false)
-      TweenMax.to(this.$el, .9, {xPercent: -100, ease: Cubic.easeIn})
+      this.setMenuCompletlyVisible(false)
+      TweenMax.to(this.$el, .9, {xPercent: -100, ease: Cubic.easeIn, onComplete: () => {this.setMenuVisible(false)}})
       TweenMax.to(this.$refs.content, .9, {xPercent: 100, ease: Cubic.easeIn})
       TweenMax.to(this.$refs.line, .9,{ xPercent: -100, ease: Quad.easeIn})
 

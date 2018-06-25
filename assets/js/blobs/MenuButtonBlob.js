@@ -6,13 +6,17 @@ class MenuButtonBlob extends BlobMixinNoise{
     super(w, h, shapeW, centerX, centerY)
   }
 
-  tick() {
+  tick(rot, scale) {
     super.tick()
 
     this.ctx.save()
     this.ctx.beginPath()
+    this.ctx.translate(this.centerX, this.centerY)
+    this.ctx.rotate(rot * Math.PI / 180)
+    this.ctx.scale(scale, scale)
+    this.ctx.translate(-this.centerX, -this.centerY)
     this.drawShape(this.shapeW, this.centerX, this.centerY)
-    this.ctx.fillStyle = $colors.bgWhite//0XCC0000//
+    this.ctx.fillStyle = 'white' //$colors.bgWhite//0XCC0000//
     this.ctx.fill()
     this.ctx.restore()
   }

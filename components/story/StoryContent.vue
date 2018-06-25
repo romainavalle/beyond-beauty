@@ -28,7 +28,7 @@ export default {
       this.$refs.speech.tick(scrollTop)
     },
     resize(w, h){
-      this.$refs.speech.resize(w, h)
+      this.$refs.speech.resize(w, h, this.$refs.media.$el.clientHeight)
     },
 
     show(){
@@ -54,9 +54,10 @@ export default {
 <style lang="stylus" scoped>
 .StoryContent
   position relative
+  pointer-events auto
   .content
-    padding-top 160 * $unitV
-    padding-bottom 160 * $unitV
+    padding-top 320 * $unitV
+    padding-bottom 320 * $unitV
     background $colors-dBlack
 
 </style>

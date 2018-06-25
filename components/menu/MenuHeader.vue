@@ -1,7 +1,7 @@
 <template>
   <header class="MenuHeader">
     <canvas ref="canvas"></canvas>
-    <button class="close" @click="setMenuOpen(false)">
+    <button class="close" @click="doClick" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave">
       close
     </button>
     <ul>
@@ -17,6 +17,12 @@ import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import MenuBlob from '~/assets/js/blobs/MenuBlob'
 export default {
   name: "MenuHeader",
+  data(){
+    return {
+      rotation: 145,
+      scale: 0
+    }
+  },
   computed:{
     canvasSize() {
       return {w: ResizeHelper.width() / 2880 * 640, h: ResizeHelper.width() / 2880 * 640}
@@ -24,16 +30,31 @@ export default {
   },
   methods:{
     ...mapActions(['setMenuOpen']),
+
+    doClick() {
+      this.setMenuOpen(false)
+      TweenMax.to(this, .1, {scale:1, ease: Power4.easeIn, repeat: 1, yoyo:true})
+    },
+    doMouseEnter() {
+      if(!this.isShow)return
+      TweenMax.to(this, 1,{rotation: '+=15', scale: 1.1, ease: Power4.easeOut})
+    },
+    doMouseLeave() {
+      if(!this.isShow)return
+      TweenMax.to(this, 1,{rotation: '+=15', scale: 1, ease: Power4.easeOut})
+    },
     show(delay) {
-      TweenMax.to(this.$elToAnimate, 1, {delay: delay + .2, autoAlpha: 1, ease: Quad.easeOut})
-      TweenMax.to(this.$refs.canvas, .7,{delay, scale:1, ease: Quad.easeOut})
+      this.isShow = true
+      TweenMax.to(this.$elToAnimate, 1, {delay: delay + .5, autoAlpha: 1, clearProps: 'all', ease: Quad.easeOut})
+      TweenMax.to(this, .9, { delay, scale:1.1, rotation: '+=45', ease: Power4.easeInOut})
     },
     hide() {
+      this.isShow = false
       TweenMax.to(this.$elToAnimate, .8, {autoAlpha: 0, ease: Quad.easeIn})
-      TweenMax.to(this.$refs.canvas, .6,{scale: 0, ease: Quad.easeIn})
+      TweenMax.to(this, .6, {delay: .4, scale: 0, rotation:  '-=45', ease: Power4.easeInOut})
     },
     tick() {
-      this.blob.tick()
+      this.blob.tick(this.rotation, this.scale)
       this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
       this.ctx.drawImage(this.blob.canvas, 0, 0, this.canvasSize.w, this.canvasSize.h);
     },
@@ -41,16 +62,17 @@ export default {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
       //const canvasPos = {x: (-130 + 640 / 2) * 2880 / w, y: (640 / 2) * (2880 / w) - 400 * (1780 / h)}
-      this.blob.resize(this.canvasSize.w, this.canvasSize.h/*, canvasPos*/)
+      const shapeW = ResizeHelper.width() / 2880 * 200
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h, shapeW)
     }
   },
   mounted() {
+
+    this.rotation = 145
     this.$elToAnimate = this.$el.querySelectorAll('button, li')
     TweenMax.set(this.$elToAnimate, {autoAlpha: 0})
-    TweenMax.set(this.$refs.canvas, {scale: 0})
     this.ctx = this.$refs.canvas.getContext('2d')
-    const shapeW = ResizeHelper.width() / 2880 * 250
-    this.blob = new MenuBlob(this.canvasSize.w, this.canvasSize.h, shapeW/*, 20*/)
+    this.blob = new MenuBlob(this.canvasSize.w, this.canvasSize.h)
   }
 }
 </script>
@@ -74,7 +96,7 @@ export default {
     width 640 * $unitH
     height 640 * $unitH
     margin-left -130 * $unitH
-    margin-top -400 * $unitV
+    margin-top -345 * $unitV
     transform rotate(180deg)
   ul
     display flex
@@ -93,6 +115,9 @@ export default {
     display block
     text-align left
     text-transform uppercase
+    transition opacity .3s
+    &:hover
+      opacity .6
   a
     color $colors-white
   li

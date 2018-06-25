@@ -1,15 +1,14 @@
 <template>
   <div class="beyond-beauty" :class="{'overflow': process.browser}">
     <v-loader></v-loader>
-    <transition name="menuButton" mode="out-in" @beforeEnter="beforeEnter" @enter="enter" @leave="leave" @css="false" v-show="isAppReady">
-      <v-logo v-if="logo" ref="logo"></v-logo>
-      <v-menu-button v-else ref="menuButton"></v-menu-button>
-    </transition>
-    <v-home-canvas ref="homeCanvas"></v-home-canvas>
+    <v-logo ref="logo"></v-logo>
+    <v-menu-button  ref="menuButton"></v-menu-button>
     <v-menu ref="siteMenu"></v-menu>
+    <v-home-canvas ref="homeCanvas"></v-home-canvas>
     <transition name="pageTrans" mode="out-in" @enter="pageEnter" @leave="pageLeave" @css="false">
       <nuxt ref="page" :key="route.params.pageId || route.name"/>
     </transition>
+    <v-mouse ref="mouse"></v-mouse>
   </div>
 </template>
 
@@ -23,7 +22,10 @@ import vLogo from '~/components/common/Logo.vue'
 import vMenuButton from '~/components/common/MenuButton.vue'
 import vLoader from '~/components/common/Loader.vue'
 import vMenu from '~/components/menu/Menu.vue'
+import vMouse from '~/components/common/Mouse.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+import SoundHelper from '~/assets/js/utils/SoundHelper'
+import MouseHelper from '~/assets/js/utils/MouseHelper'
 
 import { mapActions, mapState, mapGetters } from 'vuex'
 if(process.browser){
@@ -44,64 +46,67 @@ export default {
   },
   computed:{
     ...mapState(['isAppReady', 'isPageTransition']),
-    ...mapGetters(['route']),
-    logo(){
-      return this.route.name === 'index'
-    },
-    menuButtonRef() {
-      return this.$route.name === 'index' ? 'logo' : 'menuButton'
-    }
+    ...mapGetters(['route'])
   },
-  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader},
+  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady','setPageTransition']),
+    checkButton(from, to){
+      if(!from) {
+        if(to.name === 'index') {
+          this.$refs.logo.show()
+        }
+        if(to.name === 'story-pageId') {
+          this.$refs.menuButton.show()
+        }
+      }else{
+        if(to.name !== from .name){
+          if(from.name === 'index') {
+            this.$refs.logo.hide()
+            setTimeout(() => {this.$refs.menuButton.show()}, 1000)
+          }
+          if(from.name === 'story-pageId') {
+            setTimeout(() => {this.$refs.logo.show()}, 1000)
+            this.$refs.menuButton.hide()
+          }
+        }
+      }
+    },
     pageEnter(el, done) {
       TweenMax.set(this.$refs.page.$children[0].$el, {yPercent: 0})
+      if(this.isPageTransition) this.$refs.homeCanvas.showPage(0,0,'none')
       this.setPageTransition(false)
-      this.$refs.homeCanvas.showPage(0,1)
       done()
     },
     pageLeave(el, done) {
       if(this.isPageTransition){
         TweenMax.to(this.$refs.page.$children[0].$el, .8,{yPercent: -50, ease: Expo.easeOut})
-        this.$refs.homeCanvas.pageTrans()
+        this.$refs.homeCanvas.pageTransition()
         setTimeout(() => {
           done()
-        }, 800)
+        }, 1200)
       }else{
         done()
       }
-    },
-    beforeEnter(el){
-      TweenMax.set(el, {opacity: 0})
-      TweenMax.set(el.querySelector('canvas'), {scale: 0})
-    },
-    enter(el, done){
-      TweenMax.to(el, 1, {opacity: 1, delay: .5, ease: Quad.easeOut, clearProps: 'all'})
-      TweenMax.to(el.querySelector('canvas'), 1, {delay: .5, scale: 1, ease: Quad.easeOut, clearProps: 'all', onComplete: done})
-    },
-    leave(el, done){
-      TweenMax.to(el.querySelector('canvas'), .8, {delay: .2, scale: 0.5, ease: Quad.easeIn})
-      TweenMax.to(el, 1, {opacity: 0, ease: Quad.easeIn, onComplete: done})
     },
     resize(forceAfterRoute = false){
       if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(ResizeHelper.width(),ResizeHelper.height())
       if(!forceAfterRoute)this.$refs.homeCanvas.resize(ResizeHelper.width(),ResizeHelper.height())
       if(!forceAfterRoute)this.$refs.siteMenu.resize(ResizeHelper.width(),ResizeHelper.height())
-      if(this.$refs.logo && !forceAfterRoute )this.$refs.logo.resize(ResizeHelper.width(),ResizeHelper.height())
-      if(this.$refs.menuButton && !forceAfterRoute )this.$refs.menuButton.resize(ResizeHelper.width(),ResizeHelper.height())
     },
     setDebug() {
       this.stats = new Stats();
       document.body.appendChild( this.stats.domElement );
       this.stats.domElement.style.position = 'fixed';
-      this.stats.domElement.style.left = '0px';
+      this.stats.domElement.style.right = '0px';
       this.stats.domElement.style.top = '0px';
       this.stats.domElement.style.zIndex = 100;
     },
     tick(){
-      NoisePosition.tick()
       this.stats.begin()
+      NoisePosition.tick()
+      if(this.$refs.mouse)this.$refs.mouse.tick()
+      MouseHelper.tick()
       if(this.$refs.logo)this.$refs.logo.tick()
       if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
       if(this.$refs.menuButton)this.$refs.menuButton.tick()
@@ -120,10 +125,10 @@ export default {
       if(process.browser)this.$refs.homeCanvas.load()
       setTimeout(() => {
         this.setAppReady()
+        this.checkButton(null, this.$route)
         if(process.browser)this.$refs.homeCanvas.onReady()
         if(process.browser)this.$refs.siteMenu.onReady()
-        if(this.$refs.menuButton)this.$refs.menuButton.show()
-        if(this.$refs.logo)this.$refs.logo.show()
+
           if(process.browser)this.$nextTick(()=>{
             TweenMax.ticker.addEventListener('tick', this._tick)
             this.resize()
@@ -143,15 +148,12 @@ export default {
   async mounted () {
     this.$router.beforeEach((to, from, next) => {
       this.setMenuOpen(false)
+      SoundHelper.fadeOut()
+      this.checkButton(from, to)
       next()
     })
     this.$router.afterEach((to, from) => {
       this.resize(true)
-
-      setTimeout(() => {
-        if(this.$refs.menuButton)this.$refs.menuButton.show()
-        if(this.$refs.logo)this.$refs.logo.show()
-      }, 1000)
     })
      // todo -> promise polyfill
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
@@ -168,12 +170,15 @@ export default {
     console.log('%c🖌 @LouisAnsa', "font-weight: bold; color: #f7b8b0;");
     console.log('%c🖌 @NahelMoussi', "font-weight: bold; color: #f7cfae;");
     console.log('%c⌨️ @Romaindr', "font-weight: bold; color: #f5d4a4;");
-
+    window.addEventListener("blur", () => {
+      SoundHelper.fadeOut()
+    }, false);
   }
 }
 </script>
 
 <style lang="stylus">
+@import './../assets/stylus/base/font.styl'
 .beyond-beauty
   height 100%
   position relative
@@ -194,4 +199,5 @@ export default {
     width 100vw
     z-index 99999
     mix-blend-mode overlay*/
+
 </style>

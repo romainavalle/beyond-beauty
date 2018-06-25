@@ -1,5 +1,5 @@
 <template>
-  <div class="StorySpeechPart" @click="onclick">
+  <div class="StorySpeechPart" @click="onclick" :class="{'active': this.isActive}">
     <div class="number">
       <svg viewBox="0 0 116 116">
         <circle  cx="58" cy="58" r="56" class="load" ref="load"/>
@@ -40,9 +40,16 @@ export default {
       if(!this.isActive) return
       const pos = SoundHelper.getPos()
       const pourc = 1 - (pos / this.duration)
-      TweenMax.set(this.$refs.timer, {'stroke-dashoffset': pourc * 352})
+      TweenMax.set(this.$refs.timer, {'stroke-dashoffset': pourc * 292})
       if(pos > this.time_array[this.currentSpan]){
-        TweenMax.to(this.$spans[this.currentSpan], .3,{opacity: 1, ease:Quad.easeOut})
+        const textSplit = this.$spans[this.currentSpan].innerText.split(' ')
+        const text = '<span>' + textSplit.join('</span> <span>') + '</span>'
+        let time =  this.duration - this.time_array[this.currentSpan]
+        if(this.time_array[this.currentSpan + 1])time = this.time_array[this.currentSpan + 1] - this.time_array[this.currentSpan]
+        const stagger = (time - .6) / textSplit.length
+        this.$spans[this.currentSpan].innerHTML = text
+        TweenMax.set(this.$spans[this.currentSpan], {opacity: 1})
+        TweenMax.staggerFromTo(this.$spans[this.currentSpan].querySelectorAll('span'), .3,{opacity: 0}, {opacity: 1, ease:Quad.easeOut}, stagger)
         this.currentSpan++
       }
     },
@@ -55,10 +62,10 @@ export default {
     },
     hidePart() {
       this.paragraphClass = ''
-      TweenMax.to(this.$refs.timer, .5,{'stroke-dashoffset': 352, ease: Quad.easeOut})
+      TweenMax.to(this.$refs.timer, .5,{'stroke-dashoffset': 292, ease: Quad.easeOut})
       TweenMax.to(this.$el, .5,{opacity: .5, ease:Quad.easeInOut})
       this.isActive = false
-      TweenMax.to(this.$spans, .3,{opacity: 0, ease:Quad.easeOut, overwrite: 1}, 1)
+      TweenMax.to(this.$refs.html.querySelectorAll('span'), .3,{opacity: 0, ease:Quad.easeOut, overwrite: 1}, 1)
       Emitter.removeListener('SOUND_LOADED', this._activateSound)
     },
     activateSound() {
@@ -72,7 +79,7 @@ export default {
     }
   },
   beforeDestory() {
-    TweenMax.killAllTweensOf(this.spans)
+    TweenMax.killAllTweensOf(this.$spans[this.currentSpan].querySelectorAll('span'))
     Emitter.removeListener('SOUND_LOADED', this._activateSound)
   },
   mounted(){
@@ -101,22 +108,24 @@ export default {
     font-weight normal
     line-height 40 * $unitH
     &.text
-      color $colors-dGrey
+      color $colors-speechdGrey
     &.html
       position absolute
       top 0
   .number
     height 210 * $unitH
     width 210 * $unitH
-    margin-left -20 * $unitH
+    margin-left -19 * $unitH
     position relative
     span
       position absolute
       text-align center
       width 100%
       line-height 210 * $unitH
-      font-size 24 * $unitH
+      font-size 20 * $unitH
+      color $colors-speechdGrey
       font-weight $semi
+      letter-spacing -2 * $unitH
     svg
       position absolute
       top 0
@@ -124,14 +133,19 @@ export default {
       fill none
       width 100%
       height 100%
-      transform rotate(-90deg)
+      transform rotate(-211deg)
       stroke-width 2px
       .load
-        stroke $colors-grey
+        stroke $colors-speechdGrey
         stroke-dasharray 352
         stroke-dashoffset 352
       .timer
         stroke-dasharray 352
         stroke-dashoffset 352
         transition stroke-dashoffset .1s ease-out-quint
+  &.active
+    .number span
+      color $colors-speechGrey
+    svg .load
+      stroke $colors-speechGrey
 </style>

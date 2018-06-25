@@ -1,12 +1,12 @@
 .MenuButton button, .Logo h1
   .icon
-    width 24 * $unitH
-    height 14 * $unitH
+    width 12px
+    height 7px
     overflow hidden
     display block
     span
       height 1px
-      width 52 * $unitH
+      width 26px
       display block
       position relative
       margin-bottom 2px
@@ -22,31 +22,40 @@
         top 0
         left 0
       &:before
-        background $colors-natalie-portman
-        transition opacity .3s ease-in-out-quad 1s
-        transform translateX(-28 * $unitH)
+        background $colors-black
+        opacity 0
+        transition opacity 1s ease-out-quart .7s
+        transform translateX(-14px)
       &:after
-        background linear-gradient(to left, $colors-black, $colors-black 24 * $unitH, transparent 24 * $unitH, transparent 28 * $unitH, $colors-black 28 * $unitH, $colors-black 52 * $unitH)
+        background linear-gradient(to left, $colors-black, $colors-black 12px, transparent 12px, transparent 14px, $colors-black 14px, $colors-black 26px)
         transition transform .3s ease-in-out-quad
-        transform translateX(-52 * $unitH)
+        transform translateX(-26px)
       &:nth-child(2):after
-      &:nth-child(2):before
         transition-delay .1s
-      &:nth-child(3):after
+      &:nth-child(3):after,
       &:nth-child(3):before
+        margin-left -5px
+      &:nth-child(3):after
         transition-delay .2s
-        margin-left -10 * $unitH
-
+  &.opacity .icon span:before
+    opacity .3
   &.show .icon span
     &:before
       opacity 0
+      transition opacity 0s ease-out-quart 1s
     &:after
-      transform translateX(-28 * $unitH)
+      transform translateX(-14px)
+  &.hide .icon span
+    &:before
+      opacity 0
+    &:after
+      transition transform .3s ease-in-out-quart
+      transform translateX(-26px)
   &.show:hover
     .icon
       span
         &:after
-          transition transform .3s ease-in-out-quad
+          transition transform .3s ease-in-out-quart
           transform translateX(0px)
         &:nth-child(3):after
-          transform translateX(20 * $unitH)
+          transform translateX(10px)

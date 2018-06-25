@@ -22,7 +22,7 @@ class NoisePosition {
     for(let i = 0; i < this.totalPoints; i++) {
       x = Math.cos(angle)
       y = Math.sin(angle)
-      displacement =  (this.noise.noise3D(x, y, this.time * 0.005) * 5)
+      displacement =  (this.noise.noise3D(x, y, this.time * 0.008) * 3)
       this.noiseValues.push({x: x * displacement, y: y * displacement})
       angle += slice
     }

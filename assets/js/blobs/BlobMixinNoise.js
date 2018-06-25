@@ -10,6 +10,8 @@ class BlobMixinNoise {
     this.centerY = h / 2
     this.centerOutsideX = h / 2
     this.centerOutsideY = h / 2
+    this.rotation = 0
+    this.scale = 0
     this.init()
   }
 
@@ -60,11 +62,12 @@ class BlobMixinNoise {
     this.ctx.quadraticCurveTo(a.x, a.y, b.x, b.y)
   }
 
-  resize(w,h) {
+  resize(w,h, shapeW = 0) {
     this.w = w
     this.h = h
     this.canvas.width = this.w
     this.canvas.height = this.h
+    this.shapeW = shapeW
   }
 
 }

@@ -46,4 +46,7 @@ export default {
     text-align right
     text-transform uppercase
     color $colors-white
+    transition opacity .3s
+    &:hover
+      opacity .6
 </style>

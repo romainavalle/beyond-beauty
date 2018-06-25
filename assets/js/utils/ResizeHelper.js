@@ -1,14 +1,17 @@
 import memoize from 'lodash/memoize';
-import delay from 'lodash/delay';
 import Emitter from '~/assets/js/events'
 
 
 class ResizeHelper {
 
-  constructor()  {
-    if(!process.browser) return
+  constructor() {
+    if (!process.browser) return
     this.dimension = memoize(this._dimension);
-    window.addEventListener('resize', (e) => delay(() => this.onResize(e), 300))
+    this.timeout
+    window.addEventListener('resize', () => {
+      clearTimeout(this.timeout);
+      this.timeout = setTimeout(this.onResize.bind(this), 50);
+    })
   }
 
   onResize(e) {
@@ -23,7 +26,6 @@ class ResizeHelper {
   _dimension() {
     var body = document.body,
       html = document.documentElement;
-
     var docHeight = Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
     var dimension = {
       width: window.innerWidth,
@@ -33,7 +35,6 @@ class ResizeHelper {
     };
 
     dimension.ratio = dimension.width / dimension.height;
-
     return dimension;
   }
 

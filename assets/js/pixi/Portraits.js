@@ -55,14 +55,14 @@ class Portraits {
     })
   }
 
-  hide(id) {
-    this.transitionOutMask.playOut()
-    this.portraits[id].hide()
+  hide(id, direction = 'forward') {
+    this.transitionOutMask.playOut(direction)
+    this.portraits[id].hide(direction)
   }
 
-  show(id) {
-    this.transitionInMask.playIn()
-    this.portraits[id].show();
+  show(id, direction = 'forward') {
+    this.transitionInMask.playIn(direction)
+    this.portraits[id].show(direction);
   }
 
   tick(){

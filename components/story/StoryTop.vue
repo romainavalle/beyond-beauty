@@ -3,11 +3,14 @@
     <div class="content">
       <div class="title">
         <h1 v-text="pages[currentPageIdNum].pageName"></h1>
-        <div class="h2" ref="title">
+        <div ref="title">
           <h2 v-text="pages[currentPageIdNum].name" :data-text="pages[currentPageIdNum].name" :class="textTopClass"></h2>
         </div>
       </div>
     </div>
+    <button class="button bottom white">
+      <span class="word">discover</span>
+    </button>
     <div class="number" ref="number">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 527 447" v-if="currentPageIdNum === 0" preserveAspectRatio="xMidYMid slice">
         <path d="M156 3c14 0 29 4 44 12s30 22 45 39a240 240 0 0 1 45 76 283 283 0 0 1-33 246c-30 44-69 69-106 69-31 0-65-21-94-58a250 250 0 0 1-41-75 269 269 0 0 1-14-87c0-56 17-112 47-155 14-21 31-38 49-49 19-12 38-18 58-18m-31 42c-12 32-18 82-18 160 0 68 3 119 8 159 3 21 7 36 13 46s14 15 25 15c14 0 25-10 31-29 10-31 15-77 15-145v-29c-1-61-4-103-9-135-3-22-8-38-14-48-7-11-15-16-26-16s-20 8-25 22m30-44C74 1 0 107 0 225c0 62 19 118 55 164 30 37 65 58 95 58 81 0 157-111 157-228 0-64-20-121-61-167-29-34-60-51-90-51zm-2 422c-20 0-30-19-36-59-6-41-8-92-8-159 0-77 6-128 18-160 5-12 13-20 23-20 20 0 32 19 38 63 5 34 8 79 9 134v29c0 66-4 112-15 145-6 17-15 27-29 27z" class="cls-1"/>
@@ -86,6 +89,7 @@ export default {
   width 100vw
   top 0
   left 0
+  pointer-events none
   .content
     align-items flex-end
     bottom 0
@@ -96,7 +100,7 @@ export default {
     right 0
     top 0
   .title
-    height 280 * $unitH
+    height 400 * $unitV
     position relative
   h1
     position absolute
@@ -111,6 +115,7 @@ export default {
     &:before
       content attr(data-text)
       top 0
+      height 60 * $unitH
       position absolute
       background radial-gradient(rgba(255,255,255,1) 50%,rgba(255,255,255,0) 100%) no-repeat
       background-size 0px 0px
@@ -148,16 +153,28 @@ export default {
         height 26 * $unitH
         width 3px
         transform-origin 0 0
-  &.natalie-portman .number svg
-    width 527 * $unitH
-    height 447 * $unitH
-  &.emma-watson .number svg
-    width 583 * $unitH
-    height 457 * $unitH
-  &.jennifer-lawrence .number svg
-    width 569 * $unitH
-    height 454 * $unitH
-  &.cara-delevingne .number svg
-    width 643 * $unitH
-    height 447 * $unitH
+  &.natalie-portman .number
+    bottom 30 * $unitV
+    right -67 * $unitH
+    svg
+      width 527 * $unitH
+      height 447 * $unitH
+  &.emma-watson .number
+    right -88 * $unitH
+    bottom 50 * $unitV
+    svg
+      width 583 * $unitH
+      height 457 * $unitH
+  &.jennifer-lawrence .number
+    right -83 * $unitH
+    bottom 25 * $unitV
+    svg
+      width 569 * $unitH
+      height 454 * $unitH
+  &.cara-delevingne .number
+    right -124 * $unitH
+    bottom 80 * $unitV
+    svg
+      width 643 * $unitH
+      height 447 * $unitH
 </style>

@@ -25,13 +25,18 @@ class SoundHelper {
   }
   playPause() {
     if(this.sound.playing()) {
+      this.pause()
+    } else {
+      this.sound.play()
+      this.sound.fade(0, 1, 300)
+    }
+  }
+  pause() {
+    if(this.sound.playing()) {
       this.sound.fade(1, 0, 300)
       this.sound.once('fade', () => {
         this.sound.pause()
       });
-    } else {
-      this.sound.play()
-      this.sound.fade(0, 1, 300)
     }
   }
   getPos() {
@@ -41,6 +46,7 @@ class SoundHelper {
     return this.sound.duration()
   }
   fadeOut() {
+    if(!this.sound) return
     if(this.sound.volume() !== 1) return
     this.sound.fade(1, 0, 1000)
     this.sound.once('fade', () => {

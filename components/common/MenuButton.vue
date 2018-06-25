@@ -1,7 +1,7 @@
 <template>
 <div class="MenuButton">
   <canvas ref="canvas"></canvas>
-  <button @click="setMenuOpen(true)" :class="readyClass">
+  <button :class="readyClass" @click="doClick" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave">
     <no-ssr>
       <span class="icon">
         <span></span>
@@ -22,8 +22,7 @@ export default {
   mixins: [MenuButtonMixin],
   mounted(){
     this.ctx = this.$refs.canvas.getContext('2d')
-    const shapeW = ResizeHelper.width() / 2880 * 100
-    this.blob = new MenuButtonBlob(this.canvasSize.w, this.canvasSize.h, shapeW)
+    this.blob = new MenuButtonBlob(this.canvasSize.w, this.canvasSize.h)
   }
 }
 

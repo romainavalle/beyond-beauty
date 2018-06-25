@@ -1,0 +1,61 @@
+.button
+  align-items center
+  display flex
+  letter-spacing 2px
+  font-size 8px
+  line-height 1
+  font-weight $semi
+  justify-content center
+  left 50%
+  position absolute
+  text-transform uppercase
+  pointer-events auto
+  transition letter-spacing .3s ease-in-quad, transform .5s ease-out-quart 1s
+  padding-top 10px
+  padding-bottom 10px
+  overflow hidden
+  &:hover
+    transition letter-spacing .4s ease-out-quart
+    letter-spacing $unitH * 8
+    &:before,
+    &:after
+      transition transform .4s ease-out-quart
+    &:before
+      transform translateX(-7 * $unitH)
+    &:after
+      transform translateX(7 * $unitH)
+  .word
+    position relative
+    height 7px
+    margin 0 20 * $unitH
+  &.black
+    color $colors-black
+    &:before,
+    &:after
+      background $colors-black
+  &.white
+    color $colors-white
+    &:before,
+    &:after
+      background $colors-white
+  &:before,
+  &:after
+    content ''
+    display block
+    height 1px
+    width $unitH * 22
+    transition transform .3s ease-in-out-quad
+  &.top
+    top 0
+    transform translate(14px, 0%) rotate(90deg)
+    transform-origin 0% 0%
+    &:before
+      width $unitH * 40
+      margin-left 0
+  &.bottom
+    bottom 0
+    transform rotate(-90deg) translate(0%, 50%)
+    transform-origin 0% 100%
+    &:before
+      width $unitH * 40
+      margin-left 0

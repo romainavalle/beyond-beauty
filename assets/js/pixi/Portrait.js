@@ -1,4 +1,4 @@
-import Emitter from '~/assets/js/events'
+
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
 if (process.browser) {
@@ -17,14 +17,16 @@ class Portait {
   }
 
   load(getter) {
+    PIXI.Texture.addToCache(getter(`bust/${this.id}.png`))
+    PIXI.Texture.addToCache(getter(`bust/${this.id}-white.png`))
     this.portrait = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`bust/${this.id}.png`)))
     this.portraitTinted = new Pixi.Sprite(new Pixi.Texture.fromImage(getter(`bust/${this.id}-white.png`)))
     TweenMax.set(this.portraitTinted, { colorProps: { tint: this.color, format: "number" } })
     this.portraitTinted.visible = false
-    this.portrait.interactive = true
-    this.portrait.buttonMode = true
+    this.portrait.interactive = false
+    this.portrait.buttonMode = false
+
     this.portraitTinted.interactive = false
-    this.portrait.on('click', () => Emitter.emit('PORTRAIT_CLICK'))
     this.portrait.width = this.originalW
     this.portrait.height = this.originalH
     this.portraitTinted.width = this.originalW
@@ -82,8 +84,7 @@ class Portait {
     this.container.position.x = this.posX = w * .5 - containerW / 2
     this.container.position.y = this.posY = h * .5 - containerH / 2
   }
-  show(delay = 0) {
-    this.isActive = true
+  show(direction) {
     this.portrait.mask = this.maskTransitionIn
     this.container.visible = true
     this.maskTransitionIn.visible = true
@@ -91,16 +92,17 @@ class Portait {
     this.maskDisappear.visible = false
     this.maskDisappearTint.visible = false
     this.resize(ResizeHelper.width(), ResizeHelper.height())
-    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + 80, x: this.posX - 60}, {y: this.posY, x: this.posX, ease: Quart.easeOut})
+    const dir = direction === 'forward' ? 1 : -1
+    TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + (dir * 80), x: this.posX - (dir * 60)}, {y: this.posY, x: this.posX, ease: Quart.easeOut})
   }
-  hide() {
-    this.isActive = true
+  hide(direction) {
     this.maskTransitionIn.visible = false
     this.maskTransitionOut.visible = true
     this.maskDisappear.visible = false
     this.maskDisappearTint.visible = false
     this.portrait.mask = this.maskTransitionOut
-    TweenMax.to(this.container.position, 1, { y: this.posY - 80, x: this.posX + 60, ease: Cubic.easeIn,  onComplete: this.onHideComplete.bind(this)})
+    const dir = direction === 'forward' ? 1 : -1
+    TweenMax.to(this.container.position, 1, { y: this.posY - (dir * 80), x: this.posX + (dir * 60), ease: Cubic.easeIn,  onComplete: this.onHideComplete.bind(this)})
   }
 
   onHideComplete(){
@@ -123,7 +125,6 @@ class Portait {
     }
   }
   disappear() {
-    this.isActive = true
     this.maskTransitionIn.visible = false
     this.maskTransitionOut.visible = false
     this.maskDisappear.visible = true
@@ -132,10 +133,12 @@ class Portait {
     this.portraitTinted.mask = this.maskDisappearTint
     this.portraitTinted.visible = true
     this.container.visible = true
-    TweenMax.to(this, 1.2, {ease: Quart.easeIn})
+    TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: () => {
+      this.container.visible = false
+      this.portraitTinted.visible = false
+    }})
   }
   appear() {
-    this.isActive = true
     this.maskTransitionIn.visible = false
     this.maskTransitionOut.visible = false
     this.maskDisappear.visible = true

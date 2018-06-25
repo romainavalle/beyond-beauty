@@ -3,7 +3,13 @@
     <strong class="title">
       <transition-group name="name">
         <span class="innerTitle" v-for="(page,i) in pages" :key="i" v-show="i === currentHomeSlideId">
-          <span v-text="name(i)"></span><em></em><span v-text="title(i)"></span>
+          <span v-text="name(i)"></span>
+          <em></em>
+          <svg viewBox="0 0 20 20">
+          <circle  cx="10" cy="10" r="9" class="bottom"/>
+          <circle  cx="10" cy="10" r="9" class="timer" ref="timer"/>
+          </svg>
+          <span v-text="title(i)"></span>
         </span>
       </transition-group>
     </strong>
@@ -24,6 +30,7 @@
   </section>
 </template>
 <script>
+import Emitter from '~/assets/js/events';
 import { mapState, mapActions } from 'vuex';
 export default {
   data(){
@@ -81,6 +88,7 @@ export default {
     setTimer(time){
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
       this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), time)
+      TweenMax.fromTo(this.$refs.timer, time / 1000, {'stroke-dashoffset': 60} ,{'stroke-dashoffset': 0, ease: Linear.easeInOut})
     },
     setMouseWheelListener(){
       this._onWheel = this.onWheel.bind(this)
@@ -99,7 +107,7 @@ export default {
       document.addEventListener("keydown", this._onKey, false);
     },
     onKey(e) {
-      if(e.keyCode === 38) this.nextPage(1)
+      if(e.keyCode === 38) this.nextPage(-1)
       if(e.keyCode === 40) this.nextPage(1)
     },
     onWheel(e) {
@@ -140,6 +148,7 @@ export default {
     window.addEventListener("blur", () => {
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
     }, false);
+    Emitter.emit('SET_MOUSE_TYPE', {type: 'discover'})
   }
 }
 
@@ -166,19 +175,35 @@ export default {
       left 0
       white-space nowrap
       align-content center
+      svg
+        fill none
+        stroke white
+        width 20px
+        height 20px
+        transform translate(-12px, -2px) rotate(-90deg)
+        .bottom
+          stroke white
+          stroke-width .5
+        .timer
+          stroke-dashoffset 60
+          stroke-dasharray 60
+          stroke-width 1px
+          stroke $colors-grey
+          transition stroke-dashoffset .1s ease-out
       em
         display block
-        width 3px
-        height 3px
+        width 4px
+        height 4px
         background $colors-grey
         border-radius 50%
         margin-top 10 * $unitH
       span
         display block
       span:nth-child(1)
-        transform translateX(-20 * $unitH)
+        transform translateX(0 * $unitH)
+        margin-right 18px
       span ~ span
-        transform translateX(20 * $unitH)
+        transform translateX(0 * $unitH)
     .name-enter-active, .name-leave-active
       transition opacity .5s
     .name-enter-active

@@ -7,6 +7,7 @@ const createStore = () => {
       packer: null,
       isMenuOpen: false,
       isMenuVisible: false,
+      isMenuCompletlyVisible: false,
       isAppReady: false,
       isStoryVisible: false,
       isPageTransition: false,
@@ -29,6 +30,9 @@ const createStore = () => {
       SET_MENU_VISIBLE (state, bool){
         state.isMenuVisible = bool
       },
+      SET_MENU_COMPLETLY_VISIBLE (state, bool){
+        state.isMenuCompletlyVisible = bool
+      },
       SET_APP_READY (state){
         state.isAppReady = true
       },
@@ -48,6 +52,9 @@ const createStore = () => {
       },
       setMenuVisible ({ commit }, bool) {
         commit('SET_MENU_VISIBLE', bool)
+      },
+      setMenuCompletlyVisible ({ commit }, bool) {
+        commit('SET_MENU_COMPLETLY_VISIBLE', bool)
       },
       setCurrentHomeSlideId ({ commit }, /*{ commit }, { app, isStatic }*/ id) {
         commit('SET_CURRENT_HOME_SLIDE_ID', id)

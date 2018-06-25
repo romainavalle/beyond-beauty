@@ -1,6 +1,6 @@
 <template>
   <div class="Drag">
-    <canvas ref="canvas" :class="{'grab': grabClass}"></canvas>
+    <canvas ref="canvas" :class="{'grab': grabClass}" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave"></canvas>
   </div>
 </template>
 <script>
@@ -57,7 +57,18 @@ export default {
         this.snapValues.push(Math.round(padding + timelineW / 4 * index))
       }
     },
-    setBlobDeformation(){
+    show(delay) {
+      this.blob.show(delay)
+    },
+    hide(){
+      this.blob.hide()
+    },
+    doMouseEnter() {
+      this.blob.doMouseEnter()
+    },
+    doMouseLeave() {
+      this.blob.doMouseLeave()
+
     }
   },
   watch: {

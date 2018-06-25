@@ -1,38 +1,60 @@
 <template>
-  <div class="Slide" :class="readyClass">
-    <p class="bottom" ref="bottom">
+  <div class="Slide" :class="readyClass" :data-x="x">
+    <p>
       <span v-for="(line,i) in textArray" :key="i" v-html="line" class="line"></span>
     </p>
-    <p class="top" ref="top" v-html="fact.html"></p>
   </div>
 </template>
 
 <script>
 
-if (process.browser) {
-  var SplitText = require('gsap/SplitText')
+import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+if(process.browser) {
+  var transform = require('dom-transform');
 }
-
 export default {
   name: "Slide",
   data(){
     return {
-      readyClass: ''
+      readyClass: '',
+      x: 0,
+      currentX: 0
     }
   },
-  props: ['fact'],
+  props: ['fact', 'id'],
   computed:{
     textArray(){
       return this.fact.html.split('<br>')
     }
   },
   methods:{
-    show(){
+    show(dir){
+      const from = dir > 0 ? ResizeHelper.width() / 2 : -ResizeHelper.width() / 2
+      TweenMax.fromTo(this, 1, {x: from}, {x: 0, onComplete: () => {
+        this.readyClass = 'ready'
+      }})
     },
-    hide(){
+    hide(dir){
+      const to = dir > 0 ? ResizeHelper.width() / 2 : -ResizeHelper.width() / 2
+      TweenMax.to(this, 1, {x: to})
+      this.readyClass = ''
+    },
+    backToZero(){
+      TweenMax.to(this, .5, {x: 0, ease: Elastic.easeOut})
+    },
+    tick(x) {
+      if(x) this.x = x
+      if(this.currentX === this.x)return
+      this.currentX = this.x
+      this.$el.style.opacity = 1 - (Math.abs(this.x) / (ResizeHelper.width() / 2))
+        for (let index = 0; index < this.$spans.length; index++) {
+          transform(this.$spans[index], {translate3d:[this.x * (1 - (index * .1)), 0, 0]})
+        }
     }
   },
   mounted(){
+    this.$spans = [].slice.call(this.$el.querySelectorAll('p .line'))
+    if(this.id !== 2)this.x = ResizeHelper.width()
     setTimeout(() => {
       this.readyClass = 'ready'
     }, 2200)
@@ -48,47 +70,46 @@ export default {
   top 0
   left 0
   p
-    color transparent
+    -webkit-text-stroke-color $colors-timelineBlack
+    -webkit-text-stroke-width .25px
+    color $colors-bgWhite
     font-family $hawthorn
     font-size 140 * $unitH
+    left 0
     line-height .9
+    position absolute
     position relative
+    right 0
     text-align center
     text-transform uppercase
+    top 0
     span
       display block
-    &.bottom
-      -webkit-text-stroke-color $colors-timelineBlack
-      -webkit-text-stroke-width .5px
-      z-index 2
-    &.top
-      -webkit-text-stroke-color transparent
-      -webkit-text-stroke-width 0
-      position absolute
-      color $colors-bgWhite
-      top 0
-      left 0
-      right 0
-      background radial-gradient(rgba($colors-timelineBlack, 1) 30%,rgba($colors-timelineBlack,0) 100%) no-repeat
-      background-size 0px 0px
-      background-position center center
-      -webkit-background-clip text
-      will-change background, opacity
-  &.ready p.top
-    background-size 120vw 120vw
-    transition background-size 3s ease-out-quart
+
+
 
 
 </style>
 <style lang="stylus">
 .Slide
   strong
+    position relative
     font-weight normal
-  p.top strong
-      color transparent
-      -webkit-color transparent
-      -webkit-text-stroke-color transparent
-      -webkit-text-stroke-width 0px
+    &:after
+      transition opacity .4s ease-in-out-quart
+      content attr(data-text)
+      -webkit-text-stroke-color $colors-timelineBlack
+      -webkit-text-stroke-width 1px
+      opacity 0
+      display block
+      top .1 * 140 * $unitH
+      left 0
+      position absolute
+      color $colors-timelineBlack
+  &.ready strong:after
+      opacity 1
+      transition opacity .8s ease-in-out-quart
+
 
 </style>
 

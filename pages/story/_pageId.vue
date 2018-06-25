@@ -18,6 +18,8 @@ import vStoryContent from '~/components/story/StoryContent.vue'
 import vFacts from '~/components/facts/Facts.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import vScrollLayout from '~/components/layout/ScrollLayout.vue'
+import Emitter from '~/assets/js/events';
+
 
 export default {
   data(){
@@ -53,12 +55,12 @@ export default {
     },
     setMouseWheelListener(){
       this._onWheel = this.onWheel.bind(this)
-      this.$el.addEventListener("mousewheel", this._onWheel, false);
-      this.$el.addEventListener("DOMMouseScroll", this._onWheel, false);
+      window.addEventListener("mousewheel", this._onWheel, false);
+      window.addEventListener("DOMMouseScroll", this._onWheel, false);
     },
     removeMouseWheelListener(){
-      this.$el.removeEventListener("mousewheel", this._onWheel, false);
-      this.$el.removeEventListener("DOMMouseScroll", this._onWheel, false);
+      window.removeEventListener("mousewheel", this._onWheel, false);
+      window.removeEventListener("DOMMouseScroll", this._onWheel, false);
     },
     onWheel(e) {
       if(this.scrollTop < 3){
@@ -93,6 +95,7 @@ export default {
     this.$nextTick(()=>{
       if(window.smooth)window.smooth.removeEvents()
     })
+    Emitter.emit('SET_MOUSE_TYPE', {type: 'learn'})
 
   }
 }
@@ -103,6 +106,7 @@ export default {
 .Story
   position relative
   width 100%
+  pointer-events none
   .scrollContent
     position relative
     width 100%
