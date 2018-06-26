@@ -1,12 +1,14 @@
 class MouseHelper {
 
   constructor () {
-    this.x = -1000
-    this.y = 0
-    this.easeX = -1000
-    this.easeY = 0
-    this.easeSlowX = -1000
-    this.easeSlowY = 0
+    this.isFirst = true
+    this.isMouseNeeded = false
+    this.x = 500
+    this.y = 500
+    this.easeX = 500
+    this.easeY = 500
+    this.easeSlowX = 500
+    this.easeSlowY = 500
     this._mouseMoveHandler = this.mouseMoveHandler.bind(this)
     if(process.browser) window.addEventListener('mousemove', this._mouseMoveHandler)
   }
@@ -14,6 +16,11 @@ class MouseHelper {
   mouseMoveHandler (e) {
     this.x = e.clientX
     this.y = e.clientY
+    if(this.isFirst && !this.isMouseNeeded){
+      this.easeSlowX = this.easeX = this.x
+      this.easeSlowY = this.easeY = this.y
+    }
+    this.isFirst = false
   }
   tick() {
     const dX = this.x - this.easeX

@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <button class="button bottom white">
+    <button class="button bottom white" @click="onButtonClick">
       <span class="word">discover</span>
     </button>
     <div class="number" ref="number">
@@ -37,6 +37,7 @@
 </template>
 <script>
 import { mapState, mapGetters } from 'vuex'
+import Emitter from '~/assets/js/events'
 export default {
   data(){
     return {
@@ -52,6 +53,9 @@ export default {
     }
   },
   methods:{
+    onButtonClick() {
+      Emitter.emit('PAGE_SCROLL')
+    },
     reset(){
       TweenMax.set(this.$refs.title, {opacity: 0})
       TweenMax.set(this.$refs.number, {opacity: 0, y: -80})

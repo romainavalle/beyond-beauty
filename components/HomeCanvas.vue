@@ -40,19 +40,15 @@ export default {
       this.titles.load(this.getURI)
     },
     onReady(){
-      setTimeout(()=>{
         this.portraits.doReady()
         this.titles.doReady()
         this.$el.style.opacity = 1
-      },200)
-      setTimeout(()=>{
         if(this.route.name !== 'index'){
           this.background.show(0)
           this.showPage(0, 0)
           this.portraitsContainer.visible = false
         }
         this.pixiBlobs.show()
-      },500)
     },
     tick() {
       if(window.smooth && this.route.name !== 'index')this.checkStory()
@@ -81,11 +77,18 @@ export default {
         this.doSwitch()
       }
     },
+    checkSwitchBeforePageChange() {
+      if(this.storyPushSwitched) {
+        this.storyPushSwitched = false
+        this.doSwitch()
+      }
+    },
     doSwitch() {
       let nextPageNum = this.currentPageIdNum + 1
       this.mouseBlob.hide()
       if(nextPageNum > 3)nextPageNum = 0
       if(this.storyPushSwitched) {
+        TweenMax.set(this.$el, {yPercent: 0})
         this.titles.goToYPos(ResizeHelper.height() * .3, 0)
         this.titles.hide(this.currentPageIdNum, true)
         this.currentScale = this.smlScale
@@ -97,6 +100,7 @@ export default {
         this.pageMouseBlob.show()
         this.blobs.tick()
       }else{
+        TweenMax.set(this.$el, {yPercent: -50})
         this.pageMouseBlob.setTint(this.pages[this.currentPageIdNum].color)
         this.pageMouseBlob.hide()
         this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
@@ -133,18 +137,18 @@ export default {
       this.background.show()
       this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
       this.pageMouseBlob.setTint(this.pages[this.currentPageIdNum].color)
-      this.titles.show(this.currentPageIdNum, delay * 0.6, time, direction);
+      this.titles.show(this.currentPageIdNum, delay, time, direction);
       this.currentScale = this.midScale
-      this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay * 0.6, time);
+      this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay, time);
     },
-    hidePage(delay) {
+    hidePage(delay = 0) {
       //console.log('hidePage')
       this.mouseBlob.hide()
       this.portraitsContainer.visible = true
       this.background.hide()
       this.portraits.appear(this.currentHomeSlideId);
       this.currentScale = this.regScale
-      this.titles.scaleTo(this.currentHomeSlideId, this.currentScale, delay * 0.6, 1);
+      this.titles.scaleTo(this.currentHomeSlideId, this.currentScale, delay, 1);
     },
     canvasClick() {
       //console.log('canvasClick')
@@ -186,12 +190,19 @@ export default {
       //console.log('hideMouse')
       this.mouseBlob.hide()
       this.pageMouseBlob.hide()
+    },
+    panDown(){
+      TweenMax.to(this.$el, .5, {yPercent: -50, ease:  Circ.easeOut})
+    },
+    panUp(){
+      TweenMax.to(this.$el, .5, {yPercent: 0, ease: Cubic.easeIn})
     }
   },
   watch: {
     currentHomeSlideId(val, old) {
       // console.log('watch -> currentHomeSlideId',val, old)
       if(this.route.name === 'index') {
+        TweenMax.set(this.$el, {yPercent: 0})
         if (old != -1) {
           if(val !== 0){
             if(val - old > 0){
@@ -216,7 +227,8 @@ export default {
       }
     },
     'route.name'(val, old) {
-      // console.log('watch -> route.name',val, old)
+      console.log('watch -> route.name',val, old)
+      TweenMax.set(this.$el, {yPercent: 0})
       if(old && old !== 'index' && val === 'index')this.hidePage()
       if(old && old === 'index' && val !== 'index'){
         this.portraits.disappear(this.currentHomeSlideId);
@@ -224,13 +236,19 @@ export default {
       }
     },
     'route.params.pageId'(val, old) {
-      // console.log('watch -> route.params.pageId',val, old)
+      console.log('watch -> route.params.pageId',val, old, this.isPageTransition)
+      if(!this.isPageTransition) TweenMax.set(this.$el, {yPercent: 0})
+      let dir = 'forward'
       if(old && val) {
-        this.titles.hide(this.getPageIdNum(old), this.isMenuCompletlyVisible)
+        //this.titles.hide(this.getPageIdNum(old), this.isMenuCompletlyVisible)
+        dir = this.getPageIdNum(old) - this.getPageIdNum(val) > 0 ? 'forward' : 'backward'
+        console.log(this.isMenuCompletlyVisible)
+        this.titles.hide(this.getPageIdNum(old), this.isMenuCompletlyVisible, dir)
       }
       if(val !== undefined){
-        // console.log('test undefined', val)
-        if(!this.isPageTransition) this.showPage(.2, 1.5)
+        console.log('test undefined', val)
+        //if(!this.isPageTransition) this.showPage(.2, 1.5)
+        if(!this.isPageTransition) this.showPage(1, 1.5, dir)
       }
     }
   },
@@ -238,12 +256,16 @@ export default {
     Emitter.removeListener('CANVAS_CLICK', this._canvasClick);
     Emitter.removeListener('SHOW_MOUSE', this._showMouse);
     Emitter.removeListener('HIDE_MOUSE', this._hideMouse);
+    Emitter.removeListener('PAGE:PANDOWN', this._panDown);
+    Emitter.removeListener('PAGE:PANUP', this._panUp);
   },
 
   mounted() {
     this._canvasClick = this.canvasClick.bind(this);
     this._showMouse = this.showMouse.bind(this);
     this._hideMouse = this.hideMouse.bind(this);
+    this._panDown = this.panDown.bind(this);
+    this._panUp = this.panUp.bind(this);
     this.$el.style.opacity = .1
 
     this.mouseBlob = new MouseBlob(200, 200)
@@ -303,6 +325,8 @@ export default {
     Emitter.on('SHOW_MOUSE', this._showMouse);
     Emitter.on('HIDE_MOUSE', this._hideMouse);
     Emitter.on('TRANSITION:FINISHED', this.showHomeSlide.bind(this))
+    Emitter.on('PAGE:PANDOWN', this._panDown);
+    Emitter.on('PAGE:PANUP', this._panUp);
   }
 };
 </script>

@@ -32,9 +32,9 @@
           }
         ],
         "media": [
-          {"src": "natalie-portman-1.png", "width": 1762, "height": 1380},
-          {"src": "natalie-portman-2.png", "width": 1205, "height": 1205},
-          {"src": "natalie-portman-3.png", "width": 1395, "height": 1698}
+          {"src": "natalie-portman-0.png", "width": 1279, "height": 1525},
+          {"src": "natalie-portman-1.png", "width": 1147, "height": 1144},
+          {"src": "natalie-portman-2.png", "width": 1922, "height": 1385}
         ]
       },
       "facts":[
@@ -92,9 +92,9 @@
           }
         ],
         "media": [
-          {"src": "emma-watson-1.png", "width": 1762, "height": 1380},
-          {"src": "emma-watson-2.png", "width": 1205, "height": 1205},
-          {"src": "emma-watson-3.png", "width": 1395, "height": 1698}
+          {"src": "emma-watson-0.png", "width": 1762, "height": 1380},
+          {"src": "emma-watson-1.png", "width": 1205, "height": 1205},
+          {"src": "emma-watson-2.png", "width": 1395, "height": 1698}
         ]
       },
       "facts": [
@@ -152,9 +152,9 @@
           }
         ],
         "media": [
-          {"src": "jennifer-lawrence-1.png", "width": 1600, "height": 1190},
-          {"src": "jennifer-lawrence-2.png", "width": 1280, "height": 1280},
-          {"src": "jennifer-lawrence-3.png", "width": 1280, "height": 1600}
+          {"src": "jennifer-lawrence-0.png", "width": 1600, "height": 1190},
+          {"src": "jennifer-lawrence-1.png", "width": 1280, "height": 1280},
+          {"src": "jennifer-lawrence-2.png", "width": 1280, "height": 1600}
         ]
       },
       "facts": [
@@ -213,9 +213,9 @@
           }
         ],
         "media": [
-          {"src": "cara-delevingne-1.png", "width": 1600, "height": 1190},
-          {"src": "cara-delevingne-2.png", "width": 1280, "height": 1280},
-          {"src": "cara-delevingne-3.png", "width": 1280, "height": 1600}
+          {"src": "cara-delevingne-0.png", "width": 1150, "height": 1150},
+          {"src": "cara-delevingne-1.png", "width": 1387, "height": 1861},
+          {"src": "cara-delevingne-2.png", "width": 1761, "height": 1016}
         ]
       },
       "facts": [

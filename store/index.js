@@ -9,6 +9,7 @@ const createStore = () => {
       isMenuVisible: false,
       isMenuCompletlyVisible: false,
       isAppReady: false,
+      isAppLoaded: false,
       isStoryVisible: false,
       isPageTransition: false,
       pages,
@@ -38,7 +39,10 @@ const createStore = () => {
         state.isMenuCompletlyVisible = bool
       },
       SET_APP_READY (state){
-        // state.isAppReady = true
+        state.isAppReady = true
+      },
+      SET_APP_LOADED (state){
+        state.isAppLoaded = true
       },
       SET_STORY_VISIBLE (state, bool){
         state.isStoryVisible = bool
@@ -72,6 +76,9 @@ const createStore = () => {
       setAppReady ({ commit }) {
         commit('SET_APP_READY')
       },
+      setAppLoaded ({ commit }) {
+        commit('SET_APP_LOADED')
+      },
       setStoryVisible ({ commit }, bool) {
         commit('SET_STORY_VISIBLE', bool)
       },
@@ -82,9 +89,6 @@ const createStore = () => {
     getters: {
       getURI: (state) => (id) => {
         return state.packer.getAsURI(id)
-      },
-      currentHomeSlideId: state => {
-        return state.currentHomeSlideId
       },
       currentPageIdNum: state => {
         const page = state.pages.find(p => {return p.pageId === state.route.params.pageId})
@@ -104,9 +108,6 @@ const createStore = () => {
       },
       pageData: (state, getters) => {
         return state.pages[getters.currentPageIdNum]
-      },
-      route: state => {
-        return state.route
       }
     }
   })

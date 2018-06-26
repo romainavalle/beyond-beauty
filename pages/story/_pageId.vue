@@ -76,15 +76,16 @@ export default {
       if(this.scrollTop < 50){
         e.preventDefault();
         if(e.deltaY > 0){
-          this.panBottom()
+          this.panDown()
         }else{
           this.panUp()
         }
       }
     },
-    panBottom() {
+    panDown() {
       if(this.isShown)return
       this.show()
+      Emitter.emit('PAGE:PANDOWN')
       TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 0, ease: Circ.easeOut, onComplete: () => {
         window.smooth.addEvents(true)
         this.removeMouseWheelListener()
@@ -95,6 +96,7 @@ export default {
     },
     panUp() {
       if(!this.isShown)return
+      Emitter.emit('PAGE:PANUP')
       this.setStoryVisible(false)
       this.removeMouseWheelListenerEl()
       this.setMouseWheelListener()
@@ -108,11 +110,11 @@ export default {
   beforeDestroy() {
     this.removeMouseWheelListener()
     this.removeMouseWheelListenerEl()
-    Emitter.removeListener('PAGE_SCROLL', this._panBottom)
+    Emitter.removeListener('PAGE_SCROLL', this._panDown)
   },
   mounted(){
     this._doWheel = this.doWheel.bind(this)
-    this._panBottom = this.panBottom.bind(this)
+    this._panDown = this.panDown.bind(this)
 
     this.setCurrentHomeSlideId(this.currentPageIdNum)
     TweenMax.set(this.$refs.scrollContent,  {yPercent: 100})
@@ -123,7 +125,7 @@ export default {
       window.smooth.resize()
     })
     Emitter.emit('SET_MOUSE_TYPE', {type: 'learn'})
-    Emitter.on('PAGE_SCROLL', this._panBottom)
+    Emitter.on('PAGE_SCROLL', this._panDown)
 
   }
 }

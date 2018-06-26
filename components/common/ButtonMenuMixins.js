@@ -1,4 +1,4 @@
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 export default {
   data() {
     return {
@@ -8,8 +8,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['isAppReady']),
-    ...mapGetters(['route']),
+    ...mapState(['isAppReady', 'route']),
     canvasSize() {
       return {w: 160, h: 160}
     }

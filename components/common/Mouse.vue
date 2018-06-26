@@ -31,6 +31,7 @@ export default {
   methods: {
 
     show() {
+      MouseHelper.isMouseNeeded = true
       this.isShown = true
       TweenMax.set(this.$el, {autoAlpha: 1})
       TweenMax.to(this.$refs.word, .8,{delay: .2, scale: 1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
@@ -66,6 +67,10 @@ export default {
         break
         case 'discover':
           this.word = 'discover'
+        break
+        case 'enter':
+          this.word = 'enter'
+          this.isCanvasVisible = true
         break
         case 'drag':
           this.word = 'drag'

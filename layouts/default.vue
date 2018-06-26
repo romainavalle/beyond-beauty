@@ -42,17 +42,16 @@ const load = require('load-asset');
 export default {
   data(){
     return {
-      isLoaded: false,
       process
     }
   },
   computed:{
-    ...mapState(['isAppReady', 'isPageTransition']),
-    ...mapGetters(['route'])
+    ...mapState(['isAppReady', 'isPageTransition', 'isMenuOpen', 'route', 'currentHomeSlideId']),
+    ...mapGetters(['getPageIdNum'])
   },
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound},
   methods:{
-    ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady','setPageTransition']),
+    ...mapActions(['setPacker', 'setMenuOpen', 'setAppLoaded','setPageTransition']),
     checkButton(from, to){
       if(!from) {
         if(to.name === 'index') {
@@ -123,27 +122,26 @@ export default {
       if(this.route.name === "story-pageId")this.$refs.sound.tick()
       this.stats.end()
     },
-    onReady(){
-      this._resize = this.resize.bind(this)
-      this._tick = this.tick.bind(this)
+    onLoaded(){
+      this.setAppLoaded()
 
       Emitter.on('GLOBAL:RESIZE', this._resize)
       this.page = this.$refs.page.$children[0]
       this.setDebug()
-      if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady()
       if(process.browser)this.$refs.homeCanvas.load()
-      setTimeout(() => {
-        this.setAppReady()
-        this.checkButton(null, this.$route)
-        if(process.browser){
-          this.$refs.homeCanvas.onReady()
-          this.$refs.siteMenu.onReady()
-          this.$nextTick(()=>{
-            TweenMax.ticker.addEventListener('tick', this._tick)
-            this.resize()
-          })
-        }
-      },500)
+      this.$nextTick(()=>{
+        TweenMax.ticker.addEventListener('tick', this._tick)
+        this.resize()
+      })
+    },
+    onReady() {
+      if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady()
+      this.checkButton(null, this.$route)
+      if(process.browser){
+        this.$refs.homeCanvas.onReady()
+        this.$refs.siteMenu.onReady()
+
+      }
     }
   },
   beforeDestroy(){
@@ -155,12 +153,31 @@ export default {
   created(){
     this.date = new Date()
   },
+  watch: {
+    isAppReady() {
+      this.onReady()
+    }
+  },
   async mounted () {
+    this._resize = this.resize.bind(this)
+    this._tick = this.tick.bind(this)
     this.$router.beforeEach((to, from, next) => {
-      this.setMenuOpen(false)
       SoundHelper.fadeOut()
       this.checkButton(from, to)
-      next()
+      if(!this.isPageTransition) this.$refs.homeCanvas.checkSwitchBeforePageChange()
+      let doNext = true
+      if(from.name === 'index' && to.name === 'story-pageId' && this.isMenuOpen) {
+        if(this.getPageIdNum(to.params.pageId) === this.currentHomeSlideId){
+          setTimeout(next, 800)
+          doNext = false
+        }
+      }
+      if(from.name === 'story-pageId' && to.name === 'index' && this.isMenuOpen && window.smooth.vars.current < 50) {
+          setTimeout(next, 800)
+          doNext = false
+      }
+      this.$nextTick(()=>{this.setMenuOpen(false)})
+      if(doNext)next()
     })
 
      // todo -> promise polyfill
@@ -172,8 +189,8 @@ export default {
       window.unpacker = unpacker
       this.setPacker(unpacker)
     }
-    this.isLoaded = true
-    this.$nextTick(this.onReady.bind(this))
+
+    this.$nextTick(this.onLoaded.bind(this))
     console.log('%cMade with ❤️ 🧡 💛 💚 💙 💜', "font-weight: bold; color: #f7c8ae;");
     console.log('%c🖌 @LouisAnsa', "font-weight: bold; color: #f7b8b0;");
     console.log('%c🖌 @NahelMoussi', "font-weight: bold; color: #f7cfae;");
