@@ -59,16 +59,16 @@ export default {
     goNext(dir) {
       this.isDragging = false
       if(dir < 0){
-        if(this.currentFact === 4){
-          this.$refs.slide[this.currentFact].backToZero()
-        }else{
-          this.setCurrentFact(Math.min(this.currentFact + 1, 4))
-        }
-      }else{
         if(this.currentFact === 0){
           this.$refs.slide[this.currentFact].backToZero()
         }else{
           this.setCurrentFact(Math.max(this.currentFact - 1, 0))
+          }
+      }else{
+        if(this.currentFact === 4){
+          this.$refs.slide[this.currentFact].backToZero()
+        }else{
+          this.setCurrentFact(Math.min(this.currentFact + 1, 4))
         }
       }
     },

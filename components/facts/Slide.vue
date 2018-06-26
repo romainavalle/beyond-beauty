@@ -32,18 +32,18 @@ export default {
       this.h = h
     },
     show(dir){
-      const from = dir > 0 ? this.w / 2 : -this.w / 2
-      TweenMax.fromTo(this, 1, {x: from}, {x: 0, onComplete: () => {
+      const from = dir < 0 ? this.w / 2 : -this.w / 2
+      TweenMax.fromTo(this, 1, {x: from}, {x: 0, overwrite: 1, onComplete: () => {
         this.readyClass = 'ready'
       }})
     },
     hide(dir){
-      const to = dir > 0 ? this.w / 2 : -this.w / 2
-      TweenMax.to(this, 1, {x: to})
+      const to = dir < 0 ? this.w / 2 : -this.w / 2
+      TweenMax.to(this, 1, {x: to, overwrite: 1})
       this.readyClass = ''
     },
     backToZero(){
-      TweenMax.to(this, .5, {x: 0, ease: Elastic.easeOut})
+      TweenMax.to(this, 1, {x: 0, ease: Elastic.easeOut, overwrite: 1})
     },
     tick(x) {
       if(x) this.x = x

@@ -22,6 +22,8 @@ class Blobs {
     }
   }
   show() {
+    this.alpha = 0
+    this.scale = 0
     TweenMax.to(this, .3, { alpha: 1 })
     TweenMax.to(this, 3, { scale: 1, ease: Elastic.easeOut })
   }
