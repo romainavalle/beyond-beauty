@@ -119,7 +119,7 @@ export default {
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
-      console.log('showHomeSlide')
+      //console.log('showHomeSlide')
       delay = .5
       //this.mouseBlob.show()
       this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
@@ -128,7 +128,7 @@ export default {
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1, this.direction);
     },
     showPage(delay, time, direction = 'forward') {
-      console.log('showPage')
+      //console.log('showPage')
       this.pixiBlobs.show()
       this.background.show()
       this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
@@ -138,7 +138,7 @@ export default {
       this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay * 0.6, time);
     },
     hidePage(delay) {
-      console.log('hidePage')
+      //console.log('hidePage')
       this.mouseBlob.hide()
       this.portraitsContainer.visible = true
       this.background.hide()
@@ -147,7 +147,7 @@ export default {
       this.titles.scaleTo(this.currentHomeSlideId, this.currentScale, delay * 0.6, 1);
     },
     canvasClick() {
-      console.log('canvasClick')
+      //console.log('canvasClick')
       switch (this.currentScale) {
         case this.regScale:
           this.$router.push({
@@ -168,14 +168,14 @@ export default {
       }
     },
     pageTransition() {
-      console.log('pageTrans')
+      //console.log('pageTrans')
       Emitter.emit('HIDE_MOUSE');
       this.titles.goToYPos(0, 1.2)
       this.currentScale = this.midScale
       this.titles.scaleTo(this.currentPageIdNum , this.currentScale, 0, 1.2, true);
     },
     showMouse() {
-      console.log('showMouse')
+      //console.log('showMouse')
       if(this.$route.name === 'index'){
         this.mouseBlob.show()
       }else{
@@ -183,7 +183,7 @@ export default {
       }
     },
     hideMouse() {
-      console.log('hideMouse')
+      //console.log('hideMouse')
       this.mouseBlob.hide()
       this.pageMouseBlob.hide()
     }

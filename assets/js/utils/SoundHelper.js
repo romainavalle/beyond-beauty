@@ -3,13 +3,15 @@ import Emitter from '~/assets/js/events'
 class SoundHelper {
 
   constructor () {
+    this.mute = false
   }
   createSound(id, part) {
+
     if(this.sound)this.sound.unload()
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
     this.sound = new Howl({
       src: `${path}sounds/${id}-${part}.mp3`,
-      autoplay: true,
+      autoplay: !this.mute,
       volume: 0,
       onload: function() {
         Emitter.emit('SOUND_LOADED')
@@ -23,10 +25,15 @@ class SoundHelper {
       this.sound.fade(0, 1, 1000)
     })
   }
+  toggleMute(mute) {
+    this.mute = mute
+    if(this.mute) this.pause()
+  }
   isPlaying() {
     return this.sound.playing()
   }
   playPause() {
+    if(this.mute) return
     if(this.sound.playing()) {
       this.pause()
     } else {

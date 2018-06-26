@@ -34,8 +34,8 @@ class Scroll extends SmoothScroll {
     super.createBound()
   }
 
-  addEvents () {
-    super.addEvents()
+  addEvents (onlyscroll) {
+    super.addEvents(onlyscroll)
     Emitter.on('GLOBAL:RESIZE', this.resize)
     if (support.hasWheelEvent) window.addEventListener('wheel', this.onWheel, false)
     if (support.hasMouseWheelEvent) window.addEventListener('mousewheel', this.onWheel, false)
@@ -56,8 +56,8 @@ class Scroll extends SmoothScroll {
     }
   }
 
-  removeEvents () {
-    super.removeEvents()
+  removeEvents (onlyscroll) {
+    super.removeEvents(onlyscroll)
 
     if (support.hasWheelEvent) window.removeEventListener('wheel', this.onWheel, false)
     if (support.hasMouseWheelEvent) window.removeEventListener('mousewheel', this.onWheel, false)

@@ -1,26 +1,26 @@
 <template>
   <section class="Home" :class="{'ready' : isAppReady}">
     <strong class="title">
-      <transition-group name="name">
+      <transition-group name="name" :duration="1000">
         <span class="innerTitle" v-for="(page,i) in pages" :key="i" v-show="i === currentHomeSlideId">
           <span v-text="name(i)"></span>
           <em></em>
-          <svg viewBox="0 0 20 20">
-          <circle  cx="10" cy="10" r="9" class="bottom"/>
-          <circle  cx="10" cy="10" r="9" class="timer" ref="timer"/>
+          <svg viewBox="0 0 16 16">
+          <circle  cx="8" cy="8" r="7" class="bottom"/>
+          <circle  cx="8" cy="8" r="7" class="timer" ref="timer"/>
           </svg>
           <span v-text="title(i)"></span>
         </span>
       </transition-group>
     </strong>
-    <button class="prev" @click="nextPage(-1)">
+    <button class="prev buttonHome" @click="nextPage(-1)">
       <span class="word">
         <transition-group name="fade">
           <span class="trans" v-for="(page,i) in pages" :key="i" v-text="button(i+2)" v-show="i === currentHomeSlideId"></span>
         </transition-group>
       </span>
     </button>
-    <button class="next" @click="nextPage(1)">
+    <button class="next buttonHome" @click="nextPage(1)">
       <span class="word">
         <transition-group name="fade">
           <span class="trans" v-for="(page,i) in pages" :key="i" v-text="button(i)" v-show="i === currentHomeSlideId"></span>
@@ -88,7 +88,10 @@ export default {
     setTimer(time){
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
       this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), time)
-      TweenMax.fromTo(this.$refs.timer, time / 1000, {'stroke-dashoffset': 60} ,{'stroke-dashoffset': 0, ease: Linear.easeInOut})
+      if(this.currentHomeSlideId !== -1){
+        this.$refs.timer[this.currentHomeSlideId].style.strokeDashoffset = 45
+        TweenMax.to(this.$refs.timer[this.currentHomeSlideId], (time / 1000) - 1, {delay: 1,'stroke-dashoffset': 0, ease: Linear.easeInOut})
+      }
     },
     setMouseWheelListener(){
       this._onWheel = this.onWheel.bind(this)
@@ -178,18 +181,18 @@ export default {
       svg
         fill none
         stroke white
-        width 20px
-        height 20px
-        transform translate(-12px, -2px) rotate(-90deg)
+        display block
+        width 16px
+        height 16px
+        stroke $colors-grey
+        transform translateX(-10px) rotate(-90deg) scale(1, 1)
         .bottom
-          stroke white
-          stroke-width .5
+          opacity .3
+          stroke-width .25
         .timer
-          stroke-dashoffset 60
-          stroke-dasharray 60
+          stroke-dashoffset 45
+          stroke-dasharray 45
           stroke-width 1px
-          stroke $colors-grey
-          transition stroke-dashoffset .1s ease-out
       em
         display block
         width 4px
@@ -199,6 +202,7 @@ export default {
         margin-top 10 * $unitH
       span
         display block
+        will-change transform
       span:nth-child(1)
         transform translateX(0 * $unitH)
         margin-right 18px
@@ -212,13 +216,17 @@ export default {
       opacity 0
     .name-enter-active span, .name-leave-active span
       transition transform .5s
+    .name-enter-active svg, .name-leave-active svg
+      transition transform .5s
     .name-enter-active span
       transition-delay .7s
     .name-enter span:nth-child(1), .name-leave-to span:nth-child(1)
       transform translateX(-20 * $unitH)
     .name-enter span ~ span, .name-leave-to span ~ span
       transform translateX(20 * $unitH)
-  button
+    .name-enter svg, .name-leave-to svg
+      transform translateX(-10px) rotate(-90deg) scale(0.3, 0.3)
+  .buttonHome
     align-items center
     color $colors-black
     display flex

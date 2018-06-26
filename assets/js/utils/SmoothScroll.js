@@ -181,7 +181,6 @@ export default class Smooth {
     }
 
     off(cancelAnimationFrame = true) {
-
         const node = this.dom.listener === document.body ? window : this.dom.listener
 
         this.vars.native ? event.off(node, 'scroll', this.debounce) : (this.vs && this.vs.off(this.calc))
@@ -199,15 +198,17 @@ export default class Smooth {
         cancelAnimationFrame(this.rAF)
     }
 
-    addEvents() {
-
+    addEvents(onlyscroll) {
+        this.vs._bind()
+        if(onlyscroll)return
         this.on()
 
         event.on(window, 'resize', this.resize)
     }
 
-    removeEvents() {
-
+    removeEvents(onlyscroll) {
+        if(this.vs)this.vs._unbind()
+        if(onlyscroll)return
         this.off()
 
         event.off(window, 'resize', this.resize)

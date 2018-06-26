@@ -8,6 +8,7 @@
     <transition name="pageTrans" mode="out-in" @enter="pageEnter" @leave="pageLeave" @css="false">
       <nuxt ref="page" :key="route.params.pageId || route.name"/>
     </transition>
+    <v-sound ref="sound"></v-sound>
     <v-mouse ref="mouse"></v-mouse>
   </div>
 </template>
@@ -23,6 +24,7 @@ import vMenuButton from '~/components/common/MenuButton.vue'
 import vLoader from '~/components/common/Loader.vue'
 import vMenu from '~/components/menu/Menu.vue'
 import vMouse from '~/components/common/Mouse.vue'
+import vSound from '~/components/common/Sound.vue'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import SoundHelper from '~/assets/js/utils/SoundHelper'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
@@ -48,7 +50,7 @@ export default {
     ...mapState(['isAppReady', 'isPageTransition']),
     ...mapGetters(['route'])
   },
-  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse},
+  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppReady','setPageTransition']),
     checkButton(from, to){
@@ -76,8 +78,10 @@ export default {
       TweenMax.set(this.$refs.page.$children[0].$el, {yPercent: 0})
       if(this.isPageTransition) this.$refs.homeCanvas.showPage(0,0,'none')
       this.setPageTransition(false)
-      this.resize(true)
       done()
+      setTimeout(() => {
+        this.resize(true)
+      }, 100)
     },
     pageLeave(el, done) {
       if(this.isPageTransition){
@@ -96,6 +100,7 @@ export default {
       if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(w, h)
       if(!forceAfterRoute)this.$refs.homeCanvas.resize(w, h)
       if(!forceAfterRoute)this.$refs.siteMenu.resize(w, h)
+      this.$refs.sound.resize(w, h)
     },
     setDebug() {
       this.stats = new Stats();
@@ -115,6 +120,7 @@ export default {
       if(this.$refs.menuButton)this.$refs.menuButton.tick()
       if(this.$refs.homeCanvas)this.$refs.homeCanvas.tick()
       if(this.$refs.page && this.$refs.page.$children[0])this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
+      if(this.route.name === "story-pageId")this.$refs.sound.tick()
       this.stats.end()
     },
     onReady(){
@@ -129,13 +135,14 @@ export default {
       setTimeout(() => {
         this.setAppReady()
         this.checkButton(null, this.$route)
-        if(process.browser)this.$refs.homeCanvas.onReady()
-        if(process.browser)this.$refs.siteMenu.onReady()
-
-          if(process.browser)this.$nextTick(()=>{
+        if(process.browser){
+          this.$refs.homeCanvas.onReady()
+          this.$refs.siteMenu.onReady()
+          this.$nextTick(()=>{
             TweenMax.ticker.addEventListener('tick', this._tick)
             this.resize()
           })
+        }
       },500)
     }
   },

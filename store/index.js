@@ -12,9 +12,13 @@ const createStore = () => {
       isStoryVisible: false,
       isPageTransition: false,
       pages,
-      currentFact: 2
+      currentFact: 2,
+      muteSound: false
     },
     mutations: {
+      TOGGLE_SOUND (state) {
+        state.muteSound = !state.muteSound
+      },
       SET_CURRENT_FACT (state, id) {
         state.currentFact = id
       },
@@ -34,7 +38,7 @@ const createStore = () => {
         state.isMenuCompletlyVisible = bool
       },
       SET_APP_READY (state){
-        state.isAppReady = true
+        // state.isAppReady = true
       },
       SET_STORY_VISIBLE (state, bool){
         state.isStoryVisible = bool
@@ -44,6 +48,9 @@ const createStore = () => {
       }
     },
     actions: {
+      toggleSound ({ commit }) {
+        commit('TOGGLE_SOUND')
+      },
       setCurrentFact ({ commit }, id) {
         commit('SET_CURRENT_FACT', id)
       },

@@ -5,17 +5,18 @@
         <v-scroll-layout>
           <v-story-content ref="content"></v-story-content>
           <v-facts ref="facts"></v-facts>
-          <router-link :to="{name:'story-pageId', params: { pageId: pages[nextPageIdNum].pageId }}" class="push" v-text="pages[nextPageIdNum].pageName" @click.native="setPageTransition(true)"></router-link>
+          <v-push ref="push"></v-push>
         </v-scroll-layout>
       </div>
     </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from 'vuex';
+import { mapActions, mapGetters } from 'vuex';
 import vStoryTop from '~/components/story/StoryTop.vue'
 import vStoryContent from '~/components/story/StoryContent.vue'
 import vFacts from '~/components/facts/Facts.vue'
+import vPush from '~/components/story/StoryPush.vue'
 import vScrollLayout from '~/components/layout/ScrollLayout.vue'
 import Emitter from '~/assets/js/events';
 
@@ -27,26 +28,26 @@ export default {
       isShown: false
     }
   },
-  components: { vScrollLayout, vStoryTop, vStoryContent, vFacts },
+  components: { vScrollLayout, vStoryTop, vStoryContent, vFacts, vPush },
   computed:{
-    ...mapState(['pages']),
-    ...mapGetters(['currentPageIdNum', 'nextPageIdNum'])
+    ...mapGetters(['currentPageIdNum'])
   },
   methods:{
-    ...mapActions(['setCurrentHomeSlideId', 'setStoryVisible', "setPageTransition"]),
+    ...mapActions(['setCurrentHomeSlideId', 'setStoryVisible']),
     tick(){
       if(!window.smooth)return
       if(this.scrollTop != window.smooth.vars.current){
         this.scrollTop = window.smooth.vars.current
       }
-      if(this.$refs.content) this.$refs.content.tick(this.scrollTop)
-      if(this.$refs.facts) this.$refs.facts.tick()
+      this.$refs.content.tick(this.scrollTop)
+      this.$refs.facts.tick()
+      this.$refs.push.tick()
     },
     resize(w, h) {
       this.w = w
       this.h = h
-      if(this.$refs.content) this.$refs.content.resize(w, h)
-      if(this.$refs.facts) this.$refs.facts.resize(w, h)
+      this.$refs.content.resize(w, h)
+      this.$refs.facts.resize(w, h)
     },
     show(){
       this.$refs.content.show()
@@ -85,7 +86,7 @@ export default {
       if(this.isShown)return
       this.show()
       TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 0, ease: Circ.easeOut, onComplete: () => {
-        if(window.smooth) window.smooth.addEvents()
+        window.smooth.addEvents(true)
         this.removeMouseWheelListener()
         this.setMouseWheelListenerEl()
         this.setStoryVisible(true)
@@ -97,7 +98,8 @@ export default {
       this.setStoryVisible(false)
       this.removeMouseWheelListenerEl()
       this.setMouseWheelListener()
-      if(window.smooth) window.smooth.removeEvents()
+      window.smooth.vars.target = 0
+      window.smooth.removeEvents(true)
       TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 100, ease: Cubic.easeIn})
       this.isShown = false
       this.hide()
@@ -117,7 +119,7 @@ export default {
     this.setStoryVisible(false)
     this.setMouseWheelListener()
     this.$nextTick(()=>{
-      window.smooth.removeEvents()
+      window.smooth.removeEvents(true)
       window.smooth.resize()
     })
     Emitter.emit('SET_MOUSE_TYPE', {type: 'learn'})
@@ -137,10 +139,5 @@ export default {
     position relative
     width 100%
     height 100vh
-  .push
-    display block
-    position relative
-    width 100%
-    height 50vh
-    text-indent -50000px
+
 </style>
