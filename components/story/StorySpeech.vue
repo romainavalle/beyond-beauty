@@ -56,10 +56,12 @@ export default {
         SoundHelper.playPause()
         return
       }
-      if(this.currentPart !== -1)this.$refs.parts[this.currentPart].hidePart()
+      if(this.currentPart !== -1){
+        this.$refs.parts[this.currentPart].hidePart()
+        const top = this.$refs.parts[part].$el.offsetTop * this.mediaHeight / this.contentHeight
+        if(window.smooth) window.smooth.scrollTo(top)
+      }
       this.currentPart = part
-      const top = this.$refs.parts[this.currentPart].$el.offsetTop * this.mediaHeight / this.contentHeight
-      if(window.smooth) window.smooth.scrollTo(top)
       this.$refs.parts[this.currentPart].showPart()
       SoundHelper.createSound(this.pageData.id, this.currentPart)
     },

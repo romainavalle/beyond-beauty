@@ -1,5 +1,5 @@
 <template>
-  <div class="StorySpeechPart" @click="onclick" :class="{'active': this.isActive}">
+  <div class="StorySpeechPart" @click="onclick" @mouseenter="onMouseEnter" @mouseleave="onMouseLeave" :class="{'active': this.isActive}">
     <div class="number">
       <svg viewBox="0 0 116 116">
         <circle  cx="58" cy="58" r="56" class="load" ref="load"/>
@@ -35,6 +35,22 @@ export default {
   methods:{
     onclick() {
       Emitter.emit('PART_CLICKED', this.id)
+      Emitter.emit('HIDE_MOUSE')
+    },
+    onMouseEnter() {
+      if(this.isActive) {
+        if(SoundHelper.isPlaying()) {
+          Emitter.emit('SET_MOUSE_TYPE', {type: 'pause'})
+        }else{
+          Emitter.emit('SET_MOUSE_TYPE', {type: 'listen'})
+        }
+      } else {
+        Emitter.emit('SET_MOUSE_TYPE', {type: 'listen'})
+      }
+      Emitter.emit('SHOW_MOUSE')
+    },
+    onMouseLeave() {
+      Emitter.emit('HIDE_MOUSE')
     },
     tick() {
       if(!this.isActive) return
@@ -73,9 +89,6 @@ export default {
       Emitter.removeListener('SOUND_LOADED', this._activateSound)
       this.isActive = true
       TweenMax.to(this.$refs.load, .3, {'stroke-dashoffset': 0, ease: Quad.easeOut})
-    },
-    deactivateSound() {
-      this.isActive = false
     }
   },
   beforeDestory() {
@@ -84,7 +97,6 @@ export default {
   },
   mounted(){
     this._activateSound = this.activateSound.bind(this)
-    this._deactivateSound = this.deactivateSound.bind(this)
     this.$el.style.opacity = .3
 
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
@@ -101,6 +113,7 @@ export default {
 .StorySpeechPart
   display flex
   justify-content space-between
+  cursor pointer
   & + .StorySpeechPart
     margin-top 60 * $unitV
   .content

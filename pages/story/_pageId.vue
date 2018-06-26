@@ -23,7 +23,8 @@ import Emitter from '~/assets/js/events';
 export default {
   data(){
     return {
-      scrollTop: 0
+      scrollTop: 0,
+      isShown: false
     }
   },
   components: { vScrollLayout, vStoryTop, vStoryContent, vFacts },
@@ -55,48 +56,72 @@ export default {
       this.$refs.content.hide()
     },
     setMouseWheelListener(){
-      this._onWheel = this.onWheel.bind(this)
-      window.addEventListener("mousewheel", this._onWheel, false);
-      window.addEventListener("DOMMouseScroll", this._onWheel, false);
+      window.addEventListener("mousewheel", this._doWheel, false);
+      window.addEventListener("DOMMouseScroll", this._doWheel, false);
     },
     removeMouseWheelListener(){
-      window.removeEventListener("mousewheel", this._onWheel, false);
-      window.removeEventListener("DOMMouseScroll", this._onWheel, false);
+      window.removeEventListener("mousewheel", this._doWheel, false);
+      window.removeEventListener("DOMMouseScroll", this._doWheel, false);
     },
-    onWheel(e) {
-      if(this.scrollTop < 3){
+    setMouseWheelListenerEl(){
+      this.$el.addEventListener("mousewheel", this._doWheel, false);
+      this.$el.addEventListener("DOMMouseScroll", this._doWheel, false);
+    },
+    removeMouseWheelListenerEl(){
+      this.$el.removeEventListener("mousewheel", this._doWheel, false);
+      this.$el.removeEventListener("DOMMouseScroll", this._doWheel, false);
+    },
+    doWheel(e) {
+      if(this.scrollTop < 50){
         e.preventDefault();
         if(e.deltaY > 0){
-          if(this.isShown)return
-            this.show()
-            TweenMax.to(this.$refs.scrollContent, 1, {yPercent: 0, ease: Circ.easeOut, onComplete: () => {
-              if(window.smooth)window.smooth.addEvents()
-              this.setStoryVisible(true)
-            }})
-            this.isShown = true
+          this.panBottom()
         }else{
-          if(!this.isShown)return
-            this.setStoryVisible(false)
-            if(window.smooth)window.smooth.removeEvents()
-            TweenMax.to(this.$refs.scrollContent, 1, {yPercent: 100, ease: Cubic.easeIn})
-            this.isShown = false
-            this.hide()
-
+          this.panUp()
         }
-      }else{
-
       }
+    },
+    panBottom() {
+      if(this.isShown)return
+      this.show()
+      TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 0, ease: Circ.easeOut, onComplete: () => {
+        if(window.smooth) window.smooth.addEvents()
+        this.removeMouseWheelListener()
+        this.setMouseWheelListenerEl()
+        this.setStoryVisible(true)
+      }})
+      this.isShown = true
+    },
+    panUp() {
+      if(!this.isShown)return
+      this.setStoryVisible(false)
+      this.removeMouseWheelListenerEl()
+      this.setMouseWheelListener()
+      if(window.smooth) window.smooth.removeEvents()
+      TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 100, ease: Cubic.easeIn})
+      this.isShown = false
+      this.hide()
     }
   },
+  beforeDestroy() {
+    this.removeMouseWheelListener()
+    this.removeMouseWheelListenerEl()
+    Emitter.removeListener('PAGE_SCROLL', this._panBottom)
+  },
   mounted(){
+    this._doWheel = this.doWheel.bind(this)
+    this._panBottom = this.panBottom.bind(this)
+
     this.setCurrentHomeSlideId(this.currentPageIdNum)
-    this.setMouseWheelListener()
     TweenMax.set(this.$refs.scrollContent,  {yPercent: 100})
     this.setStoryVisible(false)
+    this.setMouseWheelListener()
     this.$nextTick(()=>{
-      if(window.smooth)window.smooth.removeEvents()
+      window.smooth.removeEvents()
+      window.smooth.resize()
     })
     Emitter.emit('SET_MOUSE_TYPE', {type: 'learn'})
+    Emitter.on('PAGE_SCROLL', this._panBottom)
 
   }
 }

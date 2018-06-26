@@ -16,6 +16,7 @@ class Scroll extends SmoothScroll {
     this.oldAutomatic = false
     this.vars.automatic = false
     this.vars.oldTarget = false
+    this.vars.current = 0
 
     this.onScroll = () => {}
     this.onBeforeDebounce = () => {}
@@ -149,9 +150,9 @@ class Scroll extends SmoothScroll {
     this.dom.section.style[this.prefix] = this.getTransform(-this.vars.current.toFixed(2))
 
     if ((Math.round(this.vars.current)) !== this.vars.target) {
-      Emitter.emit('GLOBAL:SCROLL', this.vars)
+      //Emitter.emit('GLOBAL:SCROLL', this.vars)
     }
-    Emitter.emit('GLOBAL:TICK')
+    //Emitter.emit('GLOBAL:TICK')
   }
 
   resize () {

@@ -155,8 +155,8 @@ export default {
             params: { pageId: this.pages[this.currentHomeSlideId].pageId }
           });
         break
-        case this.regScale:
-          window.smooth.scrollTo(ResizeHelper.height())
+        case this.midScale:
+          Emitter.emit('PAGE_SCROLL')
         break
         case this.smlScale:
           this.setPageTransition(true)
@@ -296,9 +296,7 @@ export default {
       this.displacementMouseBlobTexture,
       new MouseBlob(200, 200)
     );
-    if(this.$route.name !== 'index'){
-      this.pageMouseBlob.show()
-    }
+
     this.stage.addChild(mousePageSprite);
     this.stage.addChild(this.mouseBlobSprite);
     Emitter.on('CANVAS_CLICK', this._canvasClick);

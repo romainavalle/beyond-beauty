@@ -76,6 +76,7 @@ export default {
       TweenMax.set(this.$refs.page.$children[0].$el, {yPercent: 0})
       if(this.isPageTransition) this.$refs.homeCanvas.showPage(0,0,'none')
       this.setPageTransition(false)
+      this.resize(true)
       done()
     },
     pageLeave(el, done) {
@@ -154,9 +155,7 @@ export default {
       this.checkButton(from, to)
       next()
     })
-    this.$router.afterEach((to, from) => {
-      this.resize(true)
-    })
+
      // todo -> promise polyfill
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
     const assets =  await load.all([{ url: `${path}packed/pack.json`, type: 'json' },{ url: `${path}packed/pack.pack`, type: 'binary' }])

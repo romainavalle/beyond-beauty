@@ -23,6 +23,9 @@ class SoundHelper {
       this.sound.fade(0, 1, 1000)
     })
   }
+  isPlaying() {
+    return this.sound.playing()
+  }
   playPause() {
     if(this.sound.playing()) {
       this.pause()

@@ -20,6 +20,7 @@ export default {
   data(){
     return {
       isShown: false,
+      isCanvasVisible: false,
       word: 'discover',
       type: '',
       cW: 200,
@@ -33,7 +34,7 @@ export default {
       this.isShown = true
       TweenMax.set(this.$el, {autoAlpha: 1})
       TweenMax.to(this.$refs.word, .8,{delay: .2, scale: 1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
-      if(this.type === 'drag') this.blob.show()
+      if(this.isCanvasVisible) this.blob.show()
       this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
     },
 
@@ -42,7 +43,7 @@ export default {
         this.isShown = false
         TweenMax.set(this.$el, {autoAlpha: 0})
       }})
-      if(this.type === 'drag') this.blob.hide()
+      if(this.isCanvasVisible) this.blob.hide()
     },
 
     tick() {
@@ -58,6 +59,7 @@ export default {
 
     setMouseType(e) {
       this.type = e.type
+      this.isCanvasVisible = false
       switch(this.type){
         case 'learn':
           this.word = 'lear more'
@@ -67,6 +69,15 @@ export default {
         break
         case 'drag':
           this.word = 'drag'
+          this.isCanvasVisible = true
+        break
+        case 'listen':
+          this.word = 'listen'
+          this.isCanvasVisible = true
+        break
+        case 'pause':
+          this.word = 'pause'
+          this.isCanvasVisible = true
         break
         case 'next':
           this.word = 'next'
