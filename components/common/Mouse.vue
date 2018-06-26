@@ -1,6 +1,6 @@
 <template>
   <div class="Mouse" :class="type">
-    <canvas ref="canvas"></canvas>
+    <canvas ref="canvas" width="200" height="200" ></canvas>
     <span ref="word"><span v-text="word"></span></span>
   </div>
 </template>
@@ -12,8 +12,11 @@ if(process.browser) {
 import MouseBlob from '~/assets/js/blobs/MouseBlob'
 import Emitter from '~/assets/js/events';
 import MouseHelper from '~/assets/js/utils/MouseHelper'
+
 export default {
+
   name: 'Mouse',
+
   data(){
     return {
       isShown: false,
@@ -23,30 +26,36 @@ export default {
       cH: 200
     }
   },
-  methods:{
-    show(){
+
+  methods: {
+
+    show() {
       this.isShown = true
       TweenMax.set(this.$el, {autoAlpha: 1})
       TweenMax.to(this.$refs.word, .8,{delay: .2, scale: 1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
       if(this.type === 'drag') this.blob.show()
       this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
     },
-    hide(){
-      TweenMax.to(this.$refs.word, 1,{scale: 0, opacity: 0, overwrite: 1, ease: Power4.easeOut, onComplete: () => {
+
+    hide() {
+      TweenMax.to(this.$refs.word, .5,{scale: 0, opacity: 0, overwrite: 1, ease: Power4.easeOut, onComplete: () => {
         this.isShown = false
         TweenMax.set(this.$el, {autoAlpha: 0})
       }})
       if(this.type === 'drag') this.blob.hide()
     },
+
     tick() {
       if(!this.isShown) return
-      transform(this.$el, {translate3d:[MouseHelper.easeX, MouseHelper.easeY, 0]})
-      if(this.type === 'drag'){
+      transform(this.$refs.canvas, {translate3d:[MouseHelper.easeX - MouseHelper.easeSlowX, MouseHelper.easeY - MouseHelper.easeSlowY, 0]})
+      transform(this.$el, {translate3d:[MouseHelper.easeSlowX, MouseHelper.easeSlowY, 0]})
+      if(this.blob.scale !== 0){
         this.blob.tick(this.rotation, this.scale)
         this.ctx.clearRect(0, 0, this.cW, this.cH)
         this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
       }
     },
+
     setMouseType(e) {
       this.type = e.type
       switch(this.type){
@@ -59,19 +68,24 @@ export default {
         case 'drag':
           this.word = 'drag'
         break
+        case 'next':
+          this.word = 'next'
+        break
       }
-
     },
+
     resize(w, h) {
     }
+
   },
+
   beforeDestroy() {
     Emitter.removeListener('SHOW_MOUSE', this._show);
     Emitter.removeListener('HIDE_MOUSE', this._hide);
     Emitter.removeListener('SET_MOUSE_TYPE', this._setMouseType);
   },
-  mounted(){
 
+  mounted(){
     this._show = this.show.bind(this);
     this._hide = this.hide.bind(this);
     this._setMouseType = this.setMouseType.bind(this);
@@ -102,11 +116,15 @@ export default {
   canvas
     width 200px
     height 200px
+    top 0
+    left 0
     position absolute
+    display block
     margin-top -100px
     margin-left -100px
   span
     display block
     span
       transform translate(-50%, -50%)
+      text-align center
 </style>

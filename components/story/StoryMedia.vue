@@ -7,7 +7,6 @@
 </template>
 <script>
 import { mapGetters } from 'vuex'
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 export default {
   name: 'StoryMedia',
   data(){
@@ -45,7 +44,9 @@ export default {
   },
   mounted(){
     this.$imgs = [].slice.call(this.$el.querySelectorAll('.img'))
-    TweenMax.set(this.$imgs, {opacity: 0})
+    this.$imgs.forEach(element => {
+      element.style.opacity = 0
+    });
   }
 }
 

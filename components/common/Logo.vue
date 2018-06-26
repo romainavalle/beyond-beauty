@@ -16,15 +16,13 @@
 
 <script>
 import HomeBlob from '~/assets/js/blobs/HomeBlob'
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import MenuButtonMixin from './ButtonMenuMixins'
 export default {
   name: 'Logo',
   mixins: [MenuButtonMixin],
   methods:{
     show(){
-      TweenMax.set(this.$refs.titre, {opacity: 0, x: 30})
-      TweenMax.to(this.$refs.titre, 1,{opacity: 1, x: 0})
+      TweenMax.fromTo(this.$refs.titre, 1, {opacity: 0, x: 30}, {opacity: 1, x: 0})
       MenuButtonMixin.methods.show.call(this)
     },
     hide(){

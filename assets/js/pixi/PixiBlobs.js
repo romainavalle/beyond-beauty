@@ -16,7 +16,6 @@ class PixiBlobs {
     this.blobContainer = new Pixi.Sprite()
     this.blobSprite = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.blobs.canvas));
     this.mask = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.blobs.canvas));
-
     this.displacementFilter = new PIXI.filters.DisplacementFilter(this.displacementTexture);
     this.displacementFilter.scale.x = 80
     this.displacementFilter.scale.y = 80

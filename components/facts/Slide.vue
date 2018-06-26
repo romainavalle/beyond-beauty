@@ -5,7 +5,6 @@
     </p>
   </div>
 </template>
-
 <script>
 
 import ResizeHelper from '~/assets/js/utils/ResizeHelper'
@@ -28,14 +27,18 @@ export default {
     }
   },
   methods:{
+    resize(w, h){
+      this.w = w
+      this.h = h
+    },
     show(dir){
-      const from = dir > 0 ? ResizeHelper.width() / 2 : -ResizeHelper.width() / 2
+      const from = dir > 0 ? this.w / 2 : -this.w / 2
       TweenMax.fromTo(this, 1, {x: from}, {x: 0, onComplete: () => {
         this.readyClass = 'ready'
       }})
     },
     hide(dir){
-      const to = dir > 0 ? ResizeHelper.width() / 2 : -ResizeHelper.width() / 2
+      const to = dir > 0 ? this.w / 2 : -this.w / 2
       TweenMax.to(this, 1, {x: to})
       this.readyClass = ''
     },
@@ -46,19 +49,19 @@ export default {
       if(x) this.x = x
       if(this.currentX === this.x)return
       this.currentX = this.x
-      this.$el.style.opacity = 1 - (Math.abs(this.x) / (ResizeHelper.width() / 2))
-        for (let index = 0; index < this.$spans.length; index++) {
-          transform(this.$spans[index], {translate3d:[this.x * (1 - (index * .1)), 0, 0]})
-        }
+      this.$el.style.opacity = 1 - (Math.abs(this.x) / (this.w / 2))
+      for (let index = 0; index < this.$spans.length; index++) {
+        transform(this.$spans[index], {translate3d:[this.x * (1 - (index * .1)), 0, 0]})
+      }
     }
   },
   mounted(){
     this.$spans = [].slice.call(this.$el.querySelectorAll('p .line'))
-    if(this.id !== 2)this.x = ResizeHelper.width()
-    setTimeout(() => {
+    if(this.id !== 2){
+      this.x = ResizeHelper.width()
+    }else{
       this.readyClass = 'ready'
-    }, 2200)
-
+    }
   }
 }
 

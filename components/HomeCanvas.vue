@@ -41,7 +41,7 @@ export default {
       setTimeout(()=>{
         this.portraits.doReady()
         this.titles.doReady()
-        TweenMax.set(this.$el, {'opacity' : 1})
+        this.$el.style.opacity = 1
       },200)
       setTimeout(()=>{
         if(this.route.name !== 'index'){
@@ -66,7 +66,6 @@ export default {
       this.displacementBlobsTexture.texture.update()
       this.mouseBlobSprite.texture.update()
       this.renderer.render(this.stage);
-
     },
     checkStory() {
       if(window.smooth.vars.current === 0)this.storyPushSwitched = false
@@ -90,18 +89,19 @@ export default {
         this.titles.scaleTo(null, this.smlScale);
         this.titles.show(nextPageNum, 0, 0);
         this.pixiBlobs.hide()
-        this.pageMouseBlob.setTint(this.pages[nextPageNum].color)
         this.pixiBlobs.setTint(this.pages[nextPageNum].color);
+        this.pageMouseBlob.setTint(this.pages[nextPageNum].color)
         this.pageMouseBlob.show()
+        this.blobs.tick()
       }else{
         this.pageMouseBlob.setTint(this.pages[this.currentPageIdNum].color)
+        this.pageMouseBlob.hide()
         this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
         this.titles.goToYPos(0, 0)
         this.titles.scaleTo(null, this.midScale);
         this.titles.hide(nextPageNum , true)
         this.pixiBlobs.show()
         this.titles.show(this.currentPageIdNum, 0, 0);
-        this.pageMouseBlob.hide()
       }
     },
     resize(w, h) {
@@ -142,7 +142,7 @@ export default {
     },
     canvasClick() {
       console.log('canvasClick')
-      this.mouseBlob.hide()
+      Emitter.emit('HIDE_MOUSE');
       this.$router.push({
         name: 'story-pageId',
         params: { pageId: this.pages[this.currentHomeSlideId].pageId }
@@ -150,7 +150,7 @@ export default {
     },
     pageTransition() {
       console.log('pageTrans')
-      this.mouseBlob.hide()
+      Emitter.emit('HIDE_MOUSE');
       this.titles.goToYPos(0, 1.2)
       this.titles.scaleTo(this.currentPageIdNum , this.midScale, 0, 1.2, true);
     },
@@ -164,11 +164,8 @@ export default {
     },
     hideMouse() {
       console.log('hideMouse')
-      if(this.$route.name === 'index'){
-        this.mouseBlob.hide()
-      }else{
-        this.pageMouseBlob.hide()
-      }
+      this.mouseBlob.hide()
+      this.pageMouseBlob.hide()
     }
   },
   watch: {
@@ -227,13 +224,11 @@ export default {
     this._canvasClick = this.canvasClick.bind(this);
     this._showMouse = this.showMouse.bind(this);
     this._hideMouse = this.hideMouse.bind(this);
-    TweenMax.set(this.$el, {'opacity' : .1})
+    this.$el.style.opacity = .1
 
     this.mouseBlob = new MouseBlob(200, 200)
     this.blobs = new Blobs()
 
-    const width = ResizeHelper.width();
-    const height = ResizeHelper.height();
     this.renderer = Pixi.autoDetectRenderer({
       backgroundColor: 0xe1dfd7,
       antialias: false

@@ -25,7 +25,8 @@ export default {
   },
   computed:{
     canvasSize() {
-      return {w: ResizeHelper.width() / 2880 * 640, h: ResizeHelper.width() / 2880 * 640}
+      let size = ResizeHelper.width() / 2880 * 640
+      return {w: size, h: size}
     }
   },
   methods:{
@@ -62,7 +63,7 @@ export default {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
       //const canvasPos = {x: (-130 + 640 / 2) * 2880 / w, y: (640 / 2) * (2880 / w) - 400 * (1780 / h)}
-      const shapeW = ResizeHelper.width() / 2880 * 200
+      const shapeW = w / 2880 * 200
       this.blob.resize(this.canvasSize.w, this.canvasSize.h, shapeW)
     }
   },

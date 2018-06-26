@@ -9,7 +9,6 @@
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex';
 import SoundHelper from '~/assets/js/utils/SoundHelper'
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import Emitter from '~/assets/js/events'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
 import vSlide from '~/components/facts/Slide.vue'
@@ -36,6 +35,13 @@ export default {
     },
     hide() {
     },
+    resize(w, h){
+      this.w = w
+      this.h = h
+      for (let index = 0; index < this.$refs.slide.length; index++) {
+        this.$refs.slide[index].resize(w, h)
+      }
+    },
     tick() {
       if(!this.active)return
       if(!this.isDragging){
@@ -43,7 +49,7 @@ export default {
           this.$refs.slide[index].tick()
         }
       }else{
-        const max = ResizeHelper.height() / 8
+        const max = this.w / 8
         const dir = this.mousePos - MouseHelper.x
         if(Math.abs(dir) > max)this.goNext(dir)
         this.$refs.slide[this.currentFact].tick(-dir)
@@ -75,6 +81,7 @@ export default {
       this.isDragging = false
     },
     doMouseEnter(){
+      Emitter.emit('SET_MOUSE_TYPE', {type: 'drag'})
       Emitter.emit('SHOW_MOUSE')
     },
     doMouseLeave() {
@@ -89,7 +96,6 @@ export default {
     active(val) {
       if(val) {
         SoundHelper.pause()
-        Emitter.emit('SET_MOUSE_TYPE', {type: 'drag'})
       }
     }
   },
@@ -103,7 +109,7 @@ export default {
 
 <style lang="stylus" scoped>
 .Slider
-  padding-top 180 * $unitV
+  margin-top 180 * $unitV
   position relative
   width 100%
   user-select none

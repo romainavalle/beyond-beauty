@@ -25,7 +25,8 @@ export default {
     ...mapGetters(['getURI']),
     ...mapState(['packer']),
     canvasSize() {
-      return {w: 5 * 160 *  ResizeHelper.width() / 2880, h: 5 * 160 * (ResizeHelper.width() / 2880) / (774/828)}
+      let size = 5 * 160 *  ResizeHelper.width() / 2880
+      return {w: size, h: size / (774/828)}
     },
     img(){
       return this.packer ? this.getURI(`menu/${this.page.id}.png`) : ''
@@ -39,7 +40,7 @@ export default {
       this.blob.resize(this.canvasSize.w, this.canvasSize.h)
     },
     tick(x){
-      TweenMax.set(this.$el, {x})
+      //TweenMax.set(this.$el, {x})
 
       this.blob.tick()
       this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)

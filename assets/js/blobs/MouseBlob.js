@@ -21,7 +21,7 @@ class MouseBlob extends BlobMixinNoise{
     TweenMax.to(this, 1, {rotation: '+=30', scale: 1, ease: Power4.easeOut})
   }
   hide() {
-    TweenMax.to(this, 1, {rotation: '+=30', scale: 0, ease: Power4.easeOut})
+    TweenMax.to(this, .5, {rotation: '+=30', scale: 0, ease: Power4.easeOut})
   }
 
   tick(follow = false) {

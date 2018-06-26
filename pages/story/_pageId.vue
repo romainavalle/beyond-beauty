@@ -16,7 +16,6 @@ import { mapActions, mapGetters, mapState } from 'vuex';
 import vStoryTop from '~/components/story/StoryTop.vue'
 import vStoryContent from '~/components/story/StoryContent.vue'
 import vFacts from '~/components/facts/Facts.vue'
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import vScrollLayout from '~/components/layout/ScrollLayout.vue'
 import Emitter from '~/assets/js/events';
 
@@ -43,12 +42,14 @@ export default {
       if(this.$refs.facts) this.$refs.facts.tick()
     },
     resize(w, h) {
+      this.w = w
+      this.h = h
       if(this.$refs.content) this.$refs.content.resize(w, h)
       if(this.$refs.facts) this.$refs.facts.resize(w, h)
     },
     show(){
       this.$refs.content.show()
-      this.$nextTick(this.resize(ResizeHelper.width(), ResizeHelper.height()))
+      this.$nextTick(this.resize(this.w, this.h))
     },
     hide(){
       this.$refs.content.hide()

@@ -40,7 +40,7 @@ export default {
       if(!this.isActive) return
       const pos = SoundHelper.getPos()
       const pourc = 1 - (pos / this.duration)
-      TweenMax.set(this.$refs.timer, {'stroke-dashoffset': pourc * 292})
+      this.$refs.timer.style.strokeDashoffset = pourc * 292
       if(pos > this.time_array[this.currentSpan]){
         const textSplit = this.$spans[this.currentSpan].innerText.split(' ')
         const text = '<span>' + textSplit.join('</span> <span>') + '</span>'
@@ -48,7 +48,7 @@ export default {
         if(this.time_array[this.currentSpan + 1])time = this.time_array[this.currentSpan + 1] - this.time_array[this.currentSpan]
         const stagger = (time - .6) / textSplit.length
         this.$spans[this.currentSpan].innerHTML = text
-        TweenMax.set(this.$spans[this.currentSpan], {opacity: 1})
+        this.$spans[this.currentSpan].style.opacity = 1
         TweenMax.staggerFromTo(this.$spans[this.currentSpan].querySelectorAll('span'), .3,{opacity: 0}, {opacity: 1, ease:Quad.easeOut}, stagger)
         this.currentSpan++
       }
@@ -85,10 +85,13 @@ export default {
   mounted(){
     this._activateSound = this.activateSound.bind(this)
     this._deactivateSound = this.deactivateSound.bind(this)
-    TweenMax.set(this.$el, {opacity: 0.3})
+    this.$el.style.opacity = .3
+
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
     this.time_array = this.$spans.map(el => {return el.dataset.time})
-    TweenMax.set(this.$spans, {opacity: 0})
+    this.$spans.forEach(element => {
+      element.style.opacity = 0
+    });
   }
 }
 

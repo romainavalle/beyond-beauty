@@ -1,6 +1,5 @@
 import BlobPoint from '~/assets/js/canvasBlob/BlobPoint'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
-import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 class BlobMixin {
   constructor(w, h, shapeW, numPoints) {
     this.w = w

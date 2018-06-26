@@ -37,6 +37,7 @@ export default {
     },
     resize(w, h) {
       if(this.$refs.timeline)this.$refs.timeline.resize(w, h)
+      if(this.$refs.slider)this.$refs.slider.resize(w, h)
     },
     show() {
     },
@@ -45,7 +46,6 @@ export default {
   },
   mounted() {
     this.setCurrentFact(2)
-
   }
 }
 
@@ -68,9 +68,9 @@ export default {
 </style>
 <style lang="stylus">
 .fadeFact-enter-active
-  transition all .8s ease-out-quart 1s
+  transition all .8s ease-out-quart
 .fadeFact-enter,
 .fadeFact-leave-to
   opacity 0
-  transform translateY(100 * $unitH)
+  transform translateY(-100 * $unitH)
 </style>

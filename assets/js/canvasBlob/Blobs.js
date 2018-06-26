@@ -23,7 +23,6 @@ class Blobs {
   }
   show() {
     TweenMax.to(this, .3, { alpha: 1 })
-    if (this.scale === 1) return
     TweenMax.to(this, 3, { scale: 1, ease: Elastic.easeOut })
   }
   toggle() {

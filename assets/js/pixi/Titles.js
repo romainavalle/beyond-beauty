@@ -30,8 +30,15 @@ class Titles {
     this.titleSprite.interactive = true
     this.titleSprite.buttonMode = true
     this.titleSprite.on('click', () => Emitter.emit('CANVAS_CLICK'))
-    this.titleSprite.on('mouseover', () => Emitter.emit('SHOW_MOUSE'))
     this.titleSprite.on('mouseout', () => Emitter.emit('HIDE_MOUSE'))
+    this.titleSprite.on('mouseover', () => {
+      let obj
+      if(this.scale === 1) obj = {type: 'discover'}
+      if(this.scale === .65) obj = {type: 'learn'}
+      if(this.scale === .45) obj = {type: 'next'}
+      Emitter.emit('SET_MOUSE_TYPE', obj)
+      Emitter.emit('SHOW_MOUSE')
+    })
     pages.forEach((page, i) => {
       const titleContainer = new Pixi.Container()
       const title = new Title(titleContainer, page.id, i)

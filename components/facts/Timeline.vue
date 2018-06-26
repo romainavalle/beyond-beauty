@@ -65,7 +65,7 @@ export default {
       if(val) {
         this.show()
       }else{
-        // this.hide()
+        this.hide()
       }
     }
   },

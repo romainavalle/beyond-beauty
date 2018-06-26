@@ -90,9 +90,11 @@ export default {
       }
     },
     resize(forceAfterRoute = false){
-      if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(ResizeHelper.width(),ResizeHelper.height())
-      if(!forceAfterRoute)this.$refs.homeCanvas.resize(ResizeHelper.width(),ResizeHelper.height())
-      if(!forceAfterRoute)this.$refs.siteMenu.resize(ResizeHelper.width(),ResizeHelper.height())
+      const w = ResizeHelper.width()
+      const h = ResizeHelper.height()
+      if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(w, h)
+      if(!forceAfterRoute)this.$refs.homeCanvas.resize(w, h)
+      if(!forceAfterRoute)this.$refs.siteMenu.resize(w, h)
     },
     setDebug() {
       this.stats = new Stats();
@@ -105,8 +107,8 @@ export default {
     tick(){
       this.stats.begin()
       NoisePosition.tick()
-      if(this.$refs.mouse)this.$refs.mouse.tick()
       MouseHelper.tick()
+      if(this.$refs.mouse)this.$refs.mouse.tick()
       if(this.$refs.logo)this.$refs.logo.tick()
       if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
       if(this.$refs.menuButton)this.$refs.menuButton.tick()

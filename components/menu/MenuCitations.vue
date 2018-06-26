@@ -49,7 +49,7 @@ export default {
   },
   mounted() {
     this._next = this.next.bind(this)
-    TweenMax.set(this.$el, {opacity: 0})
+    this.$el.style.opacity = 0
   }
 }
 

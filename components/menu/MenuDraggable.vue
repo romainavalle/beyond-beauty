@@ -9,7 +9,6 @@
 </template>
 
 <script>
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import vMenuLink from '~/components/menu/MenuLink.vue'
 import { mapState } from 'vuex'
 if (process.browser) {
@@ -31,19 +30,20 @@ export default {
   methods:{
     tick() {
       this.$refs.link.forEach((el, i) => {
-        let t = (-this.snapValues[i] + this.draggable[0].x) / (ResizeHelper.width() / 2)
+        let t = (-this.snapValues[i] + this.draggable[0].x) / (this.w / 2)
         const ease = t > 0 ? (--t)*t*t+1 :t*t*t
 
         el.tick(ease * 200)
       })
     },
     resize(w, h) {
-      TweenMax.set(this.$el, {x: ResizeHelper.width() / 2 - ( 160 * 4 * ResizeHelper.width() / 2880), y: '-50%'})
+      this.w = w
+      TweenMax.set(this.$el, {x: this.w / 2 - ( 160 * 4 * this.w / 2880), y: '-50%'})
       this.$refs.link.forEach((el, i)=>{
         el.resize(w,h)
       })
       for (let i = 0; i< this.pages.length; i++) {
-        this.$set(this.snapValues, i, Math.round(-i * 160 * 7 * ResizeHelper.width() / 2880))
+        this.$set(this.snapValues, i, Math.round(-i * 160 * 7 * this.w / 2880))
       }
       if(this.draggable && this.draggable[0]){
         this.slideDraggable()
@@ -51,7 +51,7 @@ export default {
     },
     slideDraggable(){
       TweenMax.to(this.$refs.content , .5,{
-        x: -this.currentId * 160 * 8 * ResizeHelper.width() / 2880, force3D:true, ease: Quint.easeOut,onComplete:()=>{this.draggable[0].update()}
+        x: -this.currentId * 160 * 8 * this.w / 2880, force3D:true, ease: Quint.easeOut,onComplete:()=>{this.draggable[0].update()}
       })
     },
     resetDraggable(){
@@ -94,11 +94,11 @@ export default {
     show(){
       this.resetDraggable()
       this.currentId = 0
-      TweenMax.fromTo(this.$refs.content, .9, {x: ResizeHelper.width()}, {delay: .8, x: 0, ease: Expo.easeOut, force3D:true})
+      TweenMax.fromTo(this.$refs.content, .9, {x: this.w}, {delay: .8, x: 0, ease: Expo.easeOut, force3D:true})
       TweenMax.set(this.$el, {autoApha: 1})
     },
     hide() {
-      TweenMax.to(this.$refs.content, .9, {x: '+=' + ResizeHelper.width() * .2, opacity: 0, ease: Cubic.easeIn, force3D:true, onComplete: () => {TweenMax.set(this.$refs.content, {x: 0, opacity: 1})}})
+      TweenMax.to(this.$refs.content, .9, {x: '+=' + this.w * .2, opacity: 0, ease: Cubic.easeIn, force3D:true, onComplete: () => {TweenMax.set(this.$refs.content, {x: 0, opacity: 1})}})
     },
     onReady(){
     }

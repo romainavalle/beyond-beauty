@@ -2,7 +2,6 @@
 import Portrait from "~/assets/js/pixi/Portrait"
 import TransitionMask from "~/assets/js/mask/Transition"
 import DisappearMask from "~/assets/js/mask/Disappear"
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 
 import { pages } from '~/assets/data.json'
 

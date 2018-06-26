@@ -15,7 +15,6 @@
 
 <script>
 import MenuButtonBlob from '~/assets/js/blobs/MenuButtonBlob'
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import MenuButtonMixin from './ButtonMenuMixins'
 export default {
   name: 'MenuButton',

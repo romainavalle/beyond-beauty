@@ -1,6 +1,4 @@
 import { mapState, mapGetters, mapActions } from 'vuex'
-
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 export default {
   data() {
     return {
@@ -55,7 +53,7 @@ export default {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
       this.blob.resize(this.canvasSize.w, this.canvasSize.h, 42)
-    },
+    }
   },
   beforeDestroy(){
   },

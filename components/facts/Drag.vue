@@ -24,7 +24,8 @@ export default {
   computed:{
     ...mapState(['currentFact']),
     canvasSize() {
-      return {w: ResizeHelper.width() / 2880 * 320, h: ResizeHelper.width() / 2880 * 320}
+      const size = ResizeHelper.width() / 2880 * 320
+      return {w: size, h: size}
     }
   },
   methods:{
@@ -39,19 +40,18 @@ export default {
       this.ctx.drawImage(this.blob.canvas, 0, 0, this.canvasSize.w, this.canvasSize.h);
     },
     setDragBlob() {
-      const shapeW = ResizeHelper.width() / 2880 * 100
-      this.blob = new DragBlob(this.canvasSize.w, this.canvasSize.h, shapeW)
+      this.blob = new DragBlob(this.canvasSize.w, this.canvasSize.h)
     },
     resize(w, h) {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
-      this.blob.resize(this.canvasSize.w, this.canvasSize.h)
-      this.setSnapValue()
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h, w / 2880 * 100)
+      this.setSnapValue(w)
 
     },
-    setSnapValue(){
-      const padding = (ResizeHelper.width() / 2880 * 160) + (ResizeHelper.width() / 2880 * 25)
-      const timelineW = ResizeHelper.width() - padding * 2 // width - padding
+    setSnapValue(w){
+      const padding = (w / 2880 * 160) + (w / 2880 * 25)
+      const timelineW = w - padding * 2 // width - padding
       this.snapValues = []
       for (let index = 0; index < 5; index++) {
         this.snapValues.push(Math.round(padding + timelineW / 4 * index))
@@ -80,7 +80,7 @@ export default {
     }
   },
   mounted(){
-    this.setSnapValue()
+    this.setSnapValue(ResizeHelper.width())
     this.oldX = this.snapValues[this.currentFact]
     TweenMax.set(this.$el, {x: this.oldX})
      this.draggable = Draggable.create(this.$el , {
