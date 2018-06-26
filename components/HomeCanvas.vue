@@ -13,7 +13,7 @@ import Background from '~/assets/js/pixi/Background';
 import Portraits from '~/assets/js/pixi/Portraits';
 import Titles from '~/assets/js/pixi/Titles';
 import Emitter from '~/assets/js/events';
-import { mapState, mapGetters } from 'vuex';
+import { mapActions, mapState, mapGetters } from 'vuex';
 
 if (process.browser) {
   var Pixi = require('pixi.js');
@@ -21,6 +21,8 @@ if (process.browser) {
 export default {
   data() {
     return {
+      currentScale: 1,
+      regScale: 1,
       midScale: .65,
       smlScale: .45,
       tempCurrentPageIdNum: -1,
@@ -29,15 +31,15 @@ export default {
   },
   computed: {
     ...mapState(['currentHomeSlideId', 'route', 'isMenuCompletlyVisible', 'isAppReady','pages','isStoryVisible', 'isPageTransition']),
-    ...mapGetters(['currentPageIdNum', 'getURI', 'getPageIdNum'])
+    ...mapGetters(['currentPageIdNum','nextPageIdNum', 'getURI', 'getPageIdNum'])
   },
   methods: {
+    ...mapActions(['setPageTransition']),
     load(){
       this.portraits.load(this.getURI)
       this.titles.load(this.getURI)
     },
     onReady(){
-
       setTimeout(()=>{
         this.portraits.doReady()
         this.titles.doReady()
@@ -56,7 +58,7 @@ export default {
       if(window.smooth && this.route.name !== 'index')this.checkStory()
       if(this.isMenuCompletlyVisible) return
       if(!this.isAppReady) return
-      if(this.isStoryVisible && window.smooth.vars.current < this.bounding)return
+      if(this.isStoryVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.displacement.tick()
       this.pixiBlobs.tick();
       this.mouseBlob.tick(true);
@@ -86,7 +88,8 @@ export default {
       if(this.storyPushSwitched) {
         this.titles.goToYPos(ResizeHelper.height() * .3, 0)
         this.titles.hide(this.currentPageIdNum, true)
-        this.titles.scaleTo(null, this.smlScale);
+        this.currentScale = this.smlScale
+        this.titles.scaleTo(null, this.currentScale);
         this.titles.show(nextPageNum, 0, 0);
         this.pixiBlobs.hide()
         this.pixiBlobs.setTint(this.pages[nextPageNum].color);
@@ -98,6 +101,7 @@ export default {
         this.pageMouseBlob.hide()
         this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
         this.titles.goToYPos(0, 0)
+        this.currentScale = this.midScale
         this.titles.scaleTo(null, this.midScale);
         this.titles.hide(nextPageNum , true)
         this.pixiBlobs.show()
@@ -130,7 +134,8 @@ export default {
       this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
       this.pageMouseBlob.setTint(this.pages[this.currentPageIdNum].color)
       this.titles.show(this.currentPageIdNum, delay * 0.6, time, direction);
-      this.titles.scaleTo(this.currentPageIdNum, this.midScale, delay * 0.6, time);
+      this.currentScale = this.midScale
+      this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay * 0.6, time);
     },
     hidePage(delay) {
       console.log('hidePage')
@@ -138,21 +143,36 @@ export default {
       this.portraitsContainer.visible = true
       this.background.hide()
       this.portraits.appear(this.currentHomeSlideId);
-      this.titles.scaleTo(this.currentHomeSlideId, 1, delay * 0.6, 1);
+      this.currentScale = this.regScale
+      this.titles.scaleTo(this.currentHomeSlideId, this.currentScale, delay * 0.6, 1);
     },
     canvasClick() {
       console.log('canvasClick')
-      Emitter.emit('HIDE_MOUSE');
-      this.$router.push({
-        name: 'story-pageId',
-        params: { pageId: this.pages[this.currentHomeSlideId].pageId }
-      });
+      switch (this.currentScale) {
+        case this.regScale:
+          this.$router.push({
+            name: 'story-pageId',
+            params: { pageId: this.pages[this.currentHomeSlideId].pageId }
+          });
+        break
+        case this.regScale:
+          window.smooth.scrollTo(ResizeHelper.height())
+        break
+        case this.smlScale:
+          this.setPageTransition(true)
+          this.$router.push({
+            name: 'story-pageId',
+            params: { pageId: this.pages[this.nextPageIdNum].pageId }
+          });
+        break
+      }
     },
     pageTransition() {
       console.log('pageTrans')
       Emitter.emit('HIDE_MOUSE');
       this.titles.goToYPos(0, 1.2)
-      this.titles.scaleTo(this.currentPageIdNum , this.midScale, 0, 1.2, true);
+      this.currentScale = this.midScale
+      this.titles.scaleTo(this.currentPageIdNum , this.currentScale, 0, 1.2, true);
     },
     showMouse() {
       console.log('showMouse')
