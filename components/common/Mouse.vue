@@ -49,8 +49,8 @@ export default {
 
     tick() {
       if(!this.isShown) return
-      transform(this.$refs.canvas, {translate3d:[MouseHelper.easeX - MouseHelper.easeSlowX, MouseHelper.easeY - MouseHelper.easeSlowY, 0]})
-      transform(this.$el, {translate3d:[MouseHelper.easeSlowX, MouseHelper.easeSlowY, 0]})
+      transform(this.$refs.canvas, {translate3d:[MouseHelper.easeSlowX - MouseHelper.easeX,MouseHelper.easeSlowY -  MouseHelper.easeY, 0]})
+      transform(this.$el, {translate3d:[MouseHelper.easeX, MouseHelper.easeY, 0]})
       if(this.blob.scale !== 0){
         this.blob.tick(this.rotation, this.scale)
         this.ctx.clearRect(0, 0, this.cW, this.cH)

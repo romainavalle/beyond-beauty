@@ -177,6 +177,7 @@ export default {
           doNext = false
       }
       this.$nextTick(()=>{this.setMenuOpen(false)})
+      Emitter.emit('HIDE_MOUSE');
       if(doNext)next()
     })
 

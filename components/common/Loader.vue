@@ -193,4 +193,10 @@ export default {
       -webkit-background-clip text
     &.show:before
       background-size 600px 600px
+
+    /*transform translateZ(0.1px)
+    transition 2s
+    clip-path ellipse(1px 1px at center)
+    &.show
+      clip-path ellipse(200px 200px at center)*/
 </style>

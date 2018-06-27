@@ -14,8 +14,10 @@ class PixiBlobs {
   }
   init() {
     this.blobContainer = new Pixi.Sprite()
-    this.blobSprite = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.blobs.canvas));
-    this.mask = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.blobs.canvas));
+    this.blobTexture = new PIXI.Texture.fromCanvas(this.blobs.canvas)
+    this.blobSprite = new PIXI.Sprite(this.blobTexture);
+    this.mask = new PIXI.Sprite(this.blobTexture);
+    this.blobTexture.cacheAsBitmap = true
     this.displacementFilter = new PIXI.filters.DisplacementFilter(this.displacementTexture);
     this.displacementFilter.scale.x = 80
     this.displacementFilter.scale.y = 80
@@ -29,8 +31,7 @@ class PixiBlobs {
   }
   tick(followMouse = false) {
     this.blobs.tick(followMouse)
-    this.blobSprite.texture.update()
-    this.mask.texture.update()
+    this.blobTexture.update()
   }
   show() {
     this.blobs.show()

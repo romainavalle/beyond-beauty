@@ -27,7 +27,7 @@ export default {
       this.stage = new Pixi.Container()
 
         let img = new Image()
-        img.src = 'images/titles-border/cara-delevingne-1.png'
+        img.src = 'images/dev-titles-border/cara-delevingne-1.png'
         let sprite = new Pixi.Sprite(new Pixi.Texture(new Pixi.BaseTexture(img)))
         sprite.interactive = false
         sprite.width = 800

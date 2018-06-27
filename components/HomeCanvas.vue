@@ -36,6 +36,7 @@ export default {
   methods: {
     ...mapActions(['setPageTransition']),
     load(){
+
       this.portraits.load(this.getURI)
       this.titles.load(this.getURI)
     },
@@ -61,8 +62,8 @@ export default {
       this.pageMouseBlob.tick(true)
       this.blobs.tick()
       this.portraits.tick()
-      this.displacementBlobsTexture.texture.update()
-      this.mouseBlobSprite.texture.update()
+      this.mouseBlobTexture.update()
+      this.displacementTexture.update()
       this.renderer.render(this.stage);
     },
     checkStory() {
@@ -271,17 +272,22 @@ export default {
     this.mouseBlob = new MouseBlob(200, 200)
     this.blobs = new Blobs()
 
-    this.renderer = Pixi.autoDetectRenderer({
+    this.renderer = new Pixi.WebGLRenderer({
       backgroundColor: 0xe1dfd7,
+      transparent: false,
       antialias: false
     });
     this.renderer.autoResize = true;
+    this.renderer.preserveDrawingBuffer = true
+    this.renderer.legacy = true
     // PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE;
+    this.renderer.textureGC.mode = PIXI.GC_MODES.MANUAL
     this.$el.appendChild(this.renderer.view);
 
     this.displacement = new Displacement()
-    this.displacementBlobsTexture = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.displacement.canvas));
-    this.displacementMouseBlobTexture = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.displacement.canvas));
+    this.displacementTexture = new PIXI.Texture.fromCanvas(this.displacement.canvas)
+    this.displacementBlobsTexture = new PIXI.Sprite(this.displacementTexture);
+    //this.displacementMouseBlobTexture = new PIXI.Sprite(this.displacementTexture);
 
     this.stage = new Pixi.Container();
 
@@ -309,13 +315,13 @@ export default {
     this.portraits = new Portraits(this.portraitsContainer);
     this.stage.addChild(this.portraitsContainer);
 
-
-    this.mouseBlobSprite = new PIXI.Sprite(PIXI.Texture.fromCanvas(this.mouseBlob.canvas));
+    this.mouseBlobTexture = new PIXI.Texture.fromCanvas(this.mouseBlob.canvas)
+    this.mouseBlobSprite = new PIXI.Sprite(this.mouseBlobTexture);
     const mousePageSprite =  new Pixi.Sprite()
     this.pageMouseBlob = new PixiBlobs(
       mousePageSprite,
       this.titles.titleBorderMouseSprite,
-      this.displacementMouseBlobTexture,
+      this.displacementBlobsTexture,
       new MouseBlob(200, 200)
     );
 

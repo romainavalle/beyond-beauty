@@ -122,13 +122,14 @@ module.exports = {
     ]
   },
   router: {
-    base: process.env.NODE_ENV === 'dev' ? '/' : '/beyond-beauty/'
+    base: '/'
   },
 
 
 
 
   generate: {
+    dir: 'beyond-beauty',
     routes: function () {
       var routes_array = []
       var data = JSON.parse(require('fs').readFileSync(`./assets/data.json`, 'utf-8'))
