@@ -42,6 +42,7 @@ class SoundHelper {
     }
   }
   pause() {
+    if(!this.sound) return
     if(this.sound.playing()) {
       this.sound.fade(1, 0, 300)
       this.sound.once('fade', () => {

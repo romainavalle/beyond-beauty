@@ -1,48 +1,48 @@
 
 import 'gsap/ColorPropsPlugin';
-if (process.browser) {
-  var Pixi = require('pixi.js')
-}
+import ResizeHelper from '~/assets/js/utils/ResizeHelper'
+import Blobs from '~/assets/js/pixi/blobs/Blobs'
+
 class PixiBlobs {
-  constructor(stage, titleBorderSprite, displacementTexture, blobs) {
+  constructor(stage, titleBorderSprite, displacementFilter, renderer) {
     this.stage = stage
     this.titleBorderSprite = titleBorderSprite
     this.color = 0
-    this.displacementTexture = displacementTexture
-    this.blobs = blobs
+    this.displacementFilter = displacementFilter
+    this.blobs = new Blobs()
+    this.renderer = renderer
+    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(),PIXI.settings.SCALE_MODE.LINEAR);
     this.init()
   }
   init() {
-    this.blobContainer = new Pixi.Sprite()
-    this.blobTexture = new PIXI.Texture.fromCanvas(this.blobs.canvas)
-    this.blobSprite = new PIXI.Sprite(this.blobTexture);
-    this.mask = new PIXI.Sprite(this.blobTexture);
-    this.blobTexture.cacheAsBitmap = true
-    this.displacementFilter = new PIXI.filters.DisplacementFilter(this.displacementTexture);
-    this.displacementFilter.scale.x = 80
-    this.displacementFilter.scale.y = 80
-    this.blobContainer.addChild(this.titleBorderSprite)
-    this.blobContainer.addChild(this.displacementTexture)
-    this.blobContainer.mask = this.mask
+    this.blobContainer = new PIXI.Container()
+    this.blobSprite = new PIXI.Sprite(this.renderTexture)
+    this.maskSprite = new PIXI.Sprite(this.renderTexture)
     this.stage.addChild(this.blobSprite)
-    this.stage.addChild(this.blobContainer)
-    this.stage.addChild(this.mask)
+    this.stage.addChild(this.maskSprite)
+    this.stage.addChild(this.titleBorderSprite)
+    this.titleBorderSprite.mask = this.maskSprite
     this.titleBorderSprite.filters = [this.displacementFilter];
   }
-  tick(followMouse = false) {
-    this.blobs.tick(followMouse)
-    this.blobTexture.update()
+  tick() {
+    this.blobs.tick()
+    this.renderer.render(this.blobs.sprite, this.renderTexture)
   }
   show() {
     this.blobs.show()
+  }
+  showMouse() {
+    this.blobs.showMouse()
+  }
+  hideMouse() {
+    this.blobs.hideMouse()
   }
   hide() {
     this.blobs.hide()
   }
   resize(w, h, shapeW = 0) {
-    this.displacementTexture.width = w
-    this.displacementTexture.height = h
-    this.blobs.resize(w, h, shapeW)
+    this.renderTexture.resize(w, h)
+    this.blobs.resize && this.blobs.resize(w, h, shapeW)
   }
   setTint(color) {
     if(this.color && this.color === color) return

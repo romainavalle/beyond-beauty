@@ -1,4 +1,0 @@
-AuthName "Page d'administration protégée, veuillez vous identifier"
-AuthType Basic
-AuthUserFile "/home/thegreytqx/beyond-beauty/.htpasswd"
-Require valid-user

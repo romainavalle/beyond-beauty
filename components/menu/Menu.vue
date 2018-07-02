@@ -1,12 +1,14 @@
 <template>
   <div class="Menu">
-    <div class="content" ref="content">
+    <div class="content content--top" ref="content">
       <v-menu-header ref="header"></v-menu-header>
-      <v-menu-citations ref="menuCitations"></v-menu-citations>
-      <v-menu-footer ref="footer"></v-menu-footer>
     </div>
     <div class="line" ref="line"></div>
     <v-menu-draggable ref="menuDraggable"></v-menu-draggable>
+    <div class="content content--bottom" ref="content">
+      <v-menu-citations ref="menuCitations"></v-menu-citations>
+      <v-menu-footer ref="footer"></v-menu-footer>
+    </div>
   </div>
 </template>
 
@@ -103,8 +105,10 @@ export default {
     background $colors-grey
   .content
     position absolute
-    top 0
-    left 0
-    right 0
-    bottom 0
+    width 100%
+    z-index 1
+    &.content--top
+      top 0
+    &.content--bottom
+      bottom 0
 </style>

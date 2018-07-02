@@ -1,9 +1,7 @@
 import ResizeHelper from '../utils/ResizeHelper';
 import { pages } from '~/assets/data.json'
 import CustomEase from "gsap/CustomEase";
-if (process.browser) {
-  var Pixi = require('pixi.js')
-}
+
 class Title {
   constructor(container, id, idNum, isBordered) {
     this.container = container
@@ -29,16 +27,60 @@ class Title {
     }
   }
 
+  setTexture(baseTexture, array) {
+    console.log("ee")
+    array.forEach((el, i) => {
+      console.log(el)
+      const texture = new PIXI.Texture.from(baseTexture)
+      texture.frame = new PIXI.Rectangle(el.x, el.y, el.w, el.h)
+      const resizeSprite = new PIXI.Sprite(texture)
+      const scaleContainer = new PIXI.Sprite()
+      const imgContainer = new PIXI.Sprite()
+      const title = new PIXI.Sprite()
+      imgContainer.addChild(resizeSprite)
+      scaleContainer.addChild(imgContainer)
+      title.addChild(scaleContainer)
+      imgContainer.position.y = 5000 + pages[this.idNum].titlePosition[i] * (ResizeHelper.height() / 1440)
+      resizeSprite.anchor.x = .5
+      resizeSprite.anchor.y = .5
+      resizeSprite.pivot.x = .5
+      resizeSprite.pivot.y = .5
+      imgContainer.anchor.x = .5
+      imgContainer.anchor.y = .5
+      imgContainer.pivot.x = .5
+      imgContainer.pivot.y = .5
+      scaleContainer.anchor.x = .5
+      scaleContainer.anchor.y = .5
+      scaleContainer.pivot.x = .5
+      scaleContainer.pivot.y = .5
+      title.anchor.x = .5
+      title.anchor.y = .5
+      title.pivot.x = .5
+      title.pivot.y = .5
+      title.interactive = false
+      title.position.y = -5100
+
+      this.container.addChild(title)
+      this.title_array.push(title)
+      this.size_array.push({w: el.w, h: el.h})
+    })
+    this.originalW = this.container.width
+    this.originalH = this.container.height
+    this.isDisposed = true
+
+    if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
+  }
+
   dispose() {
     this.loaded++
     if (this.loaded != 3) return
     for (let index = 0; index < 3; index++) {
 
       PIXI.Texture.addToCache(this.img_array[index])
-      const resizeSprite = new Pixi.Sprite.from(this.img_array[index])
-      const scaleContainer = new Pixi.Sprite()
-      const imgContainer = new Pixi.Sprite()
-      const title = new Pixi.Sprite()
+      const resizeSprite = new PIXI.Sprite.from(this.img_array[index])
+      const scaleContainer = new PIXI.Sprite()
+      const imgContainer = new PIXI.Sprite()
+      const title = new PIXI.Sprite()
       imgContainer.addChild(resizeSprite)
       scaleContainer.addChild(imgContainer)
       title.addChild(scaleContainer)

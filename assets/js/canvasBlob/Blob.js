@@ -38,18 +38,18 @@ class Blob {
   }
 
   setBlob() {
-    this.numPoints = 4 + Math.floor(Math.random() * 5)
-    this.radius = 30 + this.numPoints * 15
+    this.numPoints = 5 + Math.floor(Math.random() * 4)
+    this.radius = 20 + this.numPoints * 15
     this.divisional = Math.PI * 2 / this.numPoints
     this.points = []
     for (let i = 0; i < this.numPoints; i++) {
       let point = new BlobPoint(this.divisional * i, this, i, this.elasticity, this.friction);
       this.points.push(point);
     }
-    const cosAngle = Math.random() * Math.PI / 3
-    const sinAngle = Math.random() * Math.PI / 3
-    this.position.x = Math.cos(cosAngle + Math.PI / 4) * (this.w) - this.w / 2
-    this.position.y = Math.sin(sinAngle + Math.PI / 4) * (this.h ) + this.h  / 2
+    const cosAngle = Math.random() * Math.PI / 2 + Math.PI / 4
+    const sinAngle = Math.random() * Math.PI / 2 + Math.PI / 4
+    this.position.x = Math.cos(cosAngle) * (this.w) -  this.w / 2
+    this.position.y = Math.sin(sinAngle) * (this.h ) + this.h  / 2
     const x = this.position.x + this.w * Math.cos(Math.PI / 4) + this.w
     const y = this.position.y - this.h * Math.sin(Math.PI / 4) - this.h
     const time = this.radius / 5

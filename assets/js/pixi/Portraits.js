@@ -1,13 +1,10 @@
 
 import Portrait from "~/assets/js/pixi/Portrait"
-import TransitionMask from "~/assets/js/mask/Transition"
 import DisappearMask from "~/assets/js/mask/Disappear"
 
 import { pages } from '~/assets/data.json'
 
-if (process.browser) {
-  var Pixi = require('pixi.js')
-}
+
 class Portraits {
   constructor(stage) {
     this.stage = stage
@@ -17,16 +14,14 @@ class Portraits {
 
   init() {
     this.setupPortrait()
-    this.transitionInMask = new TransitionMask()
-    this.transitionOutMask = new TransitionMask()
-    this.disappearMask = new DisappearMask()
+
   }
 
   setupPortrait() {
-    this.portraitsprite = new Pixi.Sprite()
-    pages.forEach(page => {
-      const portraitContainer = new Pixi.Container()
-      const portrait = new Portrait(portraitContainer, page.id, page.color)
+    this.portraitsprite = new PIXI.Sprite()
+    pages.forEach((page, i) => {
+      const portraitContainer = new PIXI.Container()
+      const portrait = new Portrait(portraitContainer, page.id, i, page.color)
       this.portraitsprite.addChild(portraitContainer)
       this.portraits.push(portrait)
     });
@@ -34,13 +29,35 @@ class Portraits {
   }
 
   load(getter) {
-    this.transitionInMask.loadMask(getter)
-    this.transitionOutMask.loadMask(getter)
-    this.disappearMask.loadMask(getter)
+    this.baseLoaded = false
+    this.transitionLoaded = false
+    this.disappearLoaded = false
+    this.baseText = new PIXI.BaseTexture.fromImage(getter('bust/busts.png'))
+    this.transitionText = new PIXI.BaseTexture.fromImage(getter('mask/transition.png'))
+    this.disappearText = new PIXI.BaseTexture.fromImage(getter('mask/disappear.png'))
+    let time = new Date()
+    this.baseText.on('loaded', this.onBaseLoaded.bind(this))
+    this.transitionText.on('loaded', this.onTransitionLoaded.bind(this))
+    this.disappearText.on('loaded', this.onDisappearLoaded.bind(this))
+  }
+  onBaseLoaded() {
+    this.baseLoaded = true
+    this.onLoaded()
+  }
+  onTransitionLoaded() {
+    this.transitionLoaded = true
+    this.onLoaded()
+  }
+  onDisappearLoaded() {
+    this.disappearLoaded = true
+    this.onLoaded()
+  }
+  onLoaded() {
+    if(!this.baseLoaded) return
+    if(!this.transitionLoaded) return
+    if(!this.disappearLoaded) return
     this.portraits.forEach(el => {
-      el.load(getter)
-      el.setMaskTransition(this.transitionInMask,this.transitionOutMask)
-      el.setMaskDisappear(this.disappearMask)
+      el.setTexture(this.baseText, this.transitionText, this.disappearText)
     })
   }
   doReady(){
@@ -55,27 +72,17 @@ class Portraits {
   }
 
   hide(id, direction = 'forward') {
-    this.transitionOutMask.playOut(direction)
     this.portraits[id].hide(direction)
   }
 
   show(id, direction = 'forward') {
-    this.transitionInMask.playIn(direction)
     this.portraits[id].show(direction);
   }
 
-  tick(){
-    this.portraits.forEach((el, i) => {
-      el.tick()
-    })
-  }
-
   disappear(id) {
-    this.disappearMask.disappear()
     this.portraits[id].disappear();
   }
   appear(id) {
-    this.disappearMask.appear()
     this.portraits[id].appear();
   }
 

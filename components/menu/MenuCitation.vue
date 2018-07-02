@@ -42,12 +42,15 @@ export default {
   display flex
   flex-wrap nowrap
   width 100%
+  margin 0
+  padding 0
   strong
-    font-weight normal
+    font-weight $light
     font-size 21 * $unitH
-    color $colors-grey
-    width 480 * $unitH
+    color $colors-speechGrey
+    width 400 * $unitH
   p
     color $colors-white
     font-size 25 * $unitH
+    font-weight $light
 </style>

@@ -16,7 +16,7 @@ class MenuBlob extends BlobMixinNoise{
     this.ctx.scale(scale, scale)
     this.ctx.translate(-this.centerX, -this.centerY)
     this.drawShape(this.shapeW, this.centerX, this.centerY)
-    this.ctx.fillStyle = $colors['white']//0XCC0000//
+    this.ctx.fillStyle = 'white'//0XCC0000//
     this.ctx.fill()
     this.ctx.restore()
   }

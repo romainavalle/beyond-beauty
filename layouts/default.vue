@@ -113,13 +113,13 @@ export default {
       this.stats.begin()
       NoisePosition.tick()
       MouseHelper.tick()
-      if(this.$refs.mouse)this.$refs.mouse.tick()
-      if(this.$refs.logo)this.$refs.logo.tick()
-      if(this.$refs.siteMenu)this.$refs.siteMenu.tick()
-      if(this.$refs.menuButton)this.$refs.menuButton.tick()
-      if(this.$refs.homeCanvas)this.$refs.homeCanvas.tick()
-      if(this.$refs.page && this.$refs.page.$children[0])this.$refs.page.$children[0].tick && this.$refs.page.$children[0].tick()
+      this.$refs.mouse.tick()
+      this.$refs.logo.tick()
+      this.$refs.siteMenu.tick()
+      this.$refs.menuButton.tick()
+      this.$refs.page.$children[0].tick()
       if(this.route.name === "story-pageId")this.$refs.sound.tick()
+      this.$refs.homeCanvas.tick()
       this.stats.end()
     },
     onLoaded(){
@@ -131,10 +131,10 @@ export default {
       if(process.browser)this.$refs.homeCanvas.load()
       this.$nextTick(()=>{
         TweenMax.ticker.addEventListener('tick', this._tick)
-        this.resize()
       })
     },
     onReady() {
+      this.resize()
       if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady()
       this.checkButton(null, this.$route)
       if(process.browser){
@@ -158,7 +158,13 @@ export default {
       this.onReady()
     }
   },
+  created() {
+  },
   async mounted () {
+    if(process.browser) {
+    document.fonts.load('10pt "Hawthorn')
+
+    }
     this._resize = this.resize.bind(this)
     this._tick = this.tick.bind(this)
     this.$router.beforeEach((to, from, next) => {
@@ -182,8 +188,7 @@ export default {
     })
 
      // todo -> promise polyfill
-    const path = process.env.NODE_ENV === 'dev' ? '/' : ''
-    const assets =  await load.all([{ url: `${path}packed/pack.json`, type: 'json' },{ url: `${path}packed/pack.pack`, type: 'binary' }])
+    const assets =  await load.all([{ url: '/packed/pack.json', type: 'json' },{ url: '/packed/pack.pack', type: 'binary' }])
 
     if(process.browser){
       const unpacker = new MMUnpacker(assets[1], assets[0]);
@@ -197,7 +202,7 @@ export default {
     console.log('%c🖌 @NahelMoussi', "font-weight: bold; color: #f7cfae;");
     console.log('%c⌨️ @Romaindr', "font-weight: bold; color: #f5d4a4;");
     window.addEventListener("blur", () => {
-      SoundHelper.fadeOut()
+      SoundHelper.pause()
     }, false);
   }
 }

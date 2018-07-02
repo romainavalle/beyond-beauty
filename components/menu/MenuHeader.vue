@@ -63,8 +63,8 @@ export default {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
       //const canvasPos = {x: (-130 + 640 / 2) * 2880 / w, y: (640 / 2) * (2880 / w) - 400 * (1780 / h)}
-      const shapeW = w / 2880 * 200
-      this.blob.resize(this.canvasSize.w, this.canvasSize.h, shapeW)
+      if(!this.shapeW)this.shapeW = w / 2880 * 184
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h, this.shapeW)
     }
   },
   mounted() {
@@ -89,15 +89,14 @@ export default {
   text-transform uppercase
   display flex
   top 139 * $unitV // 160 - fontsize
-  z-index 1
   canvas
     top 0
     left 0
     position absolute
     width 640 * $unitH
     height 640 * $unitH
-    margin-left -130 * $unitH
-    margin-top -345 * $unitV
+    margin-left -160 * $unitH
+    margin-top -310 * $unitH
     transform rotate(180deg)
   ul
     display flex
@@ -107,7 +106,8 @@ export default {
     padding-bottom 139 * $unitV
     margin-top -139 * $unitV
     padding-left 160 * $unitH
-    margin-right 120 * $unitH
+    margin-right (40 + 32)* $unitH
+    margin-left -32 * $unitH
     letter-spacing 3 * $unitH
     color $colors-grey
     position relative

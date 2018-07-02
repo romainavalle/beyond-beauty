@@ -58,19 +58,19 @@ export default {
     },
     setMouseWheelListener(){
       window.addEventListener("mousewheel", this._doWheel, false);
-      window.addEventListener("DOMMouseScroll", this._doWheel, false);
+      window.addEventListener("wheel", this._doWheel, false);
     },
     removeMouseWheelListener(){
       window.removeEventListener("mousewheel", this._doWheel, false);
-      window.removeEventListener("DOMMouseScroll", this._doWheel, false);
+      window.removeEventListener("wheel", this._doWheel, false);
     },
     setMouseWheelListenerEl(){
       this.$el.addEventListener("mousewheel", this._doWheel, false);
-      this.$el.addEventListener("DOMMouseScroll", this._doWheel, false);
+      this.$el.addEventListener("wheel", this._doWheel, false);
     },
     removeMouseWheelListenerEl(){
       this.$el.removeEventListener("mousewheel", this._doWheel, false);
-      this.$el.removeEventListener("DOMMouseScroll", this._doWheel, false);
+      this.$el.removeEventListener("wheel", this._doWheel, false);
     },
     doWheel(e) {
       if(this.scrollTop < 50){

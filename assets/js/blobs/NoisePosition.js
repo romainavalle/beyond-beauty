@@ -10,6 +10,7 @@ class NoisePosition {
 
   init(){
     this.noise = new SimplexNoise(Math.random())
+    this.tick()
     // console.log(this.noiseValues, this.getValuesFrom(20))
   }
 

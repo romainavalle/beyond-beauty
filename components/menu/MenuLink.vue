@@ -45,6 +45,12 @@ export default {
       this.blob.tick()
       this.ctx.clearRect(0, 0, this.canvasSize.w, this.canvasSize.h)
       this.ctx.drawImage(this.blob.canvas, 0, 0, this.canvasSize.w, this.canvasSize.h);
+    },
+    show(delay){
+      this.blob.show(delay)
+    },
+    hide(){
+      this.blob.hide()
     }
   },
   mounted() {
@@ -75,6 +81,7 @@ export default {
     position relative
   img
     width 5 * 160 * $unitH
+    max-width 480px
     display block
   strong
     display block

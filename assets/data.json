@@ -7,12 +7,22 @@
       "name": "Natalie Portman",
       "color": "#f7c8ae",
       "titlePosition": [0, 202, 420],
-      "titlePositionMid": [80, 202, 332],
-      "titlePositionSml": [120, 202, 290],
+      "titlePositionMid": [70, 202, 342],
+      "titlePositionSml": [110, 202, 300],
+      "title": [
+        {"x": 480, "y": 0, "w": 405, "h": 189},
+        {"x": 1132, "y": 440, "w": 1225, "h": 220},
+        {"x": 1151, "y": 660, "w": 1040, "h": 216}
+      ],
+      "titleBorder": [
+        {"x": 496, "y":5, "w": 406, "h": 190},
+        {"x": 1151, "y":658, "w": 1226, "h": 221},
+        {"x": 1167, "y":889, "w": 1040, "h": 216}
+      ],
       "blobs":[
-        {"x": 20, "y": 15, "shapeW": 15},
-        {"x": 75, "y": 25, "shapeW": 20},
-        {"x": 15, "y": 85, "shapeW": 10}
+        {"x": 20, "y": 73, "shapeW": 7},
+        {"x": 20, "y": 17, "shapeW": 12},
+        {"x": 77, "y": 36, "shapeW": 20}
       ],
       "story":{
         "name": "Women sexuality",
@@ -67,12 +77,22 @@
       "name": "Emma Watson",
       "color": "#f7b8b0",
       "titlePosition": [0, 190, 405],
-      "titlePositionMid": [75, 190, 320],
-      "titlePositionSml": [110, 190, 280],
+      "titlePositionMid": [63, 190, 333],
+      "titlePositionSml": [100, 190, 290],
+      "title": [
+        {"x": 0, "y": 638, "w": 518, "h": 213},
+        {"x": 0, "y": 851, "w": 1151, "h": 236},
+        {"x": 0, "y": 1087, "w": 985, "h": 230}
+      ],
+      "titleBorder":[
+        {"x": 5, "y": 677, "w": 519, "h": 213},
+        {"x": 5, "y": 900, "w": 1152, "h": 237},
+        {"x": 5, "y": 1147, "w": 986, "h": 230}
+      ],
       "blobs":[
-        {"x": 75, "y": 15, "shapeW": 10},
-        {"x": 20, "y": 30, "shapeW": 15},
-        {"x": 30, "y": 80, "shapeW": 20}
+        {"x": 48, "y": 65, "shapeW": 20},
+        {"x": 21, "y": 35, "shapeW": 7},
+        {"x": 68, "y": 20, "shapeW": 12}
       ],
       "story":{
         "name": "Free to be sensitive",
@@ -93,7 +113,7 @@
         ],
         "media": [
           {"src": "emma-watson-0.png", "width": 1762, "height": 1380},
-          {"src": "emma-watson-1.png", "width": 1205, "height": 1205},
+          {"src": "emma-watson-1.gif", "width": 1244, "height": 1244},
           {"src": "emma-watson-2.png", "width": 1395, "height": 1698}
         ]
       },
@@ -127,12 +147,22 @@
       "name": "Jennifer Lawrence",
       "color": "#f7cfae",
       "titlePosition": [0, 190, 395],
-      "titlePositionMid": [76, 190, 310],
-      "titlePositionSml": [110, 190, 275],
+      "titlePositionMid": [61, 190, 326],
+      "titlePositionSml": [100, 190, 285],
+      "title": [
+        {"x": 518, "y": 638, "w": 412, "h": 200},
+        {"x": 1190, "y": 0, "w": 1170, "h": 237},
+        {"x": 1190, "y": 237, "w": 1108, "h": 203}
+      ],
+      "titleBorder": [
+        {"x": 1151, "y": 446, "w": 415, "h": 202},
+        {"x": 1211, "y": 5, "w": 1171, "h": 238},
+        {"x": 1576, "y": 253, "w": 1125, "h": 207}
+      ],
       "blobs":[
-        {"x": 20, "y": 35, "shapeW": 15},
-        {"x": 75, "y": 25, "shapeW": 20},
-        {"x": 80, "y": 80, "shapeW": 10}
+        {"x": 17, "y": 72, "shapeW": 7},
+        {"x": 25, "y": 20, "shapeW": 12},
+        {"x": 77, "y": 33, "shapeW": 20}
       ],
       "story":{
         "name": "We must do better",
@@ -187,13 +217,22 @@
       "name": "Cara Delevingne",
       "color": "#f5d4a4",
       "titlePosition": [0, 205, 415],
-      "titlePositionMid": [84, 205, 330],
-      "titlePositionSml": [118, 205, 296],
+      "titlePositionMid": [70, 205, 344],
+      "titlePositionSml": [108, 205, 306],
+      "title": [
+        {"x": 0, "y": 0, "w": 480, "h": 190},
+        {"x": 0, "y": 190, "w": 1190, "h": 228},
+        {"x": 0, "y": 418, "w": 1132, "h": 220}
+      ],
+      "titleBorder": [
+        {"x": 5, "y": 5, "w": 481, "h": 191},
+        {"x": 5, "y": 206, "w": 1196, "h": 230},
+        {"x": 5, "y": 446, "w": 1136, "h": 221}
+      ],
       "blobs":[
-        {"x": 25, "y": 15, "shapeW": 15},
-        {"x": 75, "y": 30, "shapeW": 15},
-        {"x": 15, "y": 80, "shapeW": 10},
-        {"x": 75, "y": 10, "shapeW": 10}
+        {"x": 48, "y": 65, "shapeW": 20},
+        {"x": 21, "y": 27, "shapeW": 7},
+        {"x": 68, "y": 20, "shapeW": 12}
       ],
       "story":{
         "name": "Living in a fantasy",

@@ -29,11 +29,11 @@ export default {
   },
   methods:{
     tick() {
-      this.$refs.link.forEach((el, i) => {
-        let t = (-this.snapValues[i] + this.draggable[0].x) / (this.w / 2)
-        const ease = t > 0 ? (--t)*t*t+1 :t*t*t
+     this.$refs.link.forEach((el, i) => {
+       /* let t = (-this.snapValues[i] + this.draggable[0].x) / (this.w / 2)
+        const ease = t > 0 ? (--t)*t*t+1 :t*t*t*/
 
-        el.tick(ease * 200)
+        el.tick(/*ease * 200*/)
       })
     },
     resize(w, h) {
@@ -42,8 +42,10 @@ export default {
       this.$refs.link.forEach((el, i)=>{
         el.resize(w,h)
       })
+      const size = Math.min(160 * 5 * this.w / 2880, 480)
+      const margin = 160 * 2 * this.w / 2880
       for (let i = 0; i< this.pages.length; i++) {
-        this.$set(this.snapValues, i, Math.round(-i * 160 * 7 * this.w / 2880))
+        this.$set(this.snapValues, i, Math.round(-i * (size + margin)))
       }
       if(this.draggable && this.draggable[0]){
         this.slideDraggable()
@@ -66,6 +68,7 @@ export default {
         maxDuration: .6,
         lockAxis:true,
         throwProps:true,
+        zIndexBoost: false,
         snap: {
           x: this.snapValues
         },
@@ -92,6 +95,10 @@ export default {
       this.currentId = currentEl
     },
     show(){
+
+      this.$refs.link.forEach((el, i) => {
+        el.show(i * .15)
+      })
       this.resetDraggable()
       this.currentId = 0
       TweenMax.fromTo(this.$refs.content, .9, {x: this.w}, {delay: .8, x: 0, ease: Expo.easeOut, force3D:true})
@@ -99,6 +106,9 @@ export default {
     },
     hide() {
       TweenMax.to(this.$refs.content, .9, {x: '+=' + this.w * .2, opacity: 0, ease: Cubic.easeIn, force3D:true, onComplete: () => {TweenMax.set(this.$refs.content, {x: 0, opacity: 1})}})
+      this.$refs.link.forEach((el, i) => {
+        el.hide()
+      })
     },
     onReady(){
     }

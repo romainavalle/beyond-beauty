@@ -1,8 +1,4 @@
-import Emitter from '~/assets/js/events'
 
-if (process.browser) {
-  var Pixi = require('pixi.js')
-}
 class Mask {
   constructor(container) {
     this.container = container
@@ -18,7 +14,7 @@ class Mask {
     for (let index = 0; index < 81; index++) {
       id = index
       if (index < 10) id = '0' + index
-      const maskStep = new Pixi.Sprite.fromImage(getter(`mask/transition/transition_bust_${id}.png`))
+      const maskStep = new PIXI.Sprite.fromImage(getter(`mask/transition/transition_bust_${id}.png`))
       maskStep.interactive = false
       maskStep.width = this.originalW
       maskStep.height = this.originalH

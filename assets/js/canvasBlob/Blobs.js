@@ -15,7 +15,7 @@ class Blobs {
     const w = ResizeHelper.width()
     const h = ResizeHelper.height()
     for (let index = 0; index < 10; index++) {
-      const blob = new Blob(this.ctx, index, false)
+      const blob = new Blob(this.ctx, index)
       blob.resize(w, h)
       blob.setBlob()
       this.blobs.push(blob)
@@ -28,7 +28,7 @@ class Blobs {
     TweenMax.to(this, 3, { scale: 1, ease: Elastic.easeOut })
   }
   toggle() {
-    TweenMax.to(this, .25, { scale: .5, ease: Power4.easeIn, repeat: 1, yoyo: true, yoyoEase: Bounce.easeOut })
+    TweenMax.to(this, 1, { scale: 1.2, ease: CustomEase.create("custom", "M0,0,C0.3,0,0.298,1.044,0.498,1.044,0.704,1.044,0.698,0,1,0")/*ease: Power4.easeIn, repeat: 1, yoyo: true, yoyoEase: Bounce.easeOut*/ })
   }
 
   hide() {

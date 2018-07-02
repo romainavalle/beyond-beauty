@@ -3,12 +3,12 @@ class MouseHelper {
   constructor () {
     this.isFirst = true
     this.isMouseNeeded = false
-    this.x = 500
-    this.y = 500
-    this.easeX = 500
-    this.easeY = 500
-    this.easeSlowX = 500
-    this.easeSlowY = 500
+    this.x = Math.random() * 1200
+    this.y = Math.random() * 800
+    this.easeX = this.x
+    this.easeY = this.y
+    this.easeSlowX = this.x
+    this.easeSlowY = this.y
     this._mouseMoveHandler = this.mouseMoveHandler.bind(this)
     if(process.browser) window.addEventListener('mousemove', this._mouseMoveHandler)
   }

@@ -128,6 +128,7 @@ export default {
   text-transform uppercase
   top 0
   cursor pointer
+  will-change transform
   z-index 50
   canvas
     width 200px
@@ -138,6 +139,7 @@ export default {
     display block
     margin-top -100px
     margin-left -100px
+    will-change transform
   span
     display block
     span

@@ -83,24 +83,24 @@ export default {
 
       clearTimeout(this.idleTimer)
       this.setTimer(10000)
-      this.idleTimer = setTimeout(() => { this.isIdle = false}, 1200)
+      this.idleTimer = setTimeout(() => { this.isIdle = false}, 1500)
     },
     setTimer(time){
       if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
       this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), time)
       if(this.currentHomeSlideId !== -1){
         this.$refs.timer[this.currentHomeSlideId].style.strokeDashoffset = 45
-        TweenMax.to(this.$refs.timer[this.currentHomeSlideId], (time / 1000) - 1, {delay: 1,'stroke-dashoffset': 0, ease: Linear.easeInOut})
+        //TweenMax.to(this.$refs.timer[this.currentHomeSlideId], (time / 1000) - 1, {delay: 1,'stroke-dashoffset': 0, ease: Linear.easeInOut})
       }
     },
     setMouseWheelListener(){
       this._onWheel = this.onWheel.bind(this)
       window.addEventListener("mousewheel", this._onWheel, false);
-      window.addEventListener("DOMMouseScroll", this._onWheel, false);
+      window.addEventListener("wheel", this._onWheel, false);
     },
     removeMouseWheelListener(){
       window.removeEventListener("mousewheel", this._onWheel, false);
-      window.removeEventListener("DOMMouseScroll", this._onWheel, false);
+      window.removeEventListener("wheel", this._onWheel, false);
     },
     setKeyEvents(){
       this._onKey = this.onKey.bind(this)
@@ -120,6 +120,11 @@ export default {
     },
     onReady(){
       this.setTimer(200)
+      if(process.browser){
+        this.setMouseWheelListener()
+        this.setKeyEvents()
+      }
+      Emitter.emit('SET_MOUSE_TYPE', {type: 'discover'})
     }
   },
   beforeDestroy(){
@@ -142,15 +147,7 @@ export default {
 
   mounted() {
     if(this.currentHomeSlideId !== -1) this.setTimer(10000)
-    if(process.browser){
-      this.setMouseWheelListener()
-      this.setKeyEvents()
-    }
-    window.addEventListener("focus", this.setTimer.bind(this, 10000), false);
-    window.addEventListener("blur", () => {
-      if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
-    }, false);
-    Emitter.emit('SET_MOUSE_TYPE', {type: 'discover'})
+
   }
 }
 
@@ -184,7 +181,7 @@ export default {
         width 16px
         height 16px
         stroke $colors-grey
-        transform translateX(-10px) rotate(-90deg) scale(1, 1)
+        transform translateX(-10px) translateZ(0px) rotate(-90deg) scale(1, 1)
         .bottom
           opacity .3
           stroke-width .25

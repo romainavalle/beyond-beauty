@@ -7,7 +7,7 @@
       </div>
       <div class="text">
         <div class="content">
-          <p :class="{'show': show}" data-text="Four women, mainly known for their appearence. Discover their real inner beauty.">Four women, mainly known for their appearence. Discover their real inner beauty.</p>
+          <p :class="{'show': show}">Four women mainly<br>known for their appearance.<br>Discover their true<br>inner beauty.</p>
         </div>
       </div>
       <span class="loading" ref="loading">Loading</span>
@@ -23,7 +23,8 @@ export default {
   data(){
     return {
       currentName: -1,
-      show: false
+      show: false,
+      isMouseShowed: false
     }
   },
   computed:{
@@ -32,7 +33,7 @@ export default {
   methods:{
     ...mapActions(['setAppReady']),
     doClick(){
-      if(!this.isAppLoaded)return
+      if(!this.isMouseShowed)return
       this.setAppReady()
       Emitter.emit('HIDE_MOUSE')
       clearTimeout(this.changeTimer)
@@ -59,22 +60,23 @@ export default {
       if(this.currentName === 4) this.currentName = 0
       this.timingTimer = setTimeout(() => {
         this.showName()
-      }, 400)
+      }, 700)
     },
     showName() {
       const name = this.$refs.name[this.currentName]
       const top = [].slice.call(name.querySelectorAll('.name--top span'))
       const bottom = [].slice.call(name.querySelectorAll('.name--bottom span'))
       let delay = 0, index = 0
-      name.style.opacity = 1;
+      name.style.opacity = .2;
+      //name.style.opacity = 1;
       for (index = 0; index < top.length; index++) {
-        if(index > 2)delay += .05
-        TweenMax.fromTo(top[index], .5, {yPercent: 110, skewY: 10}, {delay, yPercent: 0, skewY: 0, force3D: true, ease: Power3.easeOut})
+        if(index > top.length - 3)delay += .05
+        TweenMax.fromTo(top[index], .8, {yPercent: 110, skewY: 20, scaleY: 1.4}, {delay, yPercent: 0, skewY: 0, scaleY: 1, force3D: true, ease: Power4.easeOut})
       }
-      delay = .3
+      delay = .1
       for (index = 0; index < bottom.length; index++) {
-        if(index > 2)delay += .05
-        TweenMax.fromTo(bottom[index], .5, {yPercent: 110, skewY: 10}, {delay, yPercent: 0, skewY: 0, force3D: true, ease: Power3.easeOut})
+        if(index > bottom.length - 3)delay += .05
+        TweenMax.fromTo(bottom[index], .8, {yPercent: 110, skewY: 20, scaleY: 1.4}, {delay, yPercent: 0, skewY: 0, scaleY: 1,force3D: true, ease: Power4.easeOut})
       }
       this.changeTimer = setTimeout(this._changeName, 3000)
     },
@@ -83,23 +85,25 @@ export default {
       const top = [].slice.call(name.querySelectorAll('.name--top span'))
       const bottom = [].slice.call(name.querySelectorAll('.name--bottom span'))
       let delay = 0, index = 0
-      name.style.opacity = 1;
       for (index = 0; index < top.length; index++) {
-        if(index > 2)delay += .05
-        TweenMax.to(top[index], .5 ,{delay, yPercent: -110, skewY: -10, force3D: true, ease: Power3.easeIn})
+        if(index > top.length - 3)delay += .05
+        TweenMax.to(top[index], .8,{delay, yPercent: -120, skewY: -10, scaleY: 1.2, force3D: true, ease: Power4.easeIn})
       }
-      delay = .3
+      delay = .1
       for (index = 0; index < bottom.length; index++) {
-        if(index > 2)delay += .05
-        TweenMax.to(bottom[index], .5,{delay, yPercent: -110, skewY: -10, force3D: true, ease: Power3.easeIn})
+        if(index > bottom.length - 3)delay += .05
+        TweenMax.to(bottom[index], .8,{delay, yPercent: -120, skewY: -10, scaleY: 1.2, force3D: true, ease: Power4.easeIn})
       }
     }
   },
   watch:{
     isAppLoaded(){
-      Emitter.emit('SET_MOUSE_TYPE', {type: 'enter'})
-      Emitter.emit('SHOW_MOUSE')
-      TweenMax.to(this.$refs.loading, 1, {opacity: 0, overwrite: 1, ease: Power4.easeOut})
+      setTimeout(() => {
+        Emitter.emit('SET_MOUSE_TYPE', {type: 'enter'})
+        Emitter.emit('SHOW_MOUSE')
+        this.isMouseShowed = true
+        TweenMax.to(this.$refs.loading, 1, {opacity: 0, overwrite: 1, ease: Power4.easeOut})
+      }, 1000)
     }
   },
   beforeDestroy() {
@@ -115,10 +119,10 @@ export default {
     TweenMax.to(this.$refs.loading, 1, {opacity: 1, ease: Power4.easeOut})
     setTimeout(() => {
       this.show = true
-    }, 300)
-    setTimeout(() => {
+    }, 200)
+    this.changeTimer = setTimeout(() => {
       this.changeName()
-    }, 500)
+    }, 1800)
   }
 }
 </script>
@@ -151,33 +155,40 @@ export default {
     justify-content center
     flex-direction column
   .name
-    -webkit-text-fill-color none
     -webkit-text-stroke-color $colors-white
     -webkit-text-stroke-width .5px
     color $colors-black
     flex-wrap wrap
     font-family $hawthorn
+    font-weight 500
     font-size 620 * $unitH
     opacity 0
-    //letter-spacing 8 * $unitH
-    line-height .8
+    letter-spacing 10 * $unitH
+    line-height .82
     margin-left 160 * $unitH
     text-transform uppercase
+    .name--bottom
+      margin-top -8 * $unitH
     .name--top,
     .name--bottom
       overflow hidden
       display flex
       span
         display block
+        will-change transform
   .text p
     font-size 60 * $unitH
     font-weight $light
+    line-height 1.5
     margin-left 480 * $unitH
     position relative
-    width 520 * $unitH
-    color transparent
-    transform translateZ(0.1px)
-    &:before
+    width 800 * $unitH
+    margin-top -34 * $unitH
+    opacity 0
+    transition opacity 3s ease-in-out-sine
+    &.show
+      opacity 1
+    /*&:before
       content attr(data-text)
       top 0
       right 0
@@ -192,11 +203,11 @@ export default {
       transition background-size 1s ease-out-quad
       -webkit-background-clip text
     &.show:before
-      background-size 600px 600px
+      background-size 600px 600px*/
 
     /*transform translateZ(0.1px)
-    transition 2s
+    transition 1s
     clip-path ellipse(1px 1px at center)
     &.show
-      clip-path ellipse(200px 200px at center)*/
+      clip-path ellipse(300px 300px at center)*/
 </style>

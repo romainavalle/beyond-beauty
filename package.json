@@ -5,7 +5,7 @@
   "author": "Romain Avalle <romain.avalle@gmail.com>",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=dev nuxt",
+    "dev": "cross-env HOST=0.0.0.0 PORT=3000 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "babel-eslint": "^8.2.1",
+    "cross-env": "^5.2.0",
     "eslint": "^4.15.0",
     "eslint-friendly-formatter": "^3.0.0",
     "eslint-loader": "^1.7.1",
