@@ -43,6 +43,9 @@ export default {
       this.$refs.facts.tick()
       this.$refs.push.tick()
     },
+    load(){
+      this.$refs.facts.load()
+    },
     resize(w, h) {
       this.w = w
       this.h = h

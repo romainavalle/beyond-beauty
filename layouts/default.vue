@@ -132,7 +132,8 @@ export default {
       Emitter.on('GLOBAL:RESIZE', this._resize)
       this.page = this.$refs.page.$children[0]
       this.setDebug()
-      if(process.browser)this.$refs.homeCanvas.load()
+      this.$refs.homeCanvas.load()
+      if(this.page)this.$refs.page.$children[0].load && this.$refs.page.$children[0].load()
       this.$nextTick(()=>{
         TweenMax.ticker.addEventListener('tick', this._tick)
       })

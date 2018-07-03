@@ -1,7 +1,5 @@
 
 import Portrait from "~/assets/js/pixi/Portrait"
-import DisappearMask from "~/assets/js/mask/Disappear"
-
 import { pages } from '~/assets/data.json'
 
 

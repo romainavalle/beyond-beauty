@@ -1,7 +1,7 @@
 <template>
     <div class="Slider" :class="transName">
         <div class="slide-content" v-show="active" @mousedown="doMouseDown" @mouseup="doMouseUp" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave">
-          <v-slide v-for="(fact,i) in pageData.facts" :key="i" :fact="fact" :id="i" ref="slide"></v-slide>
+          <v-slide v-for="(fact,i) in pageData.facts" :key="i" :fact="fact" :id="i" :images="images" ref="slide"></v-slide>
         </div>
     </div>
 </template>
@@ -12,6 +12,7 @@ import SoundHelper from '~/assets/js/utils/SoundHelper'
 import Emitter from '~/assets/js/events'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
 import vSlide from '~/components/facts/Slide.vue'
+import FactImages from '~/assets/js/facts/FactImages'
 import ioMixins from '~/components/ioMixins'
 
 export default {
@@ -20,20 +21,36 @@ export default {
     return {
       transName: "",
       isDragging: false,
-      current: 2
+      current: 2,
+      images: {},
+      isLoaded: false
     }
   },
   mixins: [ioMixins],
   components: { vSlide },
   computed:{
-    ...mapGetters(['pageData']),
+    ...mapGetters(['pageData', 'currentPageId', 'getURI']),
     ...mapState(['currentFact'])
   },
   methods:{
     ...mapActions(['setCurrentFact']),
     show() {
+      this.$nextTick(()=>{
+        this.resize(this.w, this.h)
+      })
+      this.load()
+      SoundHelper.pause()
     },
     hide() {
+    },
+    load() {
+      if(this.isLoaded) return
+      this.isLoaded = true
+      this.images.load(this.getURI)
+      for (let index = 0; index < this.$refs.slide.length; index++) {
+        this.$refs.slide[index].load()
+      }
+
     },
     resize(w, h){
       this.w = w
@@ -44,6 +61,9 @@ export default {
     },
     tick() {
       if(!this.active)return
+        this.images.tick()
+
+
       if(!this.isDragging){
         for (let index = 0; index < this.$refs.slide.length; index++) {
           this.$refs.slide[index].tick()
@@ -73,6 +93,7 @@ export default {
       }
     },
     doMouseDown() {
+      this.$refs.slide[this.currentFact].doMouseOut()
       this.isDragging = true
       this.mousePos = MouseHelper.x
     },
@@ -90,18 +111,20 @@ export default {
   },
   watch:{
     currentFact(val, old) {
+      this.$refs.slide[this.currentFact].doMouseOut()
       this.$refs.slide[old].hide(val - old)
       this.$refs.slide[val].show(old - val)
     },
     active(val) {
       if(val) {
-        SoundHelper.pause()
+        this.show()
       }
     }
   },
   beforeDestroy() {
   },
   mounted(){
+    this.images = new FactImages(this.currentPageId)
   }
 }
 

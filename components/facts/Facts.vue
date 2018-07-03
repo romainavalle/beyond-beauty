@@ -18,7 +18,7 @@
 import vSlider from '~/components/facts/Slider.vue'
 import ioMixins from '~/components/ioMixins'
 import vTimeline from '~/components/facts/Timeline.vue'
-import { mapActions } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   name: "Facts",
   data(){
@@ -32,16 +32,19 @@ export default {
   methods: {
     ...mapActions(['setCurrentFact']),
     tick() {
-      if(this.$refs.timeline)this.$refs.timeline.tick()
-      if(this.$refs.slider)this.$refs.slider.tick()
+      this.$refs.timeline.tick()
+      this.$refs.slider.tick()
     },
     resize(w, h) {
-      if(this.$refs.timeline)this.$refs.timeline.resize(w, h)
-      if(this.$refs.slider)this.$refs.slider.resize(w, h)
+      this.$refs.timeline.resize(w, h)
+      this.$refs.slider.resize(w, h)
     },
     show() {
     },
     hide() {
+    },
+    load() {
+      this.$refs.slider.load()
     }
   },
   mounted() {

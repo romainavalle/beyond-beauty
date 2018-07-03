@@ -15,7 +15,7 @@ export default {
     }
   },
   computed:{
-    ...mapGetters(['pageData', 'getURI']),
+    ...mapGetters(['pageData']),
     id() {
       return this.pageData.id
     },
