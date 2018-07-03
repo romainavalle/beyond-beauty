@@ -15,24 +15,14 @@ class Title {
     if(!this.isBordered)this.container.tint = 0xf1f3ee
   }
 
-  load(getter) {
-    this.loaded = 0
-    this.img_array = []
-    const border = this.isBordered ? '-border' : ''
-    for (let index = 0; index < 3; index++) {
-      const img = new Image()
-      img.src = getter(`titles${border}/${this.id}-${index}.png`)
-      img.onload = this.dispose.bind(this);
-      this.img_array.push(img)
-    }
-  }
-
   setTexture(baseTexture, array) {
-    console.log("ee")
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
     array.forEach((el, i) => {
-      console.log(el)
       const texture = new PIXI.Texture.from(baseTexture)
-      texture.frame = new PIXI.Rectangle(el.x, el.y, el.w, el.h)
+      texture.frame = new PIXI.Rectangle(el.x / divider, el.y / divider, el.w / divider, el.h / divider)
       const resizeSprite = new PIXI.Sprite(texture)
       const scaleContainer = new PIXI.Sprite()
       const imgContainer = new PIXI.Sprite()

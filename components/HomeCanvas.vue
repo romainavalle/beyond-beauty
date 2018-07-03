@@ -5,7 +5,6 @@
 
 <script>
 import ResizeHelper from '~/assets/js/utils/ResizeHelper';
-import Displacement from '~/assets/js/pixi/Displacement'
 import PixiBlobs from '~/assets/js/pixi/PixiBlobs';
 import MouseBlob from '~/assets/js/pixi/blobs/MouseBlob'
 import Background from '~/assets/js/pixi/Background';
@@ -40,12 +39,7 @@ export default {
       this.backgroundContainer = new PIXI.Container();
       this.background = new Background(this.backgroundContainer);
       this.stage.addChild(this.backgroundContainer);
-      this.displacement = new Displacement()
-      this.displacement.load(this.getURI)
-      this.displacementFilter = new PIXI.filters.DisplacementFilter(this.displacement.sprite);
-      this.displacementFilter.scale.x = 80
-      this.displacementFilter.scale.y = 80
-      this.stage.addChild(this.displacement.sprite)
+
 
       this.titlesContainer = new PIXI.Container();
       this.titles = new Titles(this.titlesContainer);
@@ -57,8 +51,8 @@ export default {
       this.pixiBlobs = new PixiBlobs(
         blobContainer,
         this.titles.titleBorderSprite,
-        this.displacementFilter,
-        this.renderer
+        this.renderer,
+        this.getURI
       );
 
       this.pixiBlobs.hide()
@@ -96,7 +90,6 @@ export default {
       if(window.smooth && this.route.name !== 'index')this.checkStory()
       if(this.isMenuCompletlyVisible) return
       if(this.isStoryVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
-      this.displacement.tick()
       this.pixiBlobs.tick()
       if(this.isAppReady)this.mouseBlob.tick();
       this.renderer.render(this.stage);
@@ -147,7 +140,6 @@ export default {
       }
     },
     resize(w, h) {
-      this.displacement.resize(w, h)
       this.pixiBlobs.resize(w, h);
       this.portraits.resize(w, h);
       this.titles.resize(w, h);
@@ -279,7 +271,7 @@ export default {
       }
       if(val !== undefined){
         console.log('test undefined', val)
-        if(!this.isPageTransition) this.showPage(1, 1.5, dir)
+        if(!this.isPageTransition) this.showPage(0, 1.5, dir)
       }
     }
   },
@@ -303,7 +295,7 @@ export default {
     this.renderer = new PIXI.WebGLRenderer({
       backgroundColor: 0xe1dfd7,
       transparent: false,
-      antialias: true,
+      antialias: false,
       powerPreference: "high-performance"
     });
     this.renderer.autoResize = true;

@@ -59,8 +59,13 @@ class Titles {
   load(getter) {
     this.titleLoaded = false
     this.titleBorderLoaded = false
-    this.baseText = new PIXI.BaseTexture.fromImage(getter('titles/titles.png'))
-    this.baseBorderText = new PIXI.BaseTexture.fromImage(getter('titles/titles-border.png'))
+
+    let urlResolution = ''
+    if(process.browser) {
+      if(window.resolution === .5) urlResolution = '@0.5x'
+    }
+    this.baseText = new PIXI.BaseTexture.fromImage(getter('titles/titles'+ urlResolution +'.png'))
+    this.baseBorderText = new PIXI.BaseTexture.fromImage(getter('titles/titles-border'+ urlResolution +'.png'))
     this.baseText.on('loaded', this.onBaseLoaded.bind(this))
     this.baseBorderText.on('loaded', this.onBaseBorderLoaded.bind(this))
   }

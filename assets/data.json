@@ -1,4 +1,8 @@
 {
+  "intro": {
+    "text": "Four women mainly<br>known for their appearances.<br>Discover their true<br>inner beauty.",
+    "html": "<span data-time=\"1\">Four women</span> <span data-time=\"2\">mainly</span><br><span data-time=\"2.5\">known for their appearances.</span><br><span data-time=\"5.5\">Discover their true</span><br><span data-time=\"6\">inner beauty.</span>"
+  },
   "pages":[
     {
       "id": "natalie-portman",

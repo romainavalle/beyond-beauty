@@ -11,7 +11,7 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "pack": "mm-packer -s ./imagesToPack -o static/packed"
+    "pack": "mm-packer -s ./imagesToPack -o static/images/pack"
   },
   "dependencies": {
     "@merci-michel/mm-utils-math": "^1.0.0",

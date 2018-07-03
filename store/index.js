@@ -1,5 +1,5 @@
 import Vuex from 'vuex'
-import { pages } from '~/assets/data.json'
+import data  from '~/assets/data.json'
 const createStore = () => {
   return new Vuex.Store({
     state: {
@@ -12,7 +12,8 @@ const createStore = () => {
       isAppLoaded: false,
       isStoryVisible: false,
       isPageTransition: false,
-      pages,
+      intro: data.intro,
+      pages: data.pages,
       currentFact: 2,
       muteSound: false
     },

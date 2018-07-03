@@ -5,9 +5,10 @@
         <span class="name--top" v-html="getFirstName(i)"></span>
         <span class="name--bottom" v-html="getLastName(i)"></span>
       </div>
-      <div class="text">
-        <div class="content">
-          <p :class="{'show': show}">Four women mainly<br>known for their appearance.<br>Discover their true<br>inner beauty.</p>
+      <div class="text" ref="text">
+        <div class="content" :class="{'show': show}">
+          <p v-html="intro.text" class="text"></p>
+          <p v-html="intro.html" class="html" ref="html"></p>
         </div>
       </div>
       <span class="loading" ref="loading">Loading</span>
@@ -16,7 +17,7 @@
 </template>
 
 <script>
-
+import SoundHelper from '~/assets/js/utils/SoundHelper'
 import { mapState, mapActions } from 'vuex'
 import Emitter from '~/assets/js/events'
 export default {
@@ -24,16 +25,34 @@ export default {
     return {
       currentName: -1,
       show: false,
-      isMouseShowed: false
+      isActive: false,
+      isMouseShowed: false,
+      currentSpan: 0
     }
   },
   computed:{
-    ...mapState(['isAppReady','isAppLoaded','pages']),
+    ...mapState(['isAppReady','isAppLoaded','pages', 'intro']),
   },
   methods:{
     ...mapActions(['setAppReady']),
+    tick() {
+      if(!this.isActive) return
+      const pos = SoundHelper.getPos()
+      if(pos > this.time_array[this.currentSpan]){
+        const textSplit = this.$spans[this.currentSpan].innerText.split(' ')
+        const text = '<span>' + textSplit.join('</span> <span>') + '</span>'
+        let time =  this.duration - this.time_array[this.currentSpan]
+        if(this.time_array[this.currentSpan + 1])time = this.time_array[this.currentSpan + 1] - this.time_array[this.currentSpan]
+        const stagger = (time - .6) / textSplit.length
+        this.$spans[this.currentSpan].innerHTML = text
+        this.$spans[this.currentSpan].style.opacity = 1
+        TweenMax.staggerFromTo(this.$spans[this.currentSpan].querySelectorAll('span'), .3,{opacity: 0}, {opacity: 1, ease:Quad.easeOut}, stagger)
+        this.currentSpan++
+      }
+    },
     doClick(){
       if(!this.isMouseShowed)return
+      SoundHelper.fadeOut()
       this.setAppReady()
       Emitter.emit('HIDE_MOUSE')
       clearTimeout(this.changeTimer)
@@ -52,7 +71,9 @@ export default {
       return this.textSplit(name)
     },
     leave: function (el, done) {
-      TweenMax.to(el, 1, {delay: .1, autoAlpha: 0, ease: Quad.easeInOut, onComplete: done})
+      TweenMax.to(this.$refs.text, 1, {delay: 0, autoAlpha: 0, ease: Quad.easeInOut})
+      TweenMax.to(this.$refs.name, 1, {delay: .3, autoAlpha: 0, ease: Quad.easeInOut})
+      TweenMax.to(el, 1, {delay: .8, autoAlpha: 0, ease: Quad.easeInOut, onComplete: done})
     },
     changeName() {
       if(this.currentName !== -1) this.hideName()
@@ -117,8 +138,17 @@ export default {
     }
     this.$refs.loading.style.opacity = 0
     TweenMax.to(this.$refs.loading, 1, {opacity: 1, ease: Power4.easeOut})
+    //
+    this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
+    this.time_array = this.$spans.map(el => {return el.dataset.time})
+    this.$spans.forEach(element => {
+      element.style.opacity = 0
+    });
+    //
     setTimeout(() => {
+      SoundHelper.createSound('intro')
       this.show = true
+      this.isActive = true
     }, 200)
     this.changeTimer = setTimeout(() => {
       this.changeName()
@@ -176,18 +206,26 @@ export default {
       span
         display block
         will-change transform
-  .text p
-    font-size 60 * $unitH
-    font-weight $light
-    line-height 1.5
+  .text .content
     margin-left 480 * $unitH
     position relative
-    width 800 * $unitH
     margin-top -34 * $unitH
-    opacity 0
-    transition opacity 3s ease-in-out-sine
-    &.show
-      opacity 1
+    p
+      position relative
+      display block
+      font-size 60 * $unitH
+      font-weight $light
+      line-height 1.5
+      transition opacity 3s ease-in-out-sine
+      opacity 0
+      color $colors-grey
+      &.html
+        position absolute
+        left 0
+        top 0
+        color $colors-white
+  .text .content.show p
+    opacity 1
     /*&:before
       content attr(data-text)
       top 0

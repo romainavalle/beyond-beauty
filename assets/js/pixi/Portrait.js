@@ -21,12 +21,16 @@ class Portait {
   }
 
   setTexture(base, transition, disappear) {
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
     const potraitTexture = new PIXI.Texture.from(base)
-    potraitTexture.frame = new PIXI.Rectangle(900 * this.idNum, 0, 897, 1289)
+    potraitTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 897 / divider, 1289 / divider)
     this.portrait = new PIXI.Sprite(potraitTexture)
     //this.portrait.texture.baseTexture.mipmap = true;
     const potraitTintedTexture = new PIXI.Texture.from(base)
-    potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum, 1300, 897, 1289)
+    potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 1300 / divider, 897 / divider, 1289 / divider)
     this.portraitTinted = new PIXI.Sprite(potraitTintedTexture)
     //this.portraitTinted.texture.baseTexture.mipmap = true;
     TweenMax.set(this.portraitTinted, { colorProps: { tint: this.color, format: "number" } })

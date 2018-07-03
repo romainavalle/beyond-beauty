@@ -44,8 +44,8 @@ export default {
 .Logo
   position fixed
   z-index 10
-  top 0
-  left 0
+  top 160 * $unitV
+  left 160 * $unitH
   pointer-events auto
   cursor pointer
   z-index 5
@@ -55,6 +55,8 @@ export default {
     left 10 * $unitH
     height 160px
     width 160px
+    margin-top -82px
+    margin-left -92px
   .icon
     margin-right 20 * $unitH
   h1
@@ -64,14 +66,14 @@ export default {
     font-family $hawthorn
     font-size 20px
     font-weight normal
-    left 160 * $unitH
     line-height 1
     margin 0
     margin-left -44 * $unitH
     margin-top -42 * $unitH
     padding 0
     position absolute
+    top 0
+    left 0
     text-transform uppercase
-    top 160 * $unitV
 
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="beyond-beauty" :class="{'overflow': process.browser}">
-    <v-loader></v-loader>
+    <v-loader ref="loader"></v-loader>
     <v-logo ref="logo"></v-logo>
     <v-menu-button  ref="menuButton"></v-menu-button>
     <v-menu ref="siteMenu"></v-menu>
@@ -111,14 +111,18 @@ export default {
     },
     tick(){
       this.stats.begin()
+      if(!this.isAppReady) {
+        this.$refs.loader.tick()
+      }else{
+        this.$refs.logo.tick()
+        this.$refs.siteMenu.tick()
+        this.$refs.menuButton.tick()
+        this.$refs.page.$children[0].tick()
+        if(this.route.name === "story-pageId")this.$refs.sound.tick()
+      }
       NoisePosition.tick()
       MouseHelper.tick()
       this.$refs.mouse.tick()
-      this.$refs.logo.tick()
-      this.$refs.siteMenu.tick()
-      this.$refs.menuButton.tick()
-      this.$refs.page.$children[0].tick()
-      if(this.route.name === "story-pageId")this.$refs.sound.tick()
       this.$refs.homeCanvas.tick()
       this.stats.end()
     },
@@ -162,8 +166,8 @@ export default {
   },
   async mounted () {
     if(process.browser) {
-    document.fonts.load('10pt "Hawthorn')
-
+      // document.fonts.load('10pt "Hawthorn')
+      window.resolution = 1
     }
     this._resize = this.resize.bind(this)
     this._tick = this.tick.bind(this)
@@ -186,13 +190,11 @@ export default {
       Emitter.emit('HIDE_MOUSE');
       if(doNext)next()
     })
-
      // todo -> promise polyfill
-    const assets =  await load.all([{ url: '/packed/pack.json', type: 'json' },{ url: '/packed/pack.pack', type: 'binary' }])
+    const assets =  await load.all([{ url: '/images/pack/pack.json', type: 'json', crossOrigin: 'Anonymous' },{ url: '/images/pack/pack.pack', type: 'blob', crossOrigin: 'Anonymous' }])
 
     if(process.browser){
       const unpacker = new MMUnpacker(assets[1], assets[0]);
-      window.unpacker = unpacker
       this.setPacker(unpacker)
     }
 

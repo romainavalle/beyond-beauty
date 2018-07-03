@@ -32,9 +32,14 @@ class Portraits {
     this.baseLoaded = false
     this.transitionLoaded = false
     this.disappearLoaded = false
-    this.baseText = new PIXI.BaseTexture.fromImage(getter('bust/busts.png'))
-    this.transitionText = new PIXI.BaseTexture.fromImage(getter('mask/transition.png'))
-    this.disappearText = new PIXI.BaseTexture.fromImage(getter('mask/disappear.png'))
+
+    let urlResolution = ''
+    if(process.browser) {
+      if(window.resolution === .5) urlResolution = '@0.5x'
+    }
+    this.baseText = new PIXI.BaseTexture.fromImage(getter('bust/busts'+ urlResolution +'.png'))
+    this.transitionText = new PIXI.BaseTexture.fromImage(getter('mask/transition'+ urlResolution +'.png'))
+    this.disappearText = new PIXI.BaseTexture.fromImage(getter('mask/disappear'+ urlResolution +'.png'))
     let time = new Date()
     this.baseText.on('loaded', this.onBaseLoaded.bind(this))
     this.transitionText.on('loaded', this.onTransitionLoaded.bind(this))

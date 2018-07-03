@@ -8,6 +8,11 @@ class TransitionMask {
     this.currentFrame = -1
     this.currentFrameTween = 0
     this.direction = 'forward'
+
+    this.divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) this.divider = 2
+    }
   }
 
   setTexture(base) {
@@ -44,7 +49,7 @@ class TransitionMask {
     if(this.currentFrame === 15 && this.direction !== 'forward')Emitter.emit('TRANSITION:FINISHED')
     const x = this.currentFrame % this.frameW * this.imgW
     const y = Math.floor(this.currentFrame / this.frameW) * this.imgH
-    const rect = new PIXI.Rectangle(x, y, this.imgW, this.imgH);
+    const rect = new PIXI.Rectangle(x / this.divider , y / this.divider, this.imgW / this.divider, this.imgH / this.divider);
 
     this.mask.texture.frame = rect;
     //this.ctx.drawImage(this.img, x, y, this.imgW, this.imgH, 0, 0, this.canvasWidth, this.canvasHeight);

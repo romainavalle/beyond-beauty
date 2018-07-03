@@ -6,11 +6,11 @@ class SoundHelper {
     this.mute = false
   }
   createSound(id, part) {
-
+    const partTxt = part != undefined ? `-${part}` : ''
     if(this.sound)this.sound.unload()
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
     this.sound = new Howl({
-      src: `${path}sounds/${id}-${part}.mp3`,
+      src: `${path}sounds/${id}${partTxt}.mp3`,
       autoplay: !this.mute,
       volume: 0,
       onload: function() {
