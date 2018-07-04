@@ -6,7 +6,7 @@
     </button>
     <ul>
       <li><router-link :to="{'name': 'index'}">index</router-link></li>
-      <li><a href="#">about</a></li>
+      <li><router-link :to="{'name': 'about'}">about</router-link></li>
     </ul>
   </header>
 </template>

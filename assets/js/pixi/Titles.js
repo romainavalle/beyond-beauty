@@ -9,7 +9,6 @@ class Titles {
     this.stage = stage
     this.titles = []
     this.titlesBorder = []
-    this.titlesMouseBorder = []
     this.scale = 1
     this.isShown = false
     this.originalYpos = 0

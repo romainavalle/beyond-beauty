@@ -46,7 +46,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['isAppReady', 'isPageTransition', 'isMenuOpen', 'route', 'currentHomeSlideId']),
+    ...mapState(['isAppReady', 'isPageTransition', 'isMenuOpen', 'route', 'currentHomeSlideId', 'isCanvasVisible']),
     ...mapGetters(['getPageIdNum'])
   },
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound},
@@ -56,8 +56,7 @@ export default {
       if(!from) {
         if(to.name === 'index') {
           this.$refs.logo.show()
-        }
-        if(to.name === 'story-pageId') {
+        } else {
           this.$refs.menuButton.show()
         }
       }else{
@@ -65,8 +64,7 @@ export default {
           if(from.name === 'index') {
             this.$refs.logo.hide()
             setTimeout(() => {this.$refs.menuButton.show()}, 1000)
-          }
-          if(from.name === 'story-pageId') {
+          } else {
             setTimeout(() => {this.$refs.logo.show()}, 1000)
             this.$refs.menuButton.hide()
           }
@@ -78,6 +76,7 @@ export default {
       if(this.isPageTransition) this.$refs.homeCanvas.showPage(0,0,'none')
       this.setPageTransition(false)
       done()
+      if(this.$refs.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady(false)
       setTimeout(() => {
         this.resize(true)
       }, 100)
@@ -117,7 +116,7 @@ export default {
         this.$refs.logo.tick()
         this.$refs.siteMenu.tick()
         this.$refs.menuButton.tick()
-        this.$refs.page.$children[0].tick()
+        if(this.$refs.page)this.$refs.page.$children[0].tick()
         if(this.route.name === "story-pageId")this.$refs.sound.tick()
       }
       NoisePosition.tick()
@@ -140,7 +139,7 @@ export default {
     },
     onReady() {
       this.resize()
-      if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady()
+      if(this.page)this.$refs.page.$children[0].onReady && this.$refs.page.$children[0].onReady(true)
       this.checkButton(null, this.$route)
       if(process.browser){
         this.$refs.homeCanvas.onReady()
@@ -183,7 +182,7 @@ export default {
           doNext = false
         }
       }
-      if(from.name === 'story-pageId' && to.name === 'index' && this.isMenuOpen && window.smooth.vars.current < 50) {
+      if(from.name === 'story-pageId' && to.name === 'index' && this.isMenuOpen && this.isCanvasVisible) {
           setTimeout(next, 800)
           doNext = false
       }
@@ -198,6 +197,8 @@ export default {
       const unpacker = new MMUnpacker(assets[1], assets[0]);
       this.setPacker(unpacker)
     }
+    this.$router.afterEach((to, from) => {
+    })
 
     this.$nextTick(this.onLoaded.bind(this))
     console.log('%cMade with ❤️ 🧡 💛 💚 💙 💜', "font-weight: bold; color: #f7c8ae;");

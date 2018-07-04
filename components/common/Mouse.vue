@@ -35,8 +35,10 @@ export default {
       this.isShown = true
       TweenMax.set(this.$el, {autoAlpha: 1})
       TweenMax.to(this.$refs.word, .8,{delay: .2, scale: 1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
-      if(this.isCanvasVisible) this.blob.show()
-      this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
+      if(this.isCanvasVisible) {
+        this.blob.show()
+        this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
+      }
     },
 
     hide() {
@@ -49,9 +51,9 @@ export default {
 
     tick() {
       if(!this.isShown) return
-      transform(this.$refs.canvas, {translate3d:[MouseHelper.easeSlowX - MouseHelper.easeX,MouseHelper.easeSlowY -  MouseHelper.easeY, 0]})
       transform(this.$el, {translate3d:[MouseHelper.easeX, MouseHelper.easeY, 0]})
       if(this.blob.scale !== 0){
+        transform(this.$refs.canvas, {translate3d:[MouseHelper.easeSlowX - MouseHelper.easeX,MouseHelper.easeSlowY -  MouseHelper.easeY, 0]})
         this.blob.tick(this.rotation, this.scale)
         this.ctx.clearRect(0, 0, this.cW, this.cH)
         this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
@@ -86,6 +88,9 @@ export default {
         break
         case 'next':
           this.word = 'next'
+        break
+        case 'about':
+          this.word = 'about'
         break
       }
     },

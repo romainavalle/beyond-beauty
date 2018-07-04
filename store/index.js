@@ -10,7 +10,7 @@ const createStore = () => {
       isMenuCompletlyVisible: false,
       isAppReady: false,
       isAppLoaded: false,
-      isStoryVisible: false,
+      isCanvasVisible: true,
       isPageTransition: false,
       intro: data.intro,
       pages: data.pages,
@@ -45,8 +45,8 @@ const createStore = () => {
       SET_APP_LOADED (state){
         state.isAppLoaded = true
       },
-      SET_STORY_VISIBLE (state, bool){
-        state.isStoryVisible = bool
+      SET_CANVAS_VISIBLE (state, bool){
+        state.isCanvasVisible = bool
       },
       SET_PAGE_TRANSITION (state, bool){
         state.isPageTransition = bool
@@ -80,8 +80,8 @@ const createStore = () => {
       setAppLoaded ({ commit }) {
         commit('SET_APP_LOADED')
       },
-      setStoryVisible ({ commit }, bool) {
-        commit('SET_STORY_VISIBLE', bool)
+      setCanvasVisible ({ commit }, bool) {
+        commit('SET_CANVAS_VISIBLE', bool)
       },
       setPageTransition ({ commit }, bool) {
         commit('SET_PAGE_TRANSITION', bool)

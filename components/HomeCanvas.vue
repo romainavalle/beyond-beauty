@@ -10,6 +10,7 @@ import MouseBlob from '~/assets/js/pixi/blobs/MouseBlob'
 import Background from '~/assets/js/pixi/Background';
 import Portraits from '~/assets/js/pixi/Portraits';
 import Titles from '~/assets/js/pixi/Titles';
+import TitlesAbout from '~/assets/js/pixi/TitlesAbout';
 import Emitter from '~/assets/js/events';
 import { mapActions, mapState, mapGetters } from 'vuex';
 if(process.browser){
@@ -28,7 +29,7 @@ export default {
     }
   },
   computed: {
-    ...mapState(['currentHomeSlideId', 'route', 'isMenuCompletlyVisible', 'isAppReady','pages','isStoryVisible', 'isPageTransition']),
+    ...mapState(['currentHomeSlideId', 'route', 'isMenuCompletlyVisible', 'isAppReady','pages','isCanvasVisible', 'isPageTransition']),
     ...mapGetters(['currentPageIdNum','nextPageIdNum', 'getURI', 'getPageIdNum'])
   },
   methods: {
@@ -49,11 +50,18 @@ export default {
       this.titles.load(this.getURI)
       this.stage.addChild(this.titlesContainer);
 
+      this.titlesAboutContainer = new PIXI.Container();
+      this.titlesAboutContainer.name = 'titlesAboutContainer';
+      this.titlesAbout = new TitlesAbout(this.titlesAboutContainer);
+      this.titlesAbout.load(this.getURI)
+      this.stage.addChild(this.titlesAboutContainer);
+
       const blobContainer = new PIXI.Container();
       blobContainer.name = "blobContainer"
       this.pixiBlobs = new PixiBlobs(
         blobContainer,
         this.titles.titleBorderSprite,
+        this.titlesAbout.titleBorderSprite,
         this.renderer,
         this.getURI
       );
@@ -73,6 +81,7 @@ export default {
       this.stage.addChild(this.mouseBlob.sprite);
     },
     onReady(){
+      if(this.route.name === 'story-pageId') this.checkStory()
       Emitter.on('CANVAS_CLICK', this._canvasClick);
       Emitter.on('SHOW_MOUSE', this._showMouse);
       Emitter.on('HIDE_MOUSE', this._hideMouse);
@@ -80,24 +89,34 @@ export default {
       Emitter.on('PAGE:PANDOWN', this._panDown);
       Emitter.on('PAGE:PANUP', this._panUp);
 
+      this.$el.style.opacity = 1
+
       this.portraits.doReady()
       this.titles.doReady()
-      this.$el.style.opacity = 1
-      if(this.route.name !== 'index'){
+
+      this.titlesAboutContainer.visible = false
+      if(this.route.name === 'story-pageId'){
         this.background.show(0)
         this.showPage(0, 0)
         this.portraitsContainer.visible = false
       }
-      this.pixiBlobs.show()
+      if(this.route.name === 'about'){
+        this.showAbout(1)
+        this.portraitsContainer.visible = false
+        this.titlesContainer.visible = false
+      }
+      setTimeout(()=> {
+        this.pixiBlobs.show()
+      }, 1700)
     },
+
     tick() {
-      if(window.smooth && this.route.name !== 'index')this.checkStory()
+      if(window.smooth && this.route.name === 'story-pageId')this.checkStory()
       if(this.isMenuCompletlyVisible) return
-      if(this.isStoryVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
+      if(!this.isCanvasVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.pixiBlobs.tick()
       if(this.isAppReady)this.mouseBlob.tick();
       this.renderer.render(this.stage);
-
     },
     checkStory() {
       if(window.smooth.vars.current === 0)this.storyPushSwitched = false
@@ -118,6 +137,7 @@ export default {
       }
     },
     doSwitch() {
+      console.log('doSwitch')
       let nextPageNum = this.currentPageIdNum + 1
       this.mouseBlob.hide()
       if(nextPageNum > 3)nextPageNum = 0
@@ -138,7 +158,7 @@ export default {
         this.pixiBlobs.tick()
         this.titles.goToYPos(0, 0)
         this.currentScale = this.midScale
-        this.titles.scaleTo(null, this.midScale);
+        this.titles.scaleTo(null, this.currentScale);
         this.titles.hide(nextPageNum , true)
         this.titles.show(this.currentPageIdNum, 0, 0);
       }
@@ -147,37 +167,59 @@ export default {
       this.pixiBlobs.resize(w, h);
       this.portraits.resize(w, h);
       this.titles.resize(w, h);
+      this.titlesAbout.resize(w, h);
       this.background.resize(w, h);
       this.renderer.resize(w, h);
-
       this.pixiBlobs.resize(w, h, 80 * w / 1440)
       this.mouseBlob.resize(w, h, 80 * w / 1440)
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
       delay = .5
-      this.mouseBlob.show()
       this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
       this.portraits.show(this.currentHomeSlideId, this.direction);
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1, this.direction);
     },
+    showAbout(delay = 0) {
+      this.titlesAbout.show(delay)
+      this.background.hide(0)
+      this.pixiBlobs.mask = 'about'
+      this.pixiBlobs.setTint(0xd5d2c7);
+      this.titlesContainer.visible = false
+      this.portraitsContainer.visible = false
+      this.titlesAboutContainer.visible = true
+    },
+
     showPage(delay, time, direction = 'forward') {
-      console.log('showPage')
+      console.log('showPage', {delay},{time})
+      this.titlesContainer.visible = true
+      this.titlesAboutContainer.visible = false
       this.background.show()
+      this.pixiBlobs.mask = 'regular'
       this.pixiBlobs.show()
       this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
       this.titles.show(this.currentPageIdNum, delay, time, direction);
       this.currentScale = this.midScale
       this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay, time);
     },
-    hidePage(delay = 0) {
-      console.log('hidePage')
+    showHome(delay = 0) {
+      console.log('showHome', {delay})
       this.mouseBlob.hide()
       this.portraitsContainer.visible = true
+      this.titlesContainer.visible = true
+      this.titlesAboutContainer.visible = false
       this.background.hide()
-      this.portraits.appear(this.currentHomeSlideId);
       this.currentScale = this.regScale
       this.titles.scaleTo(this.currentHomeSlideId, this.currentScale, delay, 1);
+      this.pixiBlobs.mask = 'regular'
+      this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId === -1 ? 0 : this.currentHomeSlideId].color);
+    },
+    hideHome() {
+      this.portraits.hide(this.currentHomeSlideId)
+      this.titles.hide(this.currentHomeSlideId)
+    },
+    hideAbout() {
+      this.titlesAbout.hide()
     },
     canvasClick() {
       console.log('canvasClick')
@@ -258,11 +300,17 @@ export default {
     'route.name'(val, old) {
       console.log('watch -> route.name',val, old)
       TweenMax.set(this.$el, {yPercent: 0})
-      if(old && old !== 'index' && val === 'index')this.hidePage()
-      if(old && old === 'index' && val !== 'index'){
+      if(old && old === 'index' && val === 'story-pageId'){
         this.portraits.disappear(this.currentHomeSlideId);
         setTimeout(() => {this.portraitsContainer.visible = false}, 1000)
       }
+      if(old && old === 'index' && val === 'about'){
+        this.hideHome()
+      }
+      if(old && old === 'story-pageId' && val === 'index' && this.currentHomeSlideId != -1)this.portraits.appear(this.currentHomeSlideId);
+      if(val === 'index')this.showHome()
+      if(val === 'about')this.showAbout(2)
+      if(old === 'about')this.hideAbout()
     },
     'route.params.pageId'(val, old) {
       console.log('watch -> route.params.pageId',val, old, this.isPageTransition)
@@ -270,12 +318,10 @@ export default {
       let dir = 'forward'
       if(old && val) {
         dir = this.getPageIdNum(old) - this.getPageIdNum(val) > 0 ? 'forward' : 'backward'
-        console.log(this.isMenuCompletlyVisible)
         this.titles.hide(this.getPageIdNum(old), this.isMenuCompletlyVisible, dir)
       }
       if(val !== undefined){
-        console.log('test undefined', val)
-        if(!this.isPageTransition) this.showPage(0, 1.5, dir)
+        if(!this.isPageTransition) this.showPage(this.isMenuCompletlyVisible ?  .8 : 1.2, 1.5, dir)
       }
     }
   },

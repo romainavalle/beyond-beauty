@@ -31,7 +31,6 @@ class Blobs {
     this.mouseBlob.hide()
   }
   show() {
-
     TweenMax.to(this, .3, { alpha: 1 })
     TweenMax.to(this, 3, { scale: 1, ease: Elastic.easeOut })
   }
@@ -42,6 +41,7 @@ class Blobs {
   hide() {
     this.alpha = 0
     this.scale = 0
+    TweenMax.killTweensOf(this)
   }
   tick() {
     for (let index = 0; index < this.blobs.length; index++) {

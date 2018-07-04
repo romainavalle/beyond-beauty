@@ -5,13 +5,13 @@ import Blobs from '~/assets/js/pixi/blobs/Blobs'
 import Displacement from '~/assets/js/pixi/Displacement'
 
 class PixiBlobs {
-  constructor(stage, titleBorderSprite, renderer, getter) {
+  constructor(stage, titleBorderSprite, titleAboutBorderSprite, renderer, getter) {
     this.stage = stage
+    this.mask = 'about'
     this.titleBorderSprite = titleBorderSprite
+    this.titleAboutBorderSprite = titleAboutBorderSprite
     this.color = 0
-
     this.setDisplacement(getter)
-
     this.blobs = new Blobs()
     this.renderer = renderer
     this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height());
@@ -19,6 +19,7 @@ class PixiBlobs {
 
     this.init()
   }
+
   setDisplacement(getter){
     this.displacement = new Displacement()
     this.displacement.load(getter)
@@ -27,7 +28,9 @@ class PixiBlobs {
     this.displacementFilter.scale.y = 80
     this.stage.addChild(this.displacement.sprite)
     this.titleBorderSprite.filters = [this.displacementFilter];
+    this.titleAboutBorderSprite.filters = [this.displacementFilter];
   }
+
   init() {
     this.blobContainer = new PIXI.Container()
     this.blobSprite = new PIXI.Sprite(this.renderTexture)
@@ -39,12 +42,18 @@ class PixiBlobs {
     this.stage.addChild(this.dispSprite)
     this.dispSprite.mask = this.maskSprite
   }
+
   tick() {
     this.blobs.tick()
     this.displacement.tick()
-    this.renderer.render(this.titleBorderSprite, this.renderDispTexture)
+    if(this.mask === 'about') {
+      this.renderer.render(this.titleAboutBorderSprite, this.renderDispTexture)
+    }else{
+      this.renderer.render(this.titleBorderSprite, this.renderDispTexture)
+    }
     this.renderer.render(this.blobs.sprite, this.renderTexture)
   }
+
   show() {
     this.blobs.show()
   }

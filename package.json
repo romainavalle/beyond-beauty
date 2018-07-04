@@ -21,6 +21,7 @@
     "dom-classes": "^1.0.0",
     "dom-transform": "^2.1.0",
     "gsap": "git+https://manudurgoni:dibsHk2uRKSe9rsbMKjL@gitlab.upian.com/upian/Tools/gsap.git",
+    "hammerjs": "^2.0.8",
     "intersection-observer": "^0.5.0",
     "load-asset": "^1.2.0",
     "lodash": "^4.17.10",

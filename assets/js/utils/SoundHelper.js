@@ -6,6 +6,7 @@ class SoundHelper {
     this.mute = false
   }
   createSound(id, part) {
+    this.id = id
     const partTxt = part != undefined ? `-${part}` : ''
     if(this.sound)this.sound.unload()
     const path = process.env.NODE_ENV === 'dev' ? '/' : ''
@@ -17,7 +18,7 @@ class SoundHelper {
         Emitter.emit('SOUND_LOADED')
       },
       onend: function() {
-        Emitter.emit('SOUND_ENDED')
+        if(this.id !== 'intro') Emitter.emit('SOUND_ENDED')
       }
 
     })

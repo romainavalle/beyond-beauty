@@ -1,5 +1,5 @@
 <template>
-  <div class="MenuCitations">
+  <div class="MenuCitations" :class="{'whiteBg' : whiteBg}">
     <svg xmlns="http://www.w3.org/2000/svg" version="1" viewBox="0 0 80 62">
       <path fill="none" d="M36 0C19 10 0 14 0 41c0 8 3 13 8 17 21 14 41-25 14-31 2-13 9-19 15-27h-1zm29 27c2-13 9-19 15-27h-1C62 9 43 14 43 41c0 7 3 13 7 16 21 16 43-24 15-30z"/>
     </svg>
@@ -20,6 +20,7 @@ export default {
       currentId: -1
     }
   },
+  props: ['whiteBg'],
   components: { vMenuCitation },
   computed:{
   },

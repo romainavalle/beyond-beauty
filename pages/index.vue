@@ -35,7 +35,8 @@ import { mapState, mapActions } from 'vuex';
 export default {
   data(){
     return {
-      isIdle: false
+      isIdle: false,
+      isReady: false
     }
   },
   computed: {
@@ -118,8 +119,13 @@ export default {
       if(e.deltaY > 0) this.nextPage(1)
       if(e.deltaY < 0) this.nextPage(-1)
     },
-    onReady(){
-      this.setTimer(200)
+    onReady(isFistLoad){
+      if(this.isReady) return
+      console.log('onReady')
+      this.isReady = true
+      let time = 10000
+      if(isFistLoad || this.currentHomeSlideId === -1 ) time = 1000
+      this.setTimer(time)
       if(process.browser){
         this.setMouseWheelListener()
         this.setKeyEvents()
@@ -138,16 +144,19 @@ export default {
   watch:{
     isMenuOpen(val){
       if(val){
+        this.menuInitClose = false
         if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
       }else{
-        this.setTimer(10000)
+        if(!this.menuInitClose) {
+          this.menuInitClose = true
+          this.setTimer(10000)
+        }
       }
     }
   },
 
   mounted() {
-    if(this.currentHomeSlideId !== -1) this.setTimer(10000)
-
+    this.menuInitClose = true
   }
 }
 

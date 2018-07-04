@@ -1,5 +1,5 @@
 <template>
-  <button class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound"><em></em>sound</button>
+  <button class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound" v-show="route.name !== 'about'"><em></em>sound</button>
 </template>
 
 <script>

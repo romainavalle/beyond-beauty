@@ -30,7 +30,6 @@ class FactImages {
     this.transitionMask.loadMask(getter)
     for (let index = 0; index < 5; index++) {
       const img = new Image()
-      console.log(`facts/${this.id}-${index}.jpg`)
       img.src = getter(`facts/${this.id}-${index}.jpg`)
       this.image_array.push(img)
     }

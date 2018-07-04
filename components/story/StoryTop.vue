@@ -46,7 +46,7 @@ export default {
     }
   },
   computed:{
-    ...mapState(['pages','isStoryVisible']),
+    ...mapState(['pages','isCanvasVisible']),
     ...mapGetters(['currentPageIdNum']),
     color() {
       return this.pages[this.currentPageIdNum].color
@@ -73,8 +73,8 @@ export default {
     }
   },
   watch: {
-    isStoryVisible(val) {
-      TweenMax.set(this.$el, {autoAlpha: val ? 0 : 1})
+    isCanvasVisible(val) {
+      TweenMax.set(this.$el, {autoAlpha: val ? 1 : 0})
     }
   },
   mounted(){
