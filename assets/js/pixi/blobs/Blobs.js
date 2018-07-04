@@ -12,7 +12,7 @@ class Blobs {
   }
   init() {
     this.mouseBlob = new MouseBlob()
-    this.sprite.addChild(this.mouseBlob.graph)
+    this.sprite.addChild(this.mouseBlob.sprite)
     this.blobs = []
     const w = ResizeHelper.width()
     const h = ResizeHelper.height()

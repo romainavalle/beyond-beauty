@@ -2,7 +2,8 @@ import BlobPoint from '~/assets/js/pixi/blobs/BlobPoint'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
 class Blob {
   constructor(index, debug = false) {
-    this.blobGraph = new PIXI.Graphics();
+    this.blobGraph = new PIXI.Graphics({nativeLines: true});
+    this.blobGraph.name = "blob"
     this.index = index
     this.debug = debug
     this.color = 'red'
@@ -13,6 +14,7 @@ class Blob {
     this.friction = .0085
     this.rotation = 45
     this.hover = false
+    this.firstTime = true
     this.oldMousePoint = { x: 0, y: 0 }
     this.init()
   }
@@ -49,9 +51,9 @@ class Blob {
       this.prepareStroke();
       this.isSettingPos = false
     }, 1000)
-    if (!this.firstTime) {
+    if (this.firstTime) {
       TweenMax.to(this.position, time, { x, y, onComplete: this.setBlob.bind(this) }).progress(this.index / 10)
-      this.firstTime = true
+      this.firstTime = false
     } else {
       TweenMax.to(this.position, time, { x, y, onComplete: this.setBlob.bind(this) })
     }

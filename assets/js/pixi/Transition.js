@@ -16,8 +16,8 @@ class TransitionMask {
   }
 
   setTexture(base) {
-    this.mask = new PIXI.Sprite(new PIXI.Texture.from(base))
-    this.mask.interactive = false
+    this.sprite = new PIXI.Sprite(new PIXI.Texture.from(base))
+    this.sprite.interactive = false
   }
   playIn(direction = 'forward') {
     this.direction = direction
@@ -51,7 +51,7 @@ class TransitionMask {
     const y = Math.floor(this.currentFrame / this.frameW) * this.imgH
     const rect = new PIXI.Rectangle(x / this.divider , y / this.divider, this.imgW / this.divider, this.imgH / this.divider);
 
-    this.mask.texture.frame = rect;
+    this.sprite.texture.frame = rect;
     //this.ctx.drawImage(this.img, x, y, this.imgW, this.imgH, 0, 0, this.canvasWidth, this.canvasHeight);
   }
 

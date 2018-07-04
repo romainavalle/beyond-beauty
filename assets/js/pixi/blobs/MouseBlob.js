@@ -10,8 +10,9 @@ class MouseBlob{
     this.init()
   }
   init() {
-    this.graph = new PIXI.Graphics()
-
+    this.sprite = new PIXI.Sprite()
+    this.graph = new PIXI.Graphics({nativeLines: true})
+    this.sprite.addChild(this.graph)
     this.noiseValues = NoisePosition.noiseValues
   }
   show() {
@@ -54,14 +55,14 @@ class MouseBlob{
     this.shapeW = shapeW
   }
 
-  tick() {
+  tick(color = 0xFFFFFF) {
     this.noiseValues = NoisePosition.noiseValues
 
 
-    this.graph.position.x = MouseHelper.easeSlowX
-    this.graph.position.y = MouseHelper.easeSlowY
+    this.sprite.position.x = MouseHelper.easeSlowX
+    this.sprite.position.y = MouseHelper.easeSlowY
     this.graph.clear()
-    this.graph.beginFill(0xFFFFFF)
+    this.graph.beginFill(color)
     this.drawShape(this.shapeW, 0, 0)
     this.graph.endFill();
     this.graph.rotation = this.rotation * Math.PI / 180

@@ -14,7 +14,9 @@ class PixiBlobs {
 
     this.blobs = new Blobs()
     this.renderer = renderer
-    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(),PIXI.settings.SCALE_MODE.LINEAR);
+    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height());
+    this.renderDispTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height());
+
     this.init()
   }
   setDisplacement(getter){
@@ -24,22 +26,24 @@ class PixiBlobs {
     this.displacementFilter.scale.x = 80
     this.displacementFilter.scale.y = 80
     this.stage.addChild(this.displacement.sprite)
+    this.titleBorderSprite.filters = [this.displacementFilter];
   }
   init() {
     this.blobContainer = new PIXI.Container()
     this.blobSprite = new PIXI.Sprite(this.renderTexture)
+    this.blobSprite.name ='blobSprite'
     this.maskSprite = new PIXI.Sprite(this.renderTexture)
+    this.maskSprite.name ='maskSprite'
+    this.dispSprite = new PIXI.Sprite(this.renderDispTexture)
     this.stage.addChild(this.blobSprite)
-    this.stage.addChild(this.maskSprite)
-    this.stage.addChild(this.titleBorderSprite)
-    this.titleBorderSprite.mask = this.maskSprite
-
-    this.titleBorderSprite.filters = [this.displacementFilter];
+    this.stage.addChild(this.dispSprite)
+    this.dispSprite.mask = this.maskSprite
   }
   tick() {
     this.blobs.tick()
-    this.renderer.render(this.blobs.sprite, this.renderTexture)
     this.displacement.tick()
+    this.renderer.render(this.titleBorderSprite, this.renderDispTexture)
+    this.renderer.render(this.blobs.sprite, this.renderTexture)
   }
   show() {
     this.blobs.show()
@@ -56,6 +60,7 @@ class PixiBlobs {
   resize(w, h, shapeW = 0) {
     this.displacement.resize(w, h)
     this.renderTexture.resize(w, h)
+    this.renderDispTexture.resize(w, h)
     this.blobs.resize && this.blobs.resize(w, h, shapeW)
   }
   setTint(color) {

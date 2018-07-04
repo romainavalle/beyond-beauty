@@ -35,13 +35,16 @@ export default {
     ...mapActions(['setPageTransition']),
     load(){
       this.stage = new PIXI.Container();
+      this.stage.name = "stage"
 
       this.backgroundContainer = new PIXI.Container();
+      this.backgroundContainer.name = "backgroundContainer"
       this.background = new Background(this.backgroundContainer);
       this.stage.addChild(this.backgroundContainer);
 
 
       this.titlesContainer = new PIXI.Container();
+      this.titlesContainer.name = 'titlesContainer';
       this.titles = new Titles(this.titlesContainer);
       this.titles.load(this.getURI)
       this.stage.addChild(this.titlesContainer);
@@ -59,6 +62,7 @@ export default {
       this.stage.addChild(blobContainer);
 
       this.portraitsContainer = new PIXI.Container();
+      this.portraitsContainer.name = "portraitsContainer";
       this.portraits = new Portraits(this.portraitsContainer);
       this.portraits.load(this.getURI)
       this.stage.addChild(this.portraitsContainer);
@@ -66,7 +70,7 @@ export default {
 
 
       this.mouseBlob = new MouseBlob(200)
-      this.stage.addChild(this.mouseBlob.graph);
+      this.stage.addChild(this.mouseBlob.sprite);
     },
     onReady(){
       Emitter.on('CANVAS_CLICK', this._canvasClick);

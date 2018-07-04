@@ -30,6 +30,7 @@
     "rupture": "^0.7.1",
     "simplex-noise": "^2.4.0",
     "smooth-scrolling": "^2.3.9",
+    "sniffer": "github:watsondg/sniffer",
     "stats-js": "^1.0.0-alpha1"
   },
   "devDependencies": {

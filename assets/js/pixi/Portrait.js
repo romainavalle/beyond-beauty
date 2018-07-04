@@ -47,13 +47,13 @@ class Portait {
     this.container.addChild(this.portrait)
     this.maskTransitionIn.setTexture(transition)
     this.maskTransitionOut.setTexture(transition)
-    this.container.addChild(this.maskTransitionIn.mask)
-    this.container.addChild(this.maskTransitionOut.mask)
+    this.container.addChild(this.maskTransitionIn.sprite)
+    this.container.addChild(this.maskTransitionOut.sprite)
     this.maskDisappear.setTexture(disappear)
     this.maskDisappearTint.setTexture(disappear)
-    this.container.addChild(this.maskDisappear.mask)
-    this.container.addChild(this.maskDisappearTint.mask)
-    this.maskDisappearTint.mask.scale.x = -1
+    this.container.addChild(this.maskDisappear.sprite)
+    this.container.addChild(this.maskDisappearTint.sprite)
+    this.maskDisappearTint.sprite.scale.x = -1
 
     if(this.firstResize) {
       this.firstResize = false
@@ -67,10 +67,10 @@ class Portait {
 
   hideAll() {
     this.container.visible = false
-    this.maskTransitionIn.mask.visible = false
-    this.maskTransitionOut.mask.visible = false
-    this.maskDisappear.mask.visible = false
-    this.maskDisappearTint.mask.visible = false
+    this.maskTransitionIn.sprite.visible = false
+    this.maskTransitionOut.sprite.visible = false
+    this.maskDisappear.sprite.visible = false
+    this.maskDisappearTint.sprite.visible = false
   }
   resize(w, h) {
     const ratio = this.originalW / this.originalH
@@ -82,14 +82,14 @@ class Portait {
       containerH = h * 8 / 11
       containerW = containerH * ratio
     }
-    this.maskTransitionIn.mask.width = containerW
-    this.maskTransitionIn.mask.height = containerH
-    this.maskTransitionOut.mask.width = containerW
-    this.maskTransitionOut.mask.height = containerH
-    this.maskDisappear.mask.width = containerW
-    this.maskDisappear.mask.height = containerH
-    this.maskDisappearTint.mask.width = containerW
-    this.maskDisappearTint.mask.height = containerH
+    this.maskTransitionIn.sprite.width = containerW
+    this.maskTransitionIn.sprite.height = containerH
+    this.maskTransitionOut.sprite.width = containerW
+    this.maskTransitionOut.sprite.height = containerH
+    this.maskDisappear.sprite.width = containerW
+    this.maskDisappear.sprite.height = containerH
+    this.maskDisappearTint.sprite.width = containerW
+    this.maskDisappearTint.sprite.height = containerH
 
     this.portraitTinted.width = containerW
     this.portraitTinted.height = containerH
@@ -102,26 +102,26 @@ class Portait {
 
   }
   show(direction) {
-    this.portrait.mask = this.maskTransitionIn.mask
+    this.portrait.mask = this.maskTransitionIn.sprite
 
     this.maskTransitionIn.playIn(direction)
     this.container.visible = true
-    this.maskTransitionIn.mask.visible = true
-    this.maskTransitionOut.mask.visible = false
-    this.maskDisappear.mask.visible = false
-    this.maskDisappearTint.mask.visible = false
+    this.maskTransitionIn.sprite.visible = true
+    this.maskTransitionOut.sprite.visible = false
+    this.maskDisappear.sprite.visible = false
+    this.maskDisappearTint.sprite.visible = false
     this.resize(ResizeHelper.width(), ResizeHelper.height())
     const dir = direction === 'forward' ? 1 : -1
     TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + (dir * 80), x: this.posX - (dir * 60)}, {y: this.posY, x: this.posX, ease: Quart.easeOut})
   }
   hide(direction) {
-    this.portrait.mask = this.maskTransitionOut.mask
+    this.portrait.mask = this.maskTransitionOut.sprite
 
     this.maskTransitionOut.playOut(direction)
-    this.maskTransitionIn.mask.visible = false
-    this.maskTransitionOut.mask.visible = true
-    this.maskDisappear.mask.visible = false
-    this.maskDisappearTint.mask.visible = false
+    this.maskTransitionIn.sprite.visible = false
+    this.maskTransitionOut.sprite.visible = true
+    this.maskDisappear.sprite.visible = false
+    this.maskDisappearTint.sprite.visible = false
     const dir = direction === 'forward' ? 1 : -1
     TweenMax.to(this.container.position, 1, { y: this.posY - (dir * 80), x: this.posX + (dir * 60), ease: Cubic.easeIn,  onComplete: this.onHideComplete.bind(this)})
   }
@@ -134,12 +134,12 @@ class Portait {
     this.maskDisappear.disappear()
     this.maskDisappearTint.disappear()
 
-    this.maskTransitionIn.mask.visible = false
-    this.maskTransitionOut.mask.visible = false
-    this.maskDisappear.mask.visible = true
-    this.maskDisappearTint.mask.visible = true
-    this.portrait.mask = this.maskDisappear.mask
-    this.portraitTinted.mask = this.maskDisappearTint.mask
+    this.maskTransitionIn.sprite.visible = false
+    this.maskTransitionOut.sprite.visible = false
+    this.maskDisappear.sprite.visible = true
+    this.maskDisappearTint.sprite.visible = true
+    this.portrait.mask = this.maskDisappear.sprite
+    this.portraitTinted.mask = this.maskDisappearTint.sprite
     this.portraitTinted.visible = true
     this.container.visible = true
     TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: () => {
@@ -151,13 +151,13 @@ class Portait {
     this.maskDisappear.appear()
     this.maskDisappearTint.appear()
 
-    this.maskTransitionIn.mask.visible = false
-    this.maskTransitionOut.mask.visible = false
-    this.maskDisappear.mask.visible = true
-    this.maskDisappearTint.mask.visible = true
+    this.maskTransitionIn.sprite.visible = false
+    this.maskTransitionOut.sprite.visible = false
+    this.maskDisappear.sprite.visible = true
+    this.maskDisappearTint.sprite.visible = true
     this.portraitTinted.visible = true
-    this.portrait.mask = this.maskDisappear.mask
-    this.portraitTinted.mask = this.maskDisappearTint.mask
+    this.portrait.mask = this.maskDisappear.sprite
+    this.portraitTinted.mask = this.maskDisappearTint.sprite
     this.container.visible = true
     this.resize(ResizeHelper.width(), ResizeHelper.height())
     TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: this.onAppearComplete.bind(this) })

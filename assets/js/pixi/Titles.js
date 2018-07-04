@@ -48,6 +48,7 @@ class Titles {
 
   setupTitleBorder() {
     this.titleBorderSprite = new PIXI.Container()
+    this.titleBorderSprite.name = 'titleBorderContainer'
     pages.forEach((page, i) => {
       const titleBorderContainer = new PIXI.Container()
       const title = new Title(titleBorderContainer, page.id, i, true)

@@ -17,8 +17,10 @@ class Portraits {
 
   setupPortrait() {
     this.portraitsprite = new PIXI.Sprite()
+    this.portraitsprite.name = 'portraitsprite'
     pages.forEach((page, i) => {
       const portraitContainer = new PIXI.Container()
+      portraitContainer.name = 'portraitContainer'
       const portrait = new Portrait(portraitContainer, page.id, i, page.color)
       this.portraitsprite.addChild(portraitContainer)
       this.portraits.push(portrait)

@@ -29,7 +29,7 @@ class Displacement {
 
   resize(w, h) {
     this.sprite.width = w
-    this.sprite.height = w
+    this.sprite.height = h
   }
 
 

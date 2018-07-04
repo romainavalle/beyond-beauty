@@ -271,21 +271,21 @@ export default {
       content ''
       display block
       height 1px
-      width $unitH * 22
+      width $unitV * 40
       transition transform .3s ease-in-out-quad
     &.prev
       top 0
       transform rotate(-90deg) translate(0%, -50%)
       transform-origin 0% 0%
       &:after
-        width $unitH * 40
+        width $unitV * 80
         margin-right 0
     &.next
       bottom 0
       transform rotate(-90deg) translate(-100%, 50%)
       transform-origin 0% 100%
       &:before
-        width $unitH * 40
+        width $unitV * 80
         margin-left 0
   &.ready
     .prev

@@ -46,7 +46,7 @@ export default {
       }else{
         this.show(1,0)
       }
-      this.$nextTick(this.checkImageRatio.bind(this))
+      setTimeout(this.checkImageRatio.bind(this), 100)
     },
     resetCanvasPos(){
       let x = -60, y = 50
@@ -112,7 +112,7 @@ export default {
     resize(w, h){
       this.w = w
       this.h = h
-      this.checkImageRatio()
+      if(this.images.image_array[this.id]) this.checkImageRatio()
     },
     show(dir, time = 1){
       const from = dir < 0 ? this.w / 2 : -this.w / 2
