@@ -33,7 +33,7 @@ export default {
   letter-spacing 3 * $unitH
   text-transform uppercase
   display flex
-  bottom 158 * $unitV //160 - 2 lineheight
+  bottom 152 * $unitV
   right 160 * $unitH
   z-index 1
   ul

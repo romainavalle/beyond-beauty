@@ -24,7 +24,7 @@ export default {
   computed:{
     ...mapState(['currentFact']),
     canvasSize() {
-      const size = ResizeHelper.width() / 2880 * 320
+      const size = ResizeHelper.width() / 2880 * 300
       return {w: size, h: size}
     }
   },
@@ -45,7 +45,7 @@ export default {
     resize(w, h) {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
-      this.blob.resize(this.canvasSize.w, this.canvasSize.h, w / 2880 * 100)
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h, w / 2880 * 80)
       this.setSnapValue(w)
 
     },
@@ -74,7 +74,7 @@ export default {
   watch: {
     currentFact(val) {
       if(val === this.snapValues.indexOf(Math.round(this.draggable[0].x))) return
-      TweenMax.to(this.$el, .5,{x: this.snapValues[val], ease: Quad.easeOut, onComplete: () => {
+      TweenMax.to(this.$el, .8,{x: this.snapValues[val], ease: Power4.easeOut, onComplete: () => {
         this.draggable[0].update()
       }})
     }
@@ -117,10 +117,10 @@ export default {
   position absolute
   //width 100vw
   //height 400 * $unitV
-  height 320 * $unitH
-  width 320 * $unitH
+  height 300 * $unitH
+  width 300 * $unitH
   bottom 0 * $unitH
   canvas
     position relative
-    margin-left -160 * $unitH
+    margin-left -150 * $unitH
 </style>

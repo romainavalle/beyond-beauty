@@ -83,7 +83,7 @@ export default {
     },
     pageLeave(el, done) {
       if(this.isPageTransition){
-        TweenMax.to(this.$refs.page.$children[0].$el, .8,{yPercent: -50, ease: Expo.easeOut})
+        TweenMax.to(this.$refs.page.$children[0].$el, 1.3,{yPercent: -50, ease: Power4.easeInOut})
         this.$refs.homeCanvas.pageTransition()
         setTimeout(() => {
           done()

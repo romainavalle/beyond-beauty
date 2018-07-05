@@ -60,12 +60,20 @@ export default {
       }
     },
 
+    scaleDown() {
+      this.blob.scaleDown()
+    },
+
+    scaleUp() {
+      this.blob.scaleUp()
+    },
+
     setMouseType(e) {
       this.type = e.type
       this.isCanvasVisible = false
       switch(this.type){
         case 'learn':
-          this.word = 'lear more'
+          this.word = 'learn more'
         break
         case 'discover':
           this.word = 'discover'
@@ -103,18 +111,24 @@ export default {
   beforeDestroy() {
     Emitter.removeListener('SHOW_MOUSE', this._show);
     Emitter.removeListener('HIDE_MOUSE', this._hide);
+    Emitter.removeListener('SCALE_MOUSE_DOWN', this._scaleDown);
+    Emitter.removeListener('SCALE_MOUSE_UP', this._scaleUp);
     Emitter.removeListener('SET_MOUSE_TYPE', this._setMouseType);
   },
 
   mounted(){
     this._show = this.show.bind(this);
     this._hide = this.hide.bind(this);
+    this._scaleDown = this.scaleDown.bind(this);
+    this._scaleUp = this.scaleUp.bind(this);
     this._setMouseType = this.setMouseType.bind(this);
     Emitter.on('SHOW_MOUSE', this._show);
     Emitter.on('HIDE_MOUSE', this._hide);
     Emitter.on('SET_MOUSE_TYPE', this._setMouseType);
+    Emitter.on('SCALE_MOUSE_DOWN', this._scaleDown);
+    Emitter.on('SCALE_MOUSE_UP', this._scaleUp);
     TweenMax.set(this.$refs.word, {scale: 0, opacity: 0})
-    this.blob = new MouseBlob(this.cW, this.cH, 80)
+    this.blob = new MouseBlob(this.cW, this.cH, 50)
     this.ctx = this.$refs.canvas.getContext('2d')
   }
 }

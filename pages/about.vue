@@ -3,8 +3,8 @@
       <v-about-top></v-about-top>
       <div class="scrollContent" ref="scrollContent">
         <v-scroll-layout>
-          <v-about-text></v-about-text>
-          <v-about-credits></v-about-credits>
+          <v-about-text ref="text"></v-about-text>
+          <v-about-credits ref="credits"></v-about-credits>
           <v-about-footer></v-about-footer>
         </v-scroll-layout>
       </div>
@@ -28,20 +28,25 @@ export default {
   computed:{
   },
   methods:{
-    tick(){
+    tick() {
       this.checkScroll()
+      this.$refs.credits.tick()
     },
-    load(){
+    load() {
     },
-    show(){
+    show() {
+      this.$refs.text.show()
     },
-    hide(){
+    hide() {
+      this.$refs.text.hide()
+      this.$refs.credits.hide()
     },
-    resize(w,h){
+    resize(w, h) {
+      this.$refs.credits.resize(w, h)
 
     }
   },
-  mounted(){
+  mounted() {
     Emitter.emit('SET_MOUSE_TYPE', {type: 'about'})
   }
 }

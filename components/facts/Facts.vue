@@ -1,8 +1,5 @@
 <template>
   <section class="Facts">
-    <span class="button top black">
-      <span class="word">learn more</span>
-    </span>
     <transition name="fadeFact">
       <p v-show="active">She did more than just a speech...</p>
     </transition>
@@ -61,6 +58,8 @@ export default {
   pointer-events auto
   position relative
   width 100%
+  .button
+    pointer-events none
   p
     font-size 20 * $unitH
     line-height 1

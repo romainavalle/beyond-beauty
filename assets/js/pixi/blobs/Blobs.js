@@ -31,13 +31,24 @@ class Blobs {
     this.mouseBlob.hide()
   }
   show() {
-    TweenMax.to(this, .3, { alpha: 1 })
-    TweenMax.to(this, 3, { scale: 1, ease: Elastic.easeOut })
+    this.alpha = 1
+    this.scale = 1
+    //TweenMax.to(this, .3, { alpha: 1 })
+    //TweenMax.to(this, 3, { scale: this.actualScale, ease: Power4.easeOut })
   }
   toggle() {
     TweenMax.to(this, 1, { scale: 1.2, ease: CustomEase.create("custom", "M0,0,C0.3,0,0.298,1.044,0.498,1.044,0.704,1.044,0.698,0,1,0")/*ease: Power4.easeIn, repeat: 1, yoyo: true, yoyoEase: Bounce.easeOut*/ })
   }
-
+  scaleTo(scale) {
+    this.actualScale = scale
+    let delay = .5
+    let time = 1
+    if(scale === 1) {
+      delay = .5
+      time = 1
+    }
+    TweenMax.to(this, time, {delay, scale: this.actualScale, ease: Power4.easeOut })
+  }
   hide() {
     this.alpha = 0
     this.scale = 0

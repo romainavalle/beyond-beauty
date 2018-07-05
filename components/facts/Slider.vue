@@ -77,15 +77,16 @@ export default {
 
     },
     goNext(dir) {
-      this.isDragging = false
       if(dir < 0){
         if(this.currentFact === 0){
           this.$refs.slide[this.currentFact].backToZero()
+          this.isDragging = false
         }else{
           this.setCurrentFact(Math.max(this.currentFact - 1, 0))
           }
       }else{
         if(this.currentFact === 4){
+          this.isDragging = false
           this.$refs.slide[this.currentFact].backToZero()
         }else{
           this.setCurrentFact(Math.min(this.currentFact + 1, 4))
@@ -93,11 +94,14 @@ export default {
       }
     },
     doMouseDown() {
+
       this.$refs.slide[this.currentFact].doMouseOut()
       this.isDragging = true
       this.mousePos = MouseHelper.x
+      Emitter.emit('SCALE_MOUSE_DOWN')
     },
     doMouseUp() {
+      Emitter.emit('SCALE_MOUSE_UP')
       if(this.isDragging)this.$refs.slide[this.currentFact].backToZero()
       this.isDragging = false
     },
@@ -111,9 +115,10 @@ export default {
   },
   watch:{
     currentFact(val, old) {
-      this.$refs.slide[this.currentFact].doMouseOut()
-      this.$refs.slide[old].hide(val - old)
-      this.$refs.slide[val].show(old - val)
+      //this.$refs.slide[this.currentFact].doMouseOut()
+      this.$refs.slide[old].hide(val - old, this.isDragging ? .7 : 1)
+      this.$refs.slide[val].show(old - val, this.isDragging ? .7 : 1)
+      this.isDragging = false
     },
     active(val) {
       if(val) {

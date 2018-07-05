@@ -98,14 +98,14 @@ export default {
     .text
       opacity .5
       transform translateY(35 * $unitV)
-      transition all .6s ease-in-quad
+      transition all .3s ease-in-quad
     .point
       opacity 1
     &.active
       pointer-events none
       .text
         opacity 1
-        transform translateY(0 * $unitV)
+        transform translateY(10 * $unitV)
         transition transform .8s ease-out-quart, opacity .8s ease-out-quart
       .point:after
         opacity 1

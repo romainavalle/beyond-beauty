@@ -58,7 +58,7 @@ class Title {
     this.originalH = this.container.height
     this.isDisposed = true
 
-    if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 1)
+    if (this.isFirstResize) setTimeout(() => this.resize(ResizeHelper.width(), ResizeHelper.height()), 0)
   }
 
   dispose() {
@@ -108,7 +108,7 @@ class Title {
     let lhArray = []
     if(this.scale === 1){
       lhArray = pages[this.idNum].titlePosition
-    }else if(this.scale === .65){
+    }else if(this.scale === .55){
       lhArray = pages[this.idNum].titlePositionMid
     }else{
       lhArray = pages[this.idNum].titlePositionSml
@@ -163,17 +163,25 @@ class Title {
     this.scale = scale
     let t = 0
     let d = delay
-    const stagger = isPageTransition ? .3 : .1
-    const ease = isPageTransition ? CustomEase.create("custom", "M0,0,C0.254,0.12,0.312,2.108,0.574,2.108,0.854,2.108,0.832,0.986,1,1") : Power4.easeInOut
-    this.title_array.forEach((el, i) => {
-      if(time != 0)t = time - (i * stagger)
-      //if(isPageTransition)t = time
-      if(time != 0)d= delay + (i * stagger)
-      TweenMax.to(el.children[0].children[0].scale, t, { x: scale, y: scale, delay: d, ease})
-
-      const lhArray = this.getLineHeightArray()
-      TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + lhArray[i] * this.screenRatio, delay: d, ease})
-    })
+    const stagger = .1
+    const lhArray = this.getLineHeightArray()
+    if(isPageTransition ) {
+      const tl = new TimelineMax()
+      tl.to(this.title_array[0].children[0].children[0].scale, 1, { x: scale, y: scale, ease:  CustomEase.create("custom", "M0,0 C0.57,0.098 0.446,1.102 0.688,1.146 0.83,1.146 0.788,1.01 1,1")}, 0)
+      tl.to(this.title_array[0].children[0].children[0].position, 1, { y: 5000 + pages[this.idNum].titlePositionMid[0] * this.screenRatio, ease:  CustomEase.create("custom", "M0,0 C0.57,0.098 0.446,1.102 0.688,1.146 0.83,1.146 0.788,1.01 1,1")}, 0)
+      tl.to(this.title_array[1].children[0].children[0].scale, 1.1, { x: scale, y: scale, ease:  CustomEase.create("custom", "M0,0 C0.57,0.098 0.446,1.102 0.688,1.146 0.83,1.146 0.788,1.01 1,1")}, 0)
+      tl.to(this.title_array[1].children[0].children[0].position, 1.1, { y: 5000 + pages[this.idNum].titlePositionMid[1] * this.screenRatio, ease:  CustomEase.create("custom", "M0,0 C0.57,0.098 0.446,1.102 0.688,1.146 0.83,1.146 0.788,1.01 1,1")}, 0)
+      tl.to(this.title_array[2].children[0].children[0].scale, 1.2, { x: scale, y: scale, ease:  CustomEase.create("custom", "M0,0 C0.57,0.098 0.446,1.102 0.688,1.146 0.83,1.146 0.788,1.01 1,1")}, 0)
+      tl.to(this.title_array[2].children[0].children[0].position, 1.2, { y: 5000 + pages[this.idNum].titlePositionMid[2] * this.screenRatio, ease:  CustomEase.create("custom", "M0,0 C0.57,0.098 0.446,1.102 0.688,1.146 0.83,1.146 0.788,1.01 1,1")}, 0)
+    }else {
+        this.title_array.forEach((el, i) => {
+          if(time != 0)t = time - (i * stagger)
+          //if(isPageTransition)t = time
+          if(time != 0)d= delay + (i * stagger)
+          TweenMax.to(el.children[0].children[0].scale, t, { x: scale, y: scale, delay: d, ease: Power4.easeInOut})
+          TweenMax.to(el.children[0].children[0].position, t, { y: 5000 + lhArray[i] * this.screenRatio, delay: d, ease: Power4.easeInOut})
+        })
+    }
   }
 
   pageTransition(){

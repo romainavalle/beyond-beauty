@@ -75,11 +75,10 @@ export default {
       this.portraits.load(this.getURI)
       this.stage.addChild(this.portraitsContainer);
 
-
-
-      this.mouseBlob = new MouseBlob(200)
+      this.mouseBlob = new MouseBlob(100)
       this.stage.addChild(this.mouseBlob.sprite);
     },
+
     onReady(){
       if(this.route.name === 'story-pageId') this.checkStory()
       Emitter.on('CANVAS_CLICK', this._canvasClick);
@@ -115,9 +114,10 @@ export default {
       if(this.isMenuCompletlyVisible) return
       if(!this.isCanvasVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.pixiBlobs.tick()
-      if(this.isAppReady)this.mouseBlob.tick();
+      if(this.isAppReady) this.mouseBlob.tick();
       this.renderer.render(this.stage);
     },
+
     checkStory() {
       if(window.smooth.vars.current === 0)this.storyPushSwitched = false
       if(window.smooth.vars.current > 500) {
@@ -130,12 +130,14 @@ export default {
         this.doSwitch()
       }
     },
+
     checkSwitchBeforePageChange() {
       if(this.storyPushSwitched) {
         this.storyPushSwitched = false
         this.doSwitch()
       }
     },
+
     doSwitch() {
       console.log('doSwitch')
       let nextPageNum = this.currentPageIdNum + 1
@@ -170,8 +172,8 @@ export default {
       this.titlesAbout.resize(w, h);
       this.background.resize(w, h);
       this.renderer.resize(w, h);
-      this.pixiBlobs.resize(w, h, 80 * w / 1440)
-      this.mouseBlob.resize(w, h, 80 * w / 1440)
+      this.pixiBlobs.resize(w, h, 50 * w / 1440)
+      this.mouseBlob.resize(w, h, 50 * w / 1440)
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
@@ -181,6 +183,7 @@ export default {
       this.titles.show(this.currentHomeSlideId, delay * 1.3, 1, this.direction);
     },
     showAbout(delay = 0) {
+      this.pixiBlobs.scale(1)
       this.titlesAbout.show(delay)
       this.background.hide(0)
       this.pixiBlobs.mask = 'about'
@@ -192,6 +195,7 @@ export default {
 
     showPage(delay, time, direction = 'forward') {
       console.log('showPage', {delay},{time})
+      this.pixiBlobs.scale(.8)
       this.titlesContainer.visible = true
       this.titlesAboutContainer.visible = false
       this.background.show()
@@ -200,10 +204,12 @@ export default {
       this.pixiBlobs.setTint(this.pages[this.currentPageIdNum].color);
       this.titles.show(this.currentPageIdNum, delay, time, direction);
       this.currentScale = this.midScale
+      //this.currentScale = this.smlScale
       this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay, time);
     },
     showHome(delay = 0) {
       console.log('showHome', {delay})
+      this.pixiBlobs.scale(1)
       this.mouseBlob.hide()
       this.portraitsContainer.visible = true
       this.titlesContainer.visible = true
@@ -244,10 +250,9 @@ export default {
     },
     pageTransition() {
       console.log('pageTrans')
-      Emitter.emit('HIDE_MOUSE');
-      this.titles.goToYPos(0, 1.2)
+      this.titles.goToYPos(0, 1.3)
       this.currentScale = this.midScale
-      this.titles.scaleTo(this.currentPageIdNum , this.currentScale, 0, 1.2, true);
+      this.titles.scaleTo(this.currentPageIdNum , this.currentScale, 0, 1, true);
     },
     showMouse() {
       console.log('showMouse')
@@ -321,7 +326,7 @@ export default {
         this.titles.hide(this.getPageIdNum(old), this.isMenuCompletlyVisible, dir)
       }
       if(val !== undefined){
-        if(!this.isPageTransition) this.showPage(this.isMenuCompletlyVisible ?  .8 : 1.2, 1.5, dir)
+        if(!this.isPageTransition) this.showPage(this.isMenuCompletlyVisible ?  .8 : 0, 1.5, dir)
       }
     }
   },

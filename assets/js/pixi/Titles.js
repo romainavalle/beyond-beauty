@@ -123,7 +123,6 @@ class Titles {
 
   scaleTo(id, scale, delay, time, isPageTransition = false) {
     this.scale = scale
-
     for (let index = 0; index < this.titles.length; index++) {
       if(id === index) {
         this.titlesBorder[id].scaleTo(scale, delay, time, isPageTransition)
@@ -137,7 +136,7 @@ class Titles {
 
   goToYPos(yPos, time){
     this.yPos = yPos
-    TweenMax.to([this.titleBorderSprite.position, this.titleSprite.position], time,{y: this.originalYpos + yPos, ease: Power2.easeInOut})
+    TweenMax.to([this.titleBorderSprite.position, this.titleSprite.position], time,{y: this.originalYpos + yPos, ease: Power4.easeInOut})
   }
 
 }

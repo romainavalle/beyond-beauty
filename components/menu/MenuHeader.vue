@@ -34,7 +34,7 @@ export default {
 
     doClick() {
       this.setMenuOpen(false)
-      TweenMax.to(this, .1, {scale:1, ease: Power4.easeIn, repeat: 1, yoyo:true})
+      //TweenMax.to(this, .1, {scale:1, ease: Power4.easeIn, repeat: 1, yoyo:true})
     },
     doMouseEnter() {
       if(!this.isShow)return

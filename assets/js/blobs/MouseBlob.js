@@ -23,6 +23,13 @@ class MouseBlob extends BlobMixinNoise{
   hide() {
     TweenMax.to(this, .5, {rotation: '+=30', scale: 0, ease: Power4.easeOut})
   }
+  scaleDown() {
+    TweenMax.to(this, .5,{scale: 0.85,  ease: Power4.easeOut})
+  }
+
+  scaleUp() {
+    TweenMax.to(this, .6,{scale: 1,  ease: CustomEase.create("custom", "M0,0 C0.126,0.382 0.166,1.058 0.324,1.206 0.516,1.386 0.602,1 1,1")})
+  }
 
   tick(follow = false) {
     super.tick()

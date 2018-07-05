@@ -1,5 +1,5 @@
 <template>
-  <div class="Slide" :class="readyClass">
+  <div class="Slide" :class="[readyClass, {'hover': isHover}]">
     <p class="bottom">
       <span v-for="(line,i) in textArray" :key="i" v-html="line" class="line"></span>
     </p>
@@ -29,7 +29,9 @@ export default {
       canvasWidth: 800,
       canvasHeight: 800,
       isImgShown : false,
-      canvasClass: ''
+      isAppearing: false,
+      canvasClass: '',
+      isHover: false
     }
   },
   props: ['fact', 'id', 'images'],
@@ -58,26 +60,28 @@ export default {
 
     },
     doMouseOver() {
-
       Emitter.emit('HIDE_MOUSE')
-      if(this.isImgShown) return
-      if(this.isTweening)return
-      this.isImgShown = true
-      this.isTweening = true
+      this.isHover = true
+      //if(this.isImgShown) return
+      //if(this.isTweening)return
+      //this.isImgShown = true
+      //this.isTweening = true
       this.images.show(this.id)
-      TweenMax.to(this.$refs.canvas, .6, {y: 0, x: 0, ease: Quart.easeOut, onComplete: ()=>{
-        this.isTweening = false
-        if(this.isHideRequested)this.doMouseOut()
+      TweenMax.to(this.$refs.canvas, .8, {y: 0, x: 0, ease: Quart.easeOut, onComplete: ()=>{
+        //this.isTweening = false
+        //if(this.isHideRequested)this.doMouseOut(true)
       }})
     },
-    doMouseOut() {
+    doMouseOut(/*isRequested*/) {
+      this.isHover = false
       Emitter.emit('SHOW_MOUSE')
-      if(!this.isImgShown) return
-      if(this.isTweening) this.isHideRequested = true
-      if(this.isTweening)return
-      this.isTweening = true
-      this.isHideRequested = false
-      this.isImgShown = false
+      //if(!isRequested) Emitter.emit('SHOW_MOUSE')
+      //if(!this.isImgShown) return
+      //if(this.isTweening) this.isHideRequested = true
+     // if(this.isTweening)return
+      //this.isTweening = true
+      //this.isHideRequested = false
+      //this.isImgShown = false
       this.images.hide()
       let x = 60, y = -50
       if(this.isVertical){
@@ -86,8 +90,8 @@ export default {
       }
       TweenMax.to(this.$refs.canvas, .6, {x, y, ease: Cubic.easeIn, onComplete: ()=>{
         this.resetCanvasPos()
-        this.isTweening = false
-        if(this.isHideRequested)this.doMouseOut()
+        //this.isTweening = false
+        //if(this.isHideRequested)this.doMouseOut(true)
       }})
     },
     checkImageRatio() {
@@ -114,10 +118,12 @@ export default {
       this.h = h
       if(this.images.image_array[this.id]) this.checkImageRatio()
     },
-    show(dir, time = 1){
+    show(dir, time = .5){
       const from = dir < 0 ? this.w / 2 : -this.w / 2
       TweenMax.set(this.$el, {autoAlpha: 1})
+      this.isAppearing = true
       TweenMax.fromTo(this, time, {x: from}, {x: 0, overwrite: 1, onComplete: () => {
+        this.isAppearing = false
         this.readyClass = 'ready'
         this.addListeners()
         this.resetCanvasPos()
@@ -133,7 +139,7 @@ export default {
       this.readyClass = ''
     },
     backToZero(){
-      TweenMax.to(this, 1, {x: 0, ease: Elastic.easeOut, overwrite: 1})
+      TweenMax.to(this, .7, {x: 0, ease: CustomEase.create("custom", "M0,0 C0.156,0 0.098,0.823 0.332,1 0.546,1.162 0.598,1 1,1"), overwrite: 1})
     },
     tick(x) {
       if(x) this.x = x
@@ -147,9 +153,12 @@ export default {
       if(this.currentX === this.x)return
       this.currentX = this.x
       this.$el.style.opacity = 1 - (Math.abs(this.x) / (this.w / 2))
+      let delay
       for (let index = 0; index < this.$spans.length; index++) {
-        transform(this.$spans[index], {translate3d:[this.x * (1 - (index * .1)), 0, 0]})
-        transform(this.$spansTop[index], {translate3d:[this.x * (1 - (index * .1)), 0, 0]})
+        delay = (1 - (index * .08))
+        if(this.isAppearing) delay =  .4 + (index * .08)
+        transform(this.$spans[index], {translate3d:[this.x * delay, 0, 0]})
+        transform(this.$spansTop[index], {translate3d:[this.x * delay, 0, 0]})
       }
     },
     addListeners() {
@@ -240,7 +249,7 @@ export default {
     font-weight 500
     cursor pointer
   .top strong
-    &:after
+    &:before
       transition opacity .4s ease-in-out-quart
       content attr(data-text)
       -webkit-text-stroke-color $colors-timelineBlack
@@ -251,7 +260,23 @@ export default {
       left 0
       position absolute
       color $colors-timelineBlack
-  &.ready .top strong:after
+    &:after
+      transition opacity .4s ease-in-out-quart
+      content attr(data-text)
+      -webkit-text-stroke-color $colors-black
+      -webkit-text-stroke-width .25px
+      opacity 0
+      display block
+      top .115 * 140 * $unitH
+      left 0
+      position absolute
+      color $colors-black
+      transition opacity .4s ease-in-out-quart
+  &.ready .top strong:before
+      opacity 1
+      transition opacity .8s ease-in-out-quart
+
+  &.ready.hover .top strong:after
       opacity 1
       transition opacity .8s ease-in-out-quart
 

@@ -26,19 +26,23 @@ class TransitionMask {
     this.img.addEventListener('load', this.tweenUpdate.bind(this))
   }
   show() {
-    if(this.isTweening)return
+    //if(this.isTweening)return
+    if(this.isShow)return
+    this.isShow = true
     this.isTweening = true
-    TweenMax.to(this, 35, { useFrames: true,  currentFrameTween: 35, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: ()=>{
+    this.currentFrameTween = 5
+    TweenMax.to(this, 50, { useFrames: true,  currentFrameTween: 35, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: ()=>{
       this.isTweening = false
     } })
     this.tweenUpdate()
   }
   hide() {
-
-    TweenMax.to(this, 30, { useFrames: true, currentFrameTween: 68, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: ()=>{
+    if(!this.isShow)return
+    TweenMax.to(this, 30, { useFrames: true, currentFrameTween: 69, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this), onComplete: ()=>{
       this.currentFrameTween = 0
-      this.isTweening = false
-      if(this.isHideRequested)this.hide()
+      //this.isTweening = false
+      this.isShow = false
+      //if(this.isHideRequested)this.hide()
     } })
     this.tweenUpdate()
   }

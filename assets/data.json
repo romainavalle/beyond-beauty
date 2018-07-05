@@ -11,8 +11,8 @@
       "name": "Natalie Portman",
       "color": "#f7c8ae",
       "titlePosition": [0, 202, 420],
-      "titlePositionMid": [70, 202, 342],
-      "titlePositionSml": [110, 202, 300],
+      "titlePositionMid": [95, 202, 316],
+      "titlePositionSml": [130, 202, 278],
       "title": [
         {"x": 480, "y": 0, "w": 405, "h": 189},
         {"x": 1132, "y": 440, "w": 1225, "h": 220},
@@ -81,8 +81,8 @@
       "name": "Emma Watson",
       "color": "#f7b8b0",
       "titlePosition": [0, 190, 405],
-      "titlePositionMid": [63, 190, 333],
-      "titlePositionSml": [100, 190, 290],
+      "titlePositionMid": [83, 190, 310],
+      "titlePositionSml": [120, 190, 270],
       "title": [
         {"x": 0, "y": 638, "w": 518, "h": 213},
         {"x": 0, "y": 851, "w": 1151, "h": 236},
@@ -151,8 +151,8 @@
       "name": "Jennifer Lawrence",
       "color": "#f7cfae",
       "titlePosition": [0, 190, 395],
-      "titlePositionMid": [61, 190, 326],
-      "titlePositionSml": [100, 190, 285],
+      "titlePositionMid": [84, 190, 303],
+      "titlePositionSml": [121, 190, 266],
       "title": [
         {"x": 518, "y": 638, "w": 412, "h": 200},
         {"x": 1190, "y": 0, "w": 1170, "h": 237},
@@ -221,8 +221,8 @@
       "name": "Cara Delevingne",
       "color": "#f5d4a4",
       "titlePosition": [0, 205, 415],
-      "titlePositionMid": [70, 205, 344],
-      "titlePositionSml": [108, 205, 306],
+      "titlePositionMid": [93, 205, 324],
+      "titlePositionSml": [130, 205, 284],
       "title": [
         {"x": 0, "y": 0, "w": 480, "h": 190},
         {"x": 0, "y": 190, "w": 1190, "h": 228},

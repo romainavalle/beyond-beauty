@@ -41,12 +41,12 @@ export default {
       this.showClass = true
       let delay = 0
       this.$refs.fact.forEach((el, i) => {
-        if(i == 0 || i === 4)delay = 2.5
-        if(i == 1 || i === 3)delay = 1.5
-        if(i == 2)delay = 3
+        if(i == 0 || i === 4)delay = .8
+        if(i == 1 || i === 3)delay = .5
+        if(i == 2)delay = 1.2
         el.show(delay)
       })
-      this.$refs.drag.show(2.5)
+      this.$refs.drag.show(1)
     },
     hide() {
       this.$refs.drag.hide()
@@ -65,7 +65,7 @@ export default {
       if(val) {
         this.show()
       }else{
-        this.hide()
+        //this.hide()
       }
     }
   },
@@ -87,9 +87,9 @@ export default {
   height 320 * $unitV
   bottom 40 * $unitV
   &.show .line
-    opacity .3
+    opacity .5
     transform scale(1, 1)
-    transition transform 2s ease-out-quart 1s, opacity  2s ease-out-quart 1s
+    transition transform 1s ease-out-quart .5s, opacity  1s ease-out-quart .5s
   .line
     background $colors-timelineBlack
     bottom 111 * $unitV

@@ -49,9 +49,11 @@ export default {
     font-size 21 * $unitH
     color $colors-speechGrey
     width 400 * $unitH
+    line-height 1.7
   p
     color $colors-white
     font-size 25 * $unitH
+    line-height 1.6
     font-weight $light
 </style>
 

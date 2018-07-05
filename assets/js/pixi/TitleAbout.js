@@ -20,6 +20,7 @@ class TitleAbout {
     this.posTitle = new PIXI.Sprite()
     this.posTitle.addChild(this.titleImg)
     this.container.addChild(this.posTitle)
+    if(this.isBordered) this.container.alpha = .35
   }
 
   resize(w, h) {

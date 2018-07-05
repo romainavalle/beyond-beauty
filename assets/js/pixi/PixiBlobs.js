@@ -66,6 +66,9 @@ class PixiBlobs {
   hide() {
     this.blobs.hide()
   }
+  scale(scale) {
+    this.blobs.scaleTo(scale)
+  }
   resize(w, h, shapeW = 0) {
     this.displacement.resize(w, h)
     this.renderTexture.resize(w, h)

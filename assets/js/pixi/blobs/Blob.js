@@ -11,7 +11,7 @@ class Blob {
     this.originalRadius = this.radius = 70 + Math.floor(Math.random() * 100)
     this.position = { x: 0, y: 0 }
     this.elasticity = .001
-    this.friction = .0085
+    this.friction = .08
     this.rotation = 45
     this.hover = false
     this.firstTime = true

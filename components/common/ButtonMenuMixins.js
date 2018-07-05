@@ -27,7 +27,7 @@ export default {
     },
     doClick() {
       this.setMenuOpen(true)
-      TweenMax.to(this, .1, {scale:1, ease: Power4.easeIn, repeat: 1, yoyo:true})
+      //TweenMax.to(this, .1, {scale:1, ease: Power4.easeIn, repeat: 1, yoyo:true})
     },
     doMouseEnter() {
       TweenMax.to(this, 1,{rotation: '+=15', scale: 1.1, ease: Power4.easeOut})

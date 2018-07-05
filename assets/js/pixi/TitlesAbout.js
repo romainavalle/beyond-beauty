@@ -106,8 +106,8 @@ class TitlesAbout {
     if(this.isShown) return
     this.isShown = true
     for (let index = 0; index < 4; index++) {
-      this.titles[index].show(delay + index * .3)
-      this.titlesBorder[index].show(delay + index * .3)
+      this.titles[index].show(delay + (index % 2) * .3)
+      this.titlesBorder[index].show(delay + (index % 2) * .3)
     }
   }
 
