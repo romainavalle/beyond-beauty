@@ -14,21 +14,16 @@ class Blob {
     this.friction = .08
     this.rotation = 45
     this.hover = false
-    this.firstTime = true
     this.oldMousePoint = { x: 0, y: 0 }
-    this.init()
   }
 
-  init() {
-
-  }
   resize(w, h){
     this.w = w
     this.h = h
   }
 
-  setBlob() {
-    this.isSettingPos = true
+  setBlob(setDelay = false) {
+    TweenMax.killTweensOf(this)
     this.blobGraph.clear()
     this.numPoints = 5 + Math.floor(Math.random() * 4)
     this.radius = 20 + this.numPoints * 15
@@ -38,25 +33,21 @@ class Blob {
       let point = new BlobPoint(this.divisional * i, this, i, this.elasticity, this.friction);
       this.points.push(point);
     }
-    const cosAngle = Math.random() * Math.PI / 2 + Math.PI / 4
-    const sinAngle = Math.random() * Math.PI / 2 + Math.PI / 4
-    this.position.x = Math.cos(cosAngle) * (this.w) -  this.w / 2
-    this.position.y = Math.sin(sinAngle) * (this.h ) + this.h  / 2
-    const x = this.position.x + this.w * Math.cos(Math.PI / 4) + this.w
-    const y = this.position.y - this.h * Math.sin(Math.PI / 4) - this.h
+    const random = Math.random()
+    const angle = random * Math.PI / 4 + Math.PI / 2 + Math.PI / 4
+    const angleEnd = (1 - random) * Math.PI / 4 - Math.PI / 2 + Math.PI / 4
+
+    this.position.x = this.w * .5 + Math.cos(angle) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
+    this.position.y = this.h * .5 + Math.sin(angle) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
+    const x = this.w * .5 + Math.cos(angleEnd) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
+    const y = this.h * .5 + Math.sin(angleEnd) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
     const time = this.radius / 5
-    setTimeout(() => {
-      this.blobGraph.clear()
-      this.curveThrough();
-      this.prepareStroke();
-      this.isSettingPos = false
-    }, 1000)
-    if (this.firstTime) {
-      TweenMax.to(this.position, time, { x, y, onComplete: this.setBlob.bind(this) }).progress(this.index / 10)
-      this.firstTime = false
-    } else {
-      TweenMax.to(this.position, time, { x, y, onComplete: this.setBlob.bind(this) })
-    }
+    const delay =  setDelay ? this.index : 0
+    TweenMax.to(this.position, time, {delay, x, y, onComplete: this.setBlob.bind(this), overwrite: 1, onUpdate: this.checkBlobPos.bind(this) })
+  }
+
+  checkBlobPos() {
+    if(this.position.x > this.w + this.radius + 50 || this.position.y < -(this.radius + 50) )this.setBlob()
   }
 
   onValueChange() {
@@ -134,11 +125,10 @@ class Blob {
     this.blobGraph.alpha = alpha
     if (alpha === 0) return
     if (process.browser) this.checkMouse()
-    if (this.isSettingPos) return
+    this.blobGraph.clear()
     this.blobGraph.position.x = this.position.x
     this.blobGraph.position.y = this.position.y
-    this.blobGraph.clear()
-    this.blobGraph.moveTo(0,0)
+    this.blobGraph.moveTo(0, 0)
 
     this.blobGraph.beginFill(0xFFFFFF)
     this.curveThrough();

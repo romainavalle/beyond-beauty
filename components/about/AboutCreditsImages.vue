@@ -48,7 +48,11 @@ export default {
     }
   },
   mounted(){
-
+    if(this.packer){
+      this.$refs.images.forEach(element => {
+        element.style.opacity = 0
+      });
+    }
   }
 }
 

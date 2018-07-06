@@ -19,7 +19,6 @@ export default {
   methods:{
     ...mapActions(['setCanvasVisible']),
     onReady(){
-      console.log('!!!!!onReady!!!!!')
       if(this.isReady) return
       this.isReady = true
       this.hammerPanel = new Hammer.Manager(this.$root.$el)

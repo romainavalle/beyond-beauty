@@ -121,7 +121,6 @@ export default {
     },
     onReady(isFistLoad){
       if(this.isReady) return
-      console.log('onReady')
       this.isReady = true
       let time = 10000
       if(isFistLoad || this.currentHomeSlideId === -1 ) time = 1000

@@ -60,13 +60,10 @@ export default {
           this.$refs.menuButton.show()
         }
       }else{
-        if(to.name !== from .name){
+        if(to.name !== from.name){
           if(from.name === 'index') {
             this.$refs.logo.hide()
             setTimeout(() => {this.$refs.menuButton.show()}, 1000)
-          } else {
-            setTimeout(() => {this.$refs.logo.show()}, 1000)
-            this.$refs.menuButton.hide()
           }
         }
       }
@@ -186,12 +183,22 @@ export default {
           setTimeout(next, 800)
           doNext = false
       }
+      if(from.name === 'about' && to.name === 'index' && this.currentHomeSlideId !== -1) {
+          let delay = 1
+          if(this.isMenuOpen && this.isCanvasVisible){
+            delay = 800
+          }
+          setTimeout(()=>{
+            this.$refs.homeCanvas.showHomeSlide()
+          }, delay)
+
+      }
       this.$nextTick(()=>{this.setMenuOpen(false)})
       Emitter.emit('HIDE_MOUSE');
       if(doNext)next()
     })
      // todo -> promise polyfill
-    const assets =  await load.all([{ url: '/images/pack/pack.json', type: 'json', crossOrigin: 'Anonymous' },{ url: '/images/pack/pack.pack', type: 'blob', crossOrigin: 'Anonymous' }])
+    const assets =  await load.all([{ url: '/images/pack/pack.json', type: 'json'},{ url: '/images/pack/pack.pack', type: 'blob'}])
 
     if(process.browser){
       const unpacker = new MMUnpacker(assets[1], assets[0]);

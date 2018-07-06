@@ -42,7 +42,9 @@ class PixiBlobs {
     this.stage.addChild(this.dispSprite)
     this.dispSprite.mask = this.maskSprite
   }
-
+  load(getter) {
+    this.blobs.load(getter)
+  }
   tick() {
     this.blobs.tick()
     this.displacement.tick()
@@ -77,8 +79,8 @@ class PixiBlobs {
   }
   setTint(color) {
     if(this.color && this.color === color) return
-    this.color = color
     this.blobs.toggle && this.blobs.toggle()
+    this.color = color
     TweenMax.to(this.blobSprite, 2, { colorProps: { tint: color, format: "number" } })
   }
 

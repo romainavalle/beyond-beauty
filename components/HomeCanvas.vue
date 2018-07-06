@@ -65,8 +65,8 @@ export default {
         this.renderer,
         this.getURI
       );
+      //this.pixiBlobs.load(this.getURI)
 
-      this.pixiBlobs.hide()
       this.stage.addChild(blobContainer);
 
       this.portraitsContainer = new PIXI.Container();
@@ -84,7 +84,9 @@ export default {
       Emitter.on('CANVAS_CLICK', this._canvasClick);
       Emitter.on('SHOW_MOUSE', this._showMouse);
       Emitter.on('HIDE_MOUSE', this._hideMouse);
-      Emitter.on('TRANSITION:FINISHED', this.showHomeSlide.bind(this))
+      Emitter.on('TRANSITION:FINISHED', () => {
+        if(this.route.name === 'index')this.showHomeSlide()
+      })
       Emitter.on('PAGE:PANDOWN', this._panDown);
       Emitter.on('PAGE:PANUP', this._panUp);
 
@@ -94,6 +96,9 @@ export default {
       this.titles.doReady()
 
       this.titlesAboutContainer.visible = false
+      if(this.route.name === 'index'){
+        this.showHome(0)
+      }
       if(this.route.name === 'story-pageId'){
         this.background.show(0)
         this.showPage(0, 0)
@@ -177,6 +182,7 @@ export default {
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
+      console.log('showHomeSlide')
       delay = .5
       this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
       this.portraits.show(this.currentHomeSlideId, this.direction);
@@ -187,7 +193,7 @@ export default {
       this.titlesAbout.show(delay)
       this.background.hide(0)
       this.pixiBlobs.mask = 'about'
-      this.pixiBlobs.setTint(0xd5d2c7);
+      this.pixiBlobs.setTint('#d5d2c7');
       this.titlesContainer.visible = false
       this.portraitsContainer.visible = false
       this.titlesAboutContainer.visible = true
@@ -279,7 +285,7 @@ export default {
       console.log('watch -> currentHomeSlideId',val, old)
       if(this.route.name === 'index') {
         TweenMax.set(this.$el, {yPercent: 0})
-        if (old != -1) {
+        if (old !== -1) {
           if(val !== 0){
             if(val - old > 0){
               this.direction = 'forward'
@@ -296,7 +302,7 @@ export default {
           }
           this.portraits.hide(old, this.direction);
           this.titles.hide(old, false, this.direction);
-        }else{
+        } else {
           this.direction = 'forward'
           this.showHomeSlide()
         }
