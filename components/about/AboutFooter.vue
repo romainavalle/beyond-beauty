@@ -48,7 +48,7 @@ export default {
       p
         color $colors-black
   .MenuFooter
-    bottom 298 * $unitV //160 - 2 lineheight
+    bottom 280 * $unitV //160 - 2 lineheight
     a
       color $colors-black
 </style>

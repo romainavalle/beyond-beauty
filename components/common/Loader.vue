@@ -43,7 +43,7 @@ export default {
         const text = '<span>' + textSplit.join('</span> <span>') + '</span>'
         let time =  this.duration - this.time_array[this.currentSpan]
         if(this.time_array[this.currentSpan + 1])time = this.time_array[this.currentSpan + 1] - this.time_array[this.currentSpan]
-        const stagger = (time - .6) / textSplit.length
+        const stagger = (time) / textSplit.length
         this.$spans[this.currentSpan].innerHTML = text
         this.$spans[this.currentSpan].style.opacity = 1
         TweenMax.staggerFromTo(this.$spans[this.currentSpan].querySelectorAll('span'), .3,{opacity: 0}, {opacity: 1, ease:Quad.easeOut}, stagger)
@@ -140,17 +140,18 @@ export default {
     TweenMax.to(this.$refs.loading, 1, {opacity: 1, ease: Power4.easeOut})
     //
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
-    this.time_array = this.$spans.map(el => {return el.dataset.time})
+    this.time_array = this.$spans.map(el => {return parseFloat(el.dataset.time)})
+
     this.$spans.forEach(element => {
       element.style.opacity = 0
     });
     //
     setTimeout(() => {
-      SoundHelper.createSound('intro')
       this.show = true
-      this.isActive = true
     }, 200)
-    this.changeTimer = setTimeout(() => {
+    setTimeout(() => {
+      SoundHelper.createSound('intro')
+      this.isActive = true
       this.changeName()
     }, 1800)
   }

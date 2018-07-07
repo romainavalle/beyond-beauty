@@ -4,8 +4,9 @@
       <transition-group name="name" :duration="1000">
         <span class="innerTitle" v-for="(page,i) in pages" :key="i" v-show="i === currentHomeSlideId">
           <span v-text="name(i)"></span>
-          <em></em>
+
           <svg viewBox="0 0 16 16">
+          <circle  cx="8" cy="8" r="1" class="point"/>
           <circle  cx="8" cy="8" r="7" class="bottom"/>
           <circle  cx="8" cy="8" r="7" class="timer" ref="timer"/>
           </svg>
@@ -91,7 +92,7 @@ export default {
       this.nextPageTimer = setTimeout(this.nextPage.bind(this, 1), time)
       if(this.currentHomeSlideId !== -1){
         this.$refs.timer[this.currentHomeSlideId].style.strokeDashoffset = 45
-        //TweenMax.to(this.$refs.timer[this.currentHomeSlideId], (time / 1000) - 1, {delay: 1,'stroke-dashoffset': 0, ease: Linear.easeInOut})
+        TweenMax.to(this.$refs.timer[this.currentHomeSlideId], (time / 1000) - 1, {delay: 1,'stroke-dashoffset': 0, ease: Linear.easeInOut})
       }
     },
     setMouseWheelListener(){
@@ -144,7 +145,7 @@ export default {
     isMenuOpen(val){
       if(val){
         this.menuInitClose = false
-        if(this.nextPageTimer)clearTimeout(this.nextPageTimer)
+        if(this.nextPageTimer) clearTimeout(this.nextPageTimer)
       }else{
         if(!this.menuInitClose) {
           this.menuInitClose = true
@@ -170,9 +171,9 @@ export default {
   width 100%
   pointer-events none
   .title
-    bottom 180 * $unitH
+    bottom 188 * $unitH
     font-size 20 * $unitH
-    left 180 * $unitH
+    left 160 * $unitH
     position absolute
     font-weight normal
     .innerTitle
@@ -186,10 +187,12 @@ export default {
         fill none
         stroke white
         display block
-        width 16px
-        height 16px
+        width 34 * $unitH
+        height 34 * $unitH
         stroke $colors-grey
-        transform translateX(-10px) translateZ(0px) rotate(-90deg) scale(1, 1)
+        transform translateX(-16 * $unitH) translateY(-6 * $unitH) translateZ(0px) rotate(-90deg) scale(1, 1)
+        .point
+          fill $colors-grey
         .bottom
           opacity .3
           stroke-width .25
@@ -197,13 +200,7 @@ export default {
           stroke-dashoffset 45
           stroke-dasharray 45
           stroke-width 1px
-      em
-        display block
-        width 4px
-        height 4px
-        background $colors-grey
-        border-radius 50%
-        margin-top 10 * $unitH
+
       span
         display block
         will-change transform

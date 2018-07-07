@@ -58,7 +58,7 @@ export default {
 
 <style lang="stylus" scoped>
 .MenuCitations
-  bottom 181 * $unitV // cause citation are absolute -> fontsize
+  bottom 196 * $unitH // cause citation are absolute -> fontsize
   left 80 * $unitH
   position absolute
   width 100%

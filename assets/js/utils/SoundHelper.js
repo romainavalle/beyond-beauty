@@ -14,16 +14,21 @@ class SoundHelper {
       src: `${path}sounds/${id}${partTxt}.mp3`,
       autoplay: !this.mute,
       volume: 0,
-      onload: function() {
+      onload: () => {
         Emitter.emit('SOUND_LOADED')
       },
-      onend: function() {
+      onend: () => {
+        console.log(this.id )
         if(this.id !== 'intro') Emitter.emit('SOUND_ENDED')
       }
 
     })
     this.sound.on('play', ()=>{
-      this.sound.fade(0, 1, 1000)
+      if(this.id === 'intro') {
+        this.sound.volume(1)
+      } else {
+        this.sound.fade(0, 1, 1000)
+      }
     })
   }
   toggleMute(mute) {

@@ -1,7 +1,7 @@
 {
   "intro": {
-    "text": "Four women mainly<br>known for their appearances.<br>Discover their true<br>inner beauty.",
-    "html": "<span data-time=\"1\">Four women</span> <span data-time=\"2\">mainly</span><br><span data-time=\"2.5\">known for their appearances.</span><br><span data-time=\"5.5\">Discover their true</span><br><span data-time=\"6\">inner beauty.</span>"
+    "text": "Four women mainly<br>known for their appearances.<br>Discover their<br>inner beauty.",
+    "html": "<span data-time=\"0.1\">Four women</span> <span data-time=\"0.7\">mainly</span><br><span data-time=\"0.9\">known for their appearances.</span><span data-time=\"2\"></span><br><span data-time=\"3.5\">Discover their</span><br><span data-time=\"4.2\">inner beauty.</span>"
   },
   "pages":[
     {

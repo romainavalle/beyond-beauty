@@ -88,7 +88,7 @@ export default {
   letter-spacing 3 * $unitH
   text-transform uppercase
   display flex
-  top 139 * $unitV // 160 - fontsize
+  top 150 * $unitH
   canvas
     top 0
     left 0
@@ -111,13 +111,17 @@ export default {
     letter-spacing 3 * $unitH
     color $colors-grey
     position relative
+  a
+    padding 20 * $unitH
+    margin-top -20 * $unitH
+    margin-left -20 * $unitH
   button, a
     font-weight $semi
-    display block
     text-align left
     text-transform uppercase
     transition opacity .3s
-    &:hover
+    &:hover,
+    &.nuxt-link-exact-active
       opacity .6
   a
     color $colors-white

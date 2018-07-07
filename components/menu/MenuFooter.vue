@@ -29,23 +29,29 @@ export default {
   position absolute
   display flex
   flex-wrap nowrap
-  font-size 14 * $unitH
-  letter-spacing 3 * $unitH
   text-transform uppercase
   display flex
-  bottom 152 * $unitV
+  bottom 160 * $unitH
   right 160 * $unitH
   z-index 1
   ul
     display flex
   li
     width 160 * $unitH
+    height 40 * $unitH
   a
-    font-weight $semi
+    color $colors-white
+    font-size 14 * $unitH
+    letter-spacing 3 * $unitH
     display block
+    font-weight $semi
+    line-height 1
+    margin-bottom -20 * $unitH
+    margin-right -20 * $unitH
+    padding 20 * $unitH
     text-align right
     text-transform uppercase
-    color $colors-white
+    transition opacity .3s
     transition opacity .3s
     &:hover
       opacity .6

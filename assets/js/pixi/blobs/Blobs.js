@@ -24,7 +24,7 @@ class Blobs {
     }
 
     var blurFilter = new PIXI.filters.BlurFilter();
-    blurFilter.blur = 10;
+    //blurFilter.blur = 10;
 
 
 // create filter

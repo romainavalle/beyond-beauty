@@ -100,7 +100,7 @@ export default {
     this.$el.style.opacity = .3
 
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
-    this.time_array = this.$spans.map(el => {return el.dataset.time})
+    this.time_array = this.$spans.map(el => {return parseFloat(el.dataset.time)})
     this.$spans.forEach(element => {
       element.style.opacity = 0
     });

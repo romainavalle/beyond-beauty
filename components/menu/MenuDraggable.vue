@@ -1,7 +1,7 @@
 <template>
   <nav class="MenuDraggable">
     <div class="content" ref="content">
-      <ul>
+      <ul @mouseenter="doMouseEnter" @mouseleave="doMouseLeave">
         <v-menu-link v-for="(page,i) in pages" :key="i" :page="page" ref="link"></v-menu-link>
       </ul>
     </div>
@@ -10,6 +10,7 @@
 
 <script>
 import vMenuLink from '~/components/menu/MenuLink.vue'
+import Emitter from '~/assets/js/events'
 import { mapState } from 'vuex'
 if (process.browser) {
   Draggable = require('gsap/Draggable')
@@ -32,9 +33,15 @@ export default {
      this.$refs.link.forEach((el, i) => {
        /* let t = (-this.snapValues[i] + this.draggable[0].x) / (this.w / 2)
         const ease = t > 0 ? (--t)*t*t+1 :t*t*t*/
-
         el.tick(/*ease * 200*/)
       })
+    },
+    doMouseEnter(){
+      Emitter.emit('SET_MOUSE_TYPE', {type: 'drag'})
+      Emitter.emit('SHOW_MOUSE')
+    },
+    doMouseLeave() {
+      Emitter.emit('HIDE_MOUSE')
     },
     resize(w, h) {
       this.w = w
@@ -69,14 +76,19 @@ export default {
         lockAxis:true,
         throwProps:true,
         zIndexBoost: false,
+        allowEventDefault: true,
         snap: {
           x: this.snapValues
         },
         onThrowUpdate: ()=>{
           //this.getNearestEl()
         },
-        onDrag: () => {
+        onRelease: () => {
+          Emitter.emit('SCALE_MOUSE_UP')
+        },
+        onPress: () => {
           //this.getNearestEl()
+          Emitter.emit('SCALE_MOUSE_DOWN')
         },
         onThrowComplete: () => {
           this.currentId = this.snapValues.indexOf(Math.round(this.draggable[0].x))
@@ -95,26 +107,58 @@ export default {
       this.currentId = currentEl
     },
     show(){
-
+      //this.setMouseWheelListener()
+      if(window.smooth) window.smooth.removeEvents()
       this.$refs.link.forEach((el, i) => {
         el.show(i * .15)
       })
       this.resetDraggable()
       this.currentId = 0
+      this.idleMouseWheel = false
       TweenMax.fromTo(this.$refs.content, .9, {x: this.w}, {delay: .8, x: 0, ease: Expo.easeOut, force3D:true})
       TweenMax.set(this.$el, {autoApha: 1})
     },
     hide() {
+      if(window.smooth) window.smooth.addEvents()
+      //this.removeMouseWheelListener()
       TweenMax.to(this.$refs.content, .9, {x: '+=' + this.w * .2, opacity: 0, ease: Cubic.easeIn, force3D:true, onComplete: () => {TweenMax.set(this.$refs.content, {x: 0, opacity: 1})}})
       this.$refs.link.forEach((el, i) => {
         el.hide()
       })
     },
     onReady(){
-    }
+    },
+    /*setMouseWheelListener(){
+      this.$el.addEventListener("mousewheel", this._doWheel, false);
+      this.$el.addEventListener("wheel", this._doWheel, false);
+    },
+    removeMouseWheelListener(){
+      this.$el.removeEventListener("mousewheel", this._doWheel, false);
+      this.$el.removeEventListener("wheel", this._doWheel, false);
+    },
+    doWheel(e) {
+      if(this.idleMouseWheel)return
+      this.idleMouseWheel = true
+      this.idleTimer = setTimeout(()=>{this.idleMouseWheel = false}, 1000)
+      e.preventDefault();
+      if(e.deltaY > 0 ){
+        this.currentId++
+        if(this.currentId >= 3) this.currentId=3
+      } else {
 
+        this.currentId--
+        if(this.currentId <= 0) this.currentId=0
+      }
+      console.log(this.currentId)
+      this.slideDraggable()
+    }*/
+  },
+  beforeDestroy() {
+    //if(this.idleTimer)clearTimeout(this.idleTimer)
+    //this.removeMouseWheelListener()
   },
   mounted() {
+    //this._doWheel = this.doWheel.bind(this)
     TweenMax.set(this.$el, {autoApha: 0})
   }
 }

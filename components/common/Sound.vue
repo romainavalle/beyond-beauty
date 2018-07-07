@@ -1,5 +1,11 @@
 <template>
-  <button class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound" v-show="route.name !== 'about'"><em></em>sound</button>
+  <button class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound" v-show="route.name !== 'about'">
+    <svg viewBox="0 0 8 8">
+      <circle  cx="4" cy="4" r="1" class="point"/>
+      <circle  cx="4" cy="4" r="3" class="bottom"/>
+    </svg>
+    <span>sound</span>
+  </button>
 </template>
 
 <script>
@@ -59,22 +65,12 @@ export default {
 
 <style lang="stylus" scoped>
 .Sound
-  align-items center
-  bottom 150 * $unitH
-  color $colors-black
-  display flex
-  font-size 14 * $unitH
-  font-weight $semi
-  justify-content center
-  letter-spacing $unitH * 4
-  line-height 1
-  padding-bottom 10 * $unitH
-  padding-top 10 * $unitH
+  bottom 140 * $unitH
+  padding 20 * $unitH
   pointer-events auto
   position fixed
-  right  180 * $unitH
+  right  140 * $unitH
   text-transform uppercase
-  transition letter-spacing .3s ease-in-quad, transform .5s ease-out-quart 1s
   transition opacity .5s ease-out-quart
   &.white
     color $colors-white
@@ -84,31 +80,35 @@ export default {
       background $colors-white
   &.muted
     opacity .5
-    em
+    .point
+      transform scale(0, 0)
+      opacity 0
+    .bottom
       transform scale(1, 1)
-      &:after
-        transform scale(0, 0)
-  em
-    height 6px
-    margin-right 10px
-    position relative
-    transform scale(.5, .5)
-    width 6px
-    transition transform .5s ease-out-quart
-    &:before,
-    &:after
-      bottom 0
-      content ''
-      display block
-      left 0
-      position absolute
-      right 0
-      top 0
-    &:before
-      border 1px solid $colors-grey
-      border-radius 50%
-    &:after
-      transition transform .5s ease-out-quart
-      background $colors-grey
-      border-radius 50%
+      opacity 1
+  span
+    display inline-block
+    letter-spacing $unitH * 4
+    line-height 1
+    font-size 14 * $unitH
+    font-weight $semi
+    color $colors-black
+  svg
+    fill none
+    stroke white
+    display inline-block
+    width 14 * $unitH
+    height 14 * $unitH
+    stroke $colors-black
+    margin-right 10 * $unitH
+    transform translateY(2 * $unitH)
+    circle
+      transition all .5s ease-in-out-quart
+      transform-origin 7 * $unitH 7 * $unitH
+    .point
+      transform scale(1, 1)
+      fill $colors-black
+    .bottom
+      transform scale(0, 0)
+      opacity 0
 </style>
