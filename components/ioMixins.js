@@ -11,7 +11,7 @@ export default {
         //console.log('IO', this.$options.name, 'inactive')
         this.active = false
       }else{
-        console.log('IO', this.$options.name, 'active')
+        //console.log('IO', this.$options.name, 'active')
         this.active = true
       }
     }

@@ -62,6 +62,7 @@ export default {
   .img + .img
     margin-top 160 * $unitV
   img
+    transform translateZ(.1px)
     display block
     width 7 * 160 * $unitH
     margin 0 auto

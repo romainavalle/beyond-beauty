@@ -35,26 +35,25 @@ export default {
   methods: {
     ...mapActions(['setPageTransition']),
     load(){
-      this.stage = new PIXI.Container();
-      this.stage.name = "stage"
+
 
       this.backgroundContainer = new PIXI.Container();
       this.backgroundContainer.name = "backgroundContainer"
       this.background = new Background(this.backgroundContainer);
-      this.stage.addChild(this.backgroundContainer);
+      this.app.stage.addChild(this.backgroundContainer);
 
 
       this.titlesContainer = new PIXI.Container();
       this.titlesContainer.name = 'titlesContainer';
       this.titles = new Titles(this.titlesContainer);
       this.titles.load(this.getURI)
-      this.stage.addChild(this.titlesContainer);
+      this.app.stage.addChild(this.titlesContainer);
 
       this.titlesAboutContainer = new PIXI.Container();
       this.titlesAboutContainer.name = 'titlesAboutContainer';
       this.titlesAbout = new TitlesAbout(this.titlesAboutContainer);
       this.titlesAbout.load(this.getURI)
-      this.stage.addChild(this.titlesAboutContainer);
+      this.app.stage.addChild(this.titlesAboutContainer);
 
       const blobContainer = new PIXI.Container();
       blobContainer.name = "blobContainer"
@@ -62,21 +61,21 @@ export default {
         blobContainer,
         this.titles.titleBorderSprite,
         this.titlesAbout.titleBorderSprite,
-        this.renderer,
+        this.app.renderer,
         this.getURI
       );
       //this.pixiBlobs.load(this.getURI)
 
-      this.stage.addChild(blobContainer);
+      this.app.stage.addChild(blobContainer);
 
       this.portraitsContainer = new PIXI.Container();
       this.portraitsContainer.name = "portraitsContainer";
       this.portraits = new Portraits(this.portraitsContainer);
       this.portraits.load(this.getURI)
-      this.stage.addChild(this.portraitsContainer);
+      this.app.stage.addChild(this.portraitsContainer);
 
       this.mouseBlob = new MouseBlob(100)
-      this.stage.addChild(this.mouseBlob.sprite);
+      this.app.stage.addChild(this.mouseBlob.sprite);
     },
 
     onReady(){
@@ -120,7 +119,7 @@ export default {
       if(!this.isCanvasVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.pixiBlobs.tick()
       if(this.isAppReady) this.mouseBlob.tick();
-      this.renderer.render(this.stage);
+      this.app.renderer.render(this.app.stage);
     },
 
     checkStory() {
@@ -176,7 +175,7 @@ export default {
       this.titles.resize(w, h);
       this.titlesAbout.resize(w, h);
       this.background.resize(w, h);
-      this.renderer.resize(w, h);
+      this.app.renderer.resize(w, h);
       this.pixiBlobs.resize(w, h, 50 * w / 1440)
       this.mouseBlob.resize(w, h, 50 * w / 1440)
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
@@ -352,19 +351,24 @@ export default {
     this._panUp = this.panUp.bind(this);
     this.$el.style.opacity = .1
 
-
-    this.renderer = new PIXI.WebGLRenderer({
+    this.app = new PIXI.Application({
       backgroundColor: 0xe1dfd7,
       transparent: false,
+      autoStart: false,
       antialias: false,
       powerPreference: "high-performance"
     });
-    this.renderer.autoResize = true;
-    this.renderer.preserveDrawingBuffer = true
-    this.renderer.legacy = true
-    PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE;
-    this.renderer.textureGC.mode = PIXI.GC_MODES.MANUAL
-    this.$el.appendChild(this.renderer.view);
+
+    this.app.renderer.autoResize = true;
+    PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE
+    this.app.renderer.textureGC.mode = PIXI.GC_MODES.MANUAL
+    var ticker = PIXI.ticker.shared;
+    // Set this to prevent starting this ticker when listeners are added to it
+    // By default this is true only on the PIXI.ticker.shared instance
+    ticker.autoStart = false;
+    // Call this to ensure the ticker is stopped right now
+    ticker.stop();
+    this.$el.appendChild(this.app.view)
 
 
   }
@@ -373,9 +377,9 @@ export default {
 
 <style lang='stylus' scoped>
 .HomeCanvas {
-  height: 100%;
-  overflow: hidden;
-  position: fixed;
-  width: 100%;
+  height 100%
+  overflow hidden
+  position fixed
+  width 100%
 }
 </style>

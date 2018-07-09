@@ -28,7 +28,6 @@ class PixiBlobs {
     this.displacementFilter.scale.y = 80
     this.stage.addChild(this.displacement.sprite)
     this.titleBorderSprite.filters = [this.displacementFilter];
-    this.titleAboutBorderSprite.filters = [this.displacementFilter];
   }
 
   init() {
@@ -50,8 +49,12 @@ class PixiBlobs {
     this.displacement.tick()
     if(this.mask === 'about') {
       this.renderer.render(this.titleAboutBorderSprite, this.renderDispTexture)
+      this.titleBorderSprite.filters = []
+      this.titleAboutBorderSprite.filters = [this.displacementFilter];
     }else{
       this.renderer.render(this.titleBorderSprite, this.renderDispTexture)
+      this.titleBorderSprite.filters = [this.displacementFilter];
+      this.titleAboutBorderSprite.filters = []
     }
     this.renderer.render(this.blobs.sprite, this.renderTexture)
   }

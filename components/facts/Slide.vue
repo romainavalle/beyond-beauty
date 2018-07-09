@@ -131,7 +131,7 @@ export default {
     },
     hide(dir, time = 1){
       this.removeListeners()
-      this.images.hide()
+      if(this.images) this.images.hide()
       const to = dir < 0 ? this.w / 2 : -this.w / 2
       TweenMax.to(this, time, {x: to, overwrite: 1, onComplete: () => {
         TweenMax.set(this.$el, {autoAlpha: 0})
@@ -229,56 +229,36 @@ export default {
     text-transform uppercase
     top 0
     &.top
-      -webkit-text-stroke-width 0
+      -webkit-text-stroke-color transparent
+      -webkit-text-stroke-width .25px
       color transparent
       position absolute
-      top 0
       left 0
     span
       display block
       will-change transform
-
-
-
-
 </style>
 <style lang="stylus">
 .Slide
   strong
     position relative
-    font-weight 500
     cursor pointer
+    font-weight 500
   .top strong
-    &:before
-      transition opacity .4s ease-in-out-quart
-      content attr(data-text)
-      -webkit-text-stroke-color $colors-timelineBlack
-      -webkit-text-stroke-width .25px
-      opacity 0
-      display block
-      top .115 * 140 * $unitH
-      left 0
-      position absolute
-      color $colors-timelineBlack
-    &:after
-      transition opacity .4s ease-in-out-quart
-      content attr(data-text)
-      -webkit-text-stroke-color $colors-black
-      -webkit-text-stroke-width .25px
-      opacity 0
-      display block
-      top .115 * 140 * $unitH
-      left 0
-      position absolute
-      color $colors-black
-      transition opacity .4s ease-in-out-quart
-  &.ready .top strong:before
+    transition all .4s ease-in-out-quart
+    -webkit-text-stroke-color $colors-timelineBlack
+    -webkit-text-stroke-width .25px
+    font-weight 500
+    opacity 0
+    color $colors-timelineBlack
+  &.ready .top strong
       opacity 1
       transition opacity .8s ease-in-out-quart
-
-  &.ready.hover .top strong:after
-      opacity 1
-      transition opacity .8s ease-in-out-quart
+  &.ready.hover .top strong
+    opacity 1
+    transition all .8s ease-in-out-quart
+    -webkit-text-stroke-color $colors-black
+    color $colors-black
 
 
 </style>

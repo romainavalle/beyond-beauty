@@ -122,7 +122,14 @@ module.exports = {
     ]
   },
   router: {
-    base: '/'
+    base: '/'/*,
+    extendRoutes (routes) {
+      routes.push({
+        name: 'custom',
+        path: '*',
+        redirect: '/'
+      })
+    }*/
   },
 
 

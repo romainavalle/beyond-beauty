@@ -1,8 +1,8 @@
 
 class DisappearMask {
   constructor() {
-    this.canvasWidth = 872
-    this.canvasHeight = 1289
+    this.canvasWidth = 1860
+    this.canvasHeight = 2200
     this.imgW = 872 / 4
     this.imgH = 1289 / 4
     this.frameW = 5

@@ -18,7 +18,6 @@ class SoundHelper {
         Emitter.emit('SOUND_LOADED')
       },
       onend: () => {
-        console.log(this.id )
         if(this.id !== 'intro') Emitter.emit('SOUND_ENDED')
       }
 

@@ -27,8 +27,8 @@ export default {
     },
     checkScroll(){
       if(!window.smooth)return
-      if(this.scrollTop != window.smooth.vars.current){
-        this.scrollTop = window.smooth.vars.current
+      if(this.scrollTop != window.smooth.vars.current.toFixed(1)){
+        this.scrollTop = window.smooth.vars.current.toFixed(1)
       }
     },
     setMouseWheelListener(){
@@ -67,7 +67,7 @@ export default {
       if(this.isShown)return
 
       Emitter.emit('PAGE:PANDOWN')
-      TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 0, ease: Circ.easeOut, onComplete: () => {
+      TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 0, clearProps: 'all', ease: Circ.easeOut, onComplete: () => {
         window.smooth.addEvents(true)
         this.setCanvasVisible(false)
       }})

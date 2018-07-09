@@ -27,7 +27,6 @@ class MouseHelper {
     const dY = this.y - this.easeY
     const dSlowX = this.x - this.easeSlowX
     const dSlowY = this.y - this.easeSlowY
-    console.log(this.easeX)
     this.easeX += dX / 10
     this.easeY += dY / 10
     this.easeSlowX += dSlowX / 11

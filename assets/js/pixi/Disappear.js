@@ -1,8 +1,8 @@
 
 class DisappearMask {
   constructor() {
-    this.imgW = 1090 / 5
-    this.imgH = 1611 / 5
+    this.imgW = 1860 / 5
+    this.imgH = 2200 / 4
     this.frameW = 5
     this.currentFrame = -1
     this.currentFrameTween = 0
@@ -22,12 +22,12 @@ class DisappearMask {
   disappear() {
     this.currentFrameTween = 0
     this.tweenUpdate()
-    TweenMax.to(this, 24, { useFrames: true,  currentFrameTween: 24, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+    TweenMax.to(this, 19, { useFrames: true,  currentFrameTween: 19, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
   }
   appear() {
-    this.currentFrameTween = 24
+    this.currentFrameTween = 19
     this.tweenUpdate()
-    TweenMax.to(this, 24, { useFrames: true,  currentFrameTween: 0, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+    TweenMax.to(this, 19, { useFrames: true,  currentFrameTween: 0, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
   }
 
   tweenUpdate() {

@@ -1,34 +1,53 @@
 <template>
-  <button class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound" v-show="route.name !== 'about'">
+<transition  @enter="enter" @leave="leave" appear @css="false">
+  <button v-show="displayed" class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound">
     <svg viewBox="0 0 8 8">
       <circle  cx="4" cy="4" r="1" class="point"/>
       <circle  cx="4" cy="4" r="3" class="bottom"/>
     </svg>
     <span>sound</span>
   </button>
+</transition>
 </template>
 
 <script>
 
 import { mapActions, mapState } from 'vuex'
+import Emitter from '~/assets/js/events';
 import SoundHelper from '~/assets/js/utils/SoundHelper'
 export default {
   name: 'Sound',
   data(){
     return {
-      factTop: 0,
-      factBottom: 0,
+      storyContentTop: 0,
+      storyContentBottom: 0,
       active: false
     }
   },
   computed:{
     ...mapState(['muteSound', 'route']),
     white() {
-      return this.route.name !== 'index' && !this.active
+      return this.route.name === 'story-pageId'
+    },
+    displayed() {
+      if(this.route.name === 'index') {
+        return true
+      }else if(this.route.name === 'story-pageId'){
+        if(this.active)return true
+        return false
+      }else{
+        return false
+      }
     }
   },
   methods:{
     ...mapActions(['toggleSound']),
+    enter(el, done) {
+      TweenMax.to(el, .5, {autoAlpha: 1, onComplete: done})
+    },
+    leave(el, done) {
+      TweenMax.to(el, .3, {autoAlpha: 0, onComplete: done})
+    },
     doToggleSound() {
       this.toggleSound()
       SoundHelper.toggleMute(this.muteSound)
@@ -36,28 +55,37 @@ export default {
     resize(w, h) {
       this.w = w
       this.h = h
-      this.factTop = 0
-      this.$facts = document.querySelector('.Facts')
-      if(this.$facts){
-        this.factTop = this.$facts.offsetTop - h + (w / 2880) * 160
-        this.factBottom = this.factTop + this.$facts.clientHeight
+      this.$storyContent = document.querySelector('.StoryContent')
+      if(this.$storyContent){
+        this.storyContentTop = 0
+        this.storyContentBottom = this.storyContentTop + this.$storyContent.clientHeight
       }
     },
     tick(){
-      if(this.factTop === 0) return
       if(window.smooth) {
-        if(window.smooth.vars.current > this.factTop && window.smooth.vars.current < this.factBottom){
+        if(window.smooth.vars.current >= this.storyContentTop && window.smooth.vars.current < this.storyContentBottom && this.pageDown){
           if(!this.active) this.active = true
         }else{
           if(this.active) this.active = false
         }
       }
+    },
+    onPageDown() {
+      this.pageDown = true
+    },
+    onPageUp() {
+      this.pageDown = false
     }
   },
   beforeDestroy() {
+    Emitter.removeListener('PAGE:PANDOWN',this._onPageDown)
+    Emitter.removeListener('PAGE:PANUP',this._onPageUp)
   },
   mounted(){
-
+    this._onPageDown = this.onPageDown.bind(this)
+    this._onPageUp = this.onPageUp.bind(this)
+    Emitter.on('PAGE:PANDOWN',this._onPageDown)
+    Emitter.on('PAGE:PANUP',this._onPageUp)
   }
 }
 
@@ -72,12 +100,14 @@ export default {
   right  140 * $unitH
   text-transform uppercase
   transition opacity .5s ease-out-quart
+  z-index 10
   &.white
-    color $colors-white
-    em:before
-      border 1px solid $colors-white
-    em:after
-      background $colors-white
+    span
+      color $colors-white
+    svg
+      stroke $colors-white
+      .point
+        fill $colors-white
   &.muted
     opacity .5
     .point
@@ -95,7 +125,6 @@ export default {
     color $colors-black
   svg
     fill none
-    stroke white
     display inline-block
     width 14 * $unitH
     height 14 * $unitH

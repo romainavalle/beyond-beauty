@@ -45,7 +45,9 @@ export default {
     }
   },
   mounted() {
-    this.setCurrentFact(2)
+    setTimeout(()=>{
+      this.setCurrentFact(2)
+    }, 100)
   }
 }
 

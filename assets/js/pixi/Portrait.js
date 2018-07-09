@@ -32,6 +32,7 @@ class Portait {
     const potraitTintedTexture = new PIXI.Texture.from(base)
     potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 1300 / divider, 897 / divider, 1289 / divider)
     this.portraitTinted = new PIXI.Sprite(potraitTintedTexture)
+    this.portraitTintedBlob = new PIXI.Sprite(potraitTintedTexture)
     //this.portraitTinted.texture.baseTexture.mipmap = true;
     TweenMax.set(this.portraitTinted, { colorProps: { tint: this.color, format: "number" } })
     this.portraitTinted.visible = false

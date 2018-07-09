@@ -2,3 +2,7 @@ AuthName "Page d'administration protégée, veuillez vous identifier"
 AuthType Basic
 AuthUserFile "/home/thegreytqx/beyond-beauty/.htpasswd"
 Require valid-user
+
+#RewriteEngine On
+#RewriteCond %{SERVER_PORT} 80
+#RewriteRule ^(.*)$ https://www.beyond-beauty.co/$1 [R=301,L]

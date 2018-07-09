@@ -24,7 +24,7 @@ export default {
   computed:{
     ...mapState(['currentFact']),
     canvasSize() {
-      const size = ResizeHelper.width() / 2880 * 300
+      const size = Math.max(ResizeHelper.width() / 2880 * 300, 100)
       return {w: size, h: size}
     }
   },
@@ -45,8 +45,14 @@ export default {
     resize(w, h) {
       this.$refs.canvas.width = this.canvasSize.w
       this.$refs.canvas.height = this.canvasSize.h
-      this.blob.resize(this.canvasSize.w, this.canvasSize.h, w / 2880 * 80)
+      this.$refs.canvas.style.width = this.canvasSize.w + 'px'
+      this.$refs.canvas.style.height = this.canvasSize.h + 'px'
+      this.blob.resize(this.canvasSize.w, this.canvasSize.h, Math.max(w / 2880 * 80, 40))
+
       this.setSnapValue(w)
+      TweenMax.to(this.$el, .8,{y: '-50%', x: this.snapValues[this.currentFact], overwrite: 1, ease: Power4.easeOut, onComplete: () => {
+        this.draggable[0].update()
+      }})
 
     },
     setSnapValue(w){
@@ -74,7 +80,7 @@ export default {
   watch: {
     currentFact(val) {
       if(val === this.snapValues.indexOf(Math.round(this.draggable[0].x))) return
-      TweenMax.to(this.$el, .8,{x: this.snapValues[val], ease: Power4.easeOut, onComplete: () => {
+      TweenMax.to(this.$el, .8,{y: '-50%', x: this.snapValues[val], overwrite: 1, ease: Power4.easeOut, onComplete: () => {
         this.draggable[0].update()
       }})
     }
@@ -82,7 +88,7 @@ export default {
   mounted(){
     this.setSnapValue(ResizeHelper.width())
     this.oldX = this.snapValues[this.currentFact]
-    TweenMax.set(this.$el, {x: this.oldX})
+    TweenMax.set(this.$el, {y: '-50%', x: this.oldX})
      this.draggable = Draggable.create(this.$el , {
         type:"x",
         cursor: '-webkit-grab',
@@ -119,8 +125,12 @@ export default {
   //height 400 * $unitV
   height 300 * $unitH
   width 300 * $unitH
-  bottom 0 * $unitH
+  top 50%
   canvas
-    position relative
-    margin-left -150 * $unitH
+    position absolute
+    top 50%
+    left 0
+    width 100%
+    height 100%
+    transform translate(-50%, -50%)
 </style>

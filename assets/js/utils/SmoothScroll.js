@@ -142,10 +142,8 @@ export default class Smooth {
         this.vars.current += (this.vars.target - this.vars.current) * this.vars.ease
         this.vars.current < .1 && (this.vars.current = 0)
 
-        this.rAF = requestAnimationFrame(this.run)
-
         if(!this.extends){
-            this.dom.section.style[this.prefix] = this.getTransform(-this.vars.current.toFixed(2))
+            this.dom.section.style[this.prefix] = this.getTransform(-this.vars.current.toFixed(1))
         }
 
         if(!this.vars.native && !this.options.noscrollbar) {
@@ -153,7 +151,7 @@ export default class Smooth {
             const bounds = this.vars.direction === 'vertical' ? this.vars.height : this.vars.width
             const value = (Math.abs(this.vars.current) / (this.vars.bounding / (bounds - size))) + (size / .5) - size
             const clamp = Math.max(0, Math.min(value-size, value+size))
-            this.dom.scrollbar.drag.el.style[this.prefix] = this.getTransform(clamp.toFixed(2))
+            this.dom.scrollbar.drag.el.style[this.prefix] = this.getTransform(clamp.toFixed(1))
         }
 
         if (this.callback && this.vars.current !== this.vars.last) {
@@ -161,6 +159,8 @@ export default class Smooth {
         }
 
         this.vars.last = this.vars.current;
+        this.rAF = requestAnimationFrame(this.run)
+
     }
 
     getTransform(value) {

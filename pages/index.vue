@@ -211,10 +211,17 @@ export default {
         transform translateX(0 * $unitH)
     .name-enter-active, .name-leave-active
       transition opacity .5s
+      &:before
+        transform translateX(-7 * $unitH)
+      &:after
+        transform translateX(7 * $unitH)
     .name-enter-active
       transition-delay .7s
     .name-enter, .name-leave-to
       opacity 0
+      &:before,
+      &:after
+        transition transform .4s ease-out-quart
     .name-enter-active span, .name-leave-active span
       transition transform .5s
     .name-enter-active svg, .name-leave-active svg

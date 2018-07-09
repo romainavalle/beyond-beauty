@@ -7,11 +7,12 @@ class MouseBlob{
     this.color = 'white'
     this.totalPoints = 40
     this.shapeW = shapeW
+    this.tickInt = 0
     this.init()
   }
   init() {
     this.sprite = new PIXI.Sprite()
-    this.graph = new PIXI.Graphics({nativeLines: true})
+    this.graph = new PIXI.Graphics()
     this.sprite.addChild(this.graph)
     this.noiseValues = NoisePosition.noiseValues
   }
@@ -56,6 +57,9 @@ class MouseBlob{
   }
 
   tick(color = 0xFFFFFF) {
+    this.tickInt++
+    if(this.tickInt !== 2)return
+    this.tickInt = 0
     this.noiseValues = NoisePosition.noiseValues
 
 

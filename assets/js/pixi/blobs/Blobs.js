@@ -18,45 +18,34 @@ class Blobs {
     const h = ResizeHelper.height()
     for (let index = 0; index < 10; index++) {
       const blob = new Blob(index)
-      blob.resize(w, h)
+      //blob.resize(w, h)
       this.sprite.addChild(blob.blobGraph)
       this.blobs.push(blob)
     }
 
     var blurFilter = new PIXI.filters.BlurFilter();
-    //blurFilter.blur = 10;
-
-
-// create filter
-var fragSrc = [
-  'precision mediump float;',
-  'varying vec2 vTextureCoord;',
-  'uniform sampler2D uSampler;',
-  'uniform float threshold;',
-  'void main(void)',
-  '{',
-  '    vec4 color = texture2D(uSampler, vTextureCoord);',
-  '    vec3 mcolor = vec3(255.0, 255.0, 255.0);',
-  '    if (color.a > threshold) {',
-  '       gl_FragColor = vec4(mcolor, 1.0);',
-  '    } else {',
-  '       gl_FragColor = vec4(vec3(0.0), 0.0);',
-  '    }',
-  '}'
-].join('\n')
-
-
-const filter = new PIXI.Filter( null, fragSrc );
-filter.apply = function(filterManager, input, output)
-{
-  this.uniforms.threshold = .5
-
-  // draw the filter...
-  filterManager.applyFilter(this, input, output);
-}
-
-
-
+    blurFilter.blur = 10;
+    var fragSrc = [
+      'precision mediump float;',
+      'varying vec2 vTextureCoord;',
+      'uniform sampler2D uSampler;',
+      'uniform float threshold;',
+      'void main(void)',
+      '{',
+      '    vec4 color = texture2D(uSampler, vTextureCoord);',
+      '    vec3 mcolor = vec3(255.0, 255.0, 255.0);',
+      '    if (color.a > threshold) {',
+      '       gl_FragColor = vec4(mcolor, 1.0);',
+      '    } else {',
+      '       gl_FragColor = vec4(vec3(0.0), 0.0);',
+      '    }',
+      '}'
+    ].join('\n')
+    const filter = new PIXI.Filter( null, fragSrc );
+    filter.apply = function(filterManager, input, output) {
+      this.uniforms.threshold = .5
+      filterManager.applyFilter(this, input, output);
+    }
     this.sprite.filters = [blurFilter, filter];
   }
   load(getter) {
@@ -76,6 +65,7 @@ filter.apply = function(filterManager, input, output)
     for (let index = 0; index < this.blobs.length; index++) {
       this.blobs[index].setBlob(true);
     }
+    this.resize(this.w, this.h, this.shapeW)
     this.scale = this.actualScale
     this.alpha = 1
     //TweenMax.to(this, .3, { alpha: 1 })
@@ -112,7 +102,9 @@ filter.apply = function(filterManager, input, output)
   }
 
   resize(w, h, shapeW) {
-
+    this.w = w
+    this.h = h
+    this.shapeW = shapeW
     this.mouseBlob.resize(w, h, shapeW)
     for (let index = 0; index < this.blobs.length; index++) {
       this.blobs[index].resize(w, h)

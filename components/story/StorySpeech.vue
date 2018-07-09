@@ -43,7 +43,8 @@ export default {
       if(scrollTop < 0) scrollTop = 0
       if(scrollTop === this.scrollTop)return
       this.scrollTop = scrollTop
-      transform(this.$el, {translate3d:[0, scrollTop - this.contentHeight * (scrollTop/this.mediaHeight), 0]})
+      const top = scrollTop - this.contentHeight * (scrollTop/this.mediaHeight)
+      transform(this.$el, {translate3d:[0, top.toFixed(1), 0]})
     },
     resize(w, h, mediaHeight) {
       this.mediaHeight = mediaHeight + 320 * h  / 1760
@@ -123,6 +124,7 @@ export default {
 .StorySpeech
   position absolute
   width 960 * $unitH
+  will-change transform
   h3
     font-size 60 * $unitH
     font-weight normal
