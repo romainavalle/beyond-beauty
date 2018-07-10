@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapState } from 'vuex';
 import ScrollMixins from '~/components/ScrollMixins.js'
 import vStoryTop from '~/components/story/StoryTop.vue'
 import vStoryContent from '~/components/story/StoryContent.vue'
@@ -22,12 +22,31 @@ import Emitter from '~/assets/js/events';
 
 
 export default {
+  head () {
+    return {
+      title: `Beyond Beauty | ${this.pages[this.currentPageIdNum].pageName}`,
+      meta: [
+        { hid: 'description', name: 'description', content: 'Page 1 description' },
+        {
+          hid: 'og:image',
+          property: 'og:image',
+          content: 'https://www.beyond-beauty.co/images/share/${this.pages[this.currentPageIdNum].id}.jpg'
+        },
+        {
+          hid: 'twitter:image',
+          property: 'twitter:image',
+          content: 'https://www.beyond-beauty.co/images/share/${this.pages[this.currentPageIdNum].id}.jpg'
+        }
+      ]
+    }
+  },
   data(){
     return {
     }
   },
   components: { vStoryTop, vStoryContent, vFacts, vPush },
   computed:{
+    ...mapState(['pages']),
     ...mapGetters(['currentPageIdNum'])
   },
   mixins:[ScrollMixins],

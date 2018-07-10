@@ -15,8 +15,11 @@ class Displacement {
     this.baseTexture.height = 1000
 
     this.texture = new PIXI.Texture(this.baseTexture)
+    this.movingImg = new PIXI.Sprite(new PIXI.Texture(this.baseTexture))
     this.sprite = new PIXI.Sprite(this.texture)
     this.sprite.name = 'displacement'
+    this.sprite.scale.y = 0.1;
+    this.sprite.scale.x = 0.1;
   }
 
   tick() {
@@ -28,8 +31,8 @@ class Displacement {
   }
 
   resize(w, h) {
-    this.sprite.width = w
-    this.sprite.height = h
+    this.sprite.width = 2000
+    this.sprite.height = 2000
   }
 
 

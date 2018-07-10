@@ -36,7 +36,6 @@ export default {
     ...mapActions(['setPageTransition']),
     load(){
 
-
       this.backgroundContainer = new PIXI.Container();
       this.backgroundContainer.name = "backgroundContainer"
       this.background = new Background(this.backgroundContainer);
@@ -170,14 +169,13 @@ export default {
       }
     },
     resize(w, h) {
-      this.pixiBlobs.resize(w, h);
       this.portraits.resize(w, h);
       this.titles.resize(w, h);
       this.titlesAbout.resize(w, h);
       this.background.resize(w, h);
-      this.app.renderer.resize(w, h);
       this.pixiBlobs.resize(w, h, 50 * w / 1440)
       this.mouseBlob.resize(w, h, 50 * w / 1440)
+      this.app.renderer.resize(w, h);
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
@@ -355,7 +353,6 @@ export default {
       backgroundColor: 0xe1dfd7,
       transparent: false,
       autoStart: false,
-      antialias: false,
       powerPreference: "high-performance"
     });
 

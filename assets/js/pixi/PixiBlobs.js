@@ -7,15 +7,15 @@ import Displacement from '~/assets/js/pixi/Displacement'
 class PixiBlobs {
   constructor(stage, titleBorderSprite, titleAboutBorderSprite, renderer, getter) {
     this.stage = stage
-    this.mask = 'about'
+    this.mask = 'index'
     this.titleBorderSprite = titleBorderSprite
     this.titleAboutBorderSprite = titleAboutBorderSprite
     this.color = 0
     this.setDisplacement(getter)
     this.blobs = new Blobs()
     this.renderer = renderer
-    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height());
-    this.renderDispTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height());
+    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(), PIXI.SCALE_MODES.LINEAR, 2);
+    this.renderDispTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(), PIXI.SCALE_MODES.LINEAR, 2);
 
     this.init()
   }

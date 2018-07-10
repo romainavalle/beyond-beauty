@@ -11,7 +11,8 @@
     "generate": "nuxt generate",
     "lint": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "precommit": "npm run lint",
-    "pack": "mm-packer -s ./imagesToPack -o static/images/pack"
+    "pack": "mm-packer -s ./imagesToPack -o static/images/pack",
+    "packMobile": "mm-packer -s ./imagesToPackMobile -o static/images/pack-mobile"
   },
   "dependencies": {
     "@merci-michel/mm-utils-math": "^1.0.0",
@@ -31,7 +32,6 @@
     "rupture": "^0.7.1",
     "simplex-noise": "^2.4.0",
     "smooth-scrolling": "^2.3.9",
-    "sniffer": "github:watsondg/sniffer",
     "stats-js": "^1.0.0-alpha1"
   },
   "devDependencies": {

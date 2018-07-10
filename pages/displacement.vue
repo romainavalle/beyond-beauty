@@ -11,7 +11,7 @@ if (process.browser) {
   var dat = require('dat.gui')
 }
 export default {
-  layout:'dev',
+  layout: 'dev',
   data(){
     return {
       scaleX: 80,

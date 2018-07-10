@@ -19,6 +19,11 @@ import vAboutCredits from '~/components/about/AboutCredits.vue'
 import vAboutFooter from '~/components/about/AboutFooter.vue'
 import Emitter from '~/assets/js/events';
 export default {
+  head () {
+    return {
+      title: `Beyond Beauty | About`
+    }
+  },
   data(){
     return {
     }

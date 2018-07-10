@@ -31,7 +31,7 @@ module.exports = {
   */
   head: {
     htmlAttrs: {
-      lang: 'fr',
+      lang: 'en',
     },
     title: 'Beyond Beauty',
     meta: [
@@ -64,7 +64,7 @@ module.exports = {
       {
         hid: 'og:url',
         property: 'og:url',
-        content: 'https://urldusite/'
+        content: 'https://www.beyond-beauty.co/'
       },
       {
         hid: 'og:image:width',
@@ -79,7 +79,7 @@ module.exports = {
       {
         hid: 'og:image',
         property: 'og:image',
-        content: 'https://urldusite/assets/images/share/facebook.jpg'
+        content: 'https://www.beyond-beauty.co/images/share/general.jpg'
       },
       {
         hid: 'twitter:card',
@@ -104,12 +104,12 @@ module.exports = {
       {
         hid: 'twitter:image',
         property: 'twitter:image',
-        content: 'https://urldusite/assets/images/share/twitter.jpg'
+        content: 'https://www.beyond-beauty.co/images/share/general.jpg'
       },
       {
         hid: 'twitter:url',
         property: 'twitter:url',
-        content: 'https://urldusite/'
+        content: 'https://www.beyond-beauty.co/'
       },
     ],
     link: [
@@ -122,14 +122,8 @@ module.exports = {
     ]
   },
   router: {
-    base: '/'/*,
-    extendRoutes (routes) {
-      routes.push({
-        name: 'custom',
-        path: '*',
-        redirect: '/'
-      })
-    }*/
+    base: '/',
+    middleware: ['mobile']
   },
 
 
