@@ -26,16 +26,50 @@ export default {
     return {
       title: `Beyond Beauty | ${this.pages[this.currentPageIdNum].pageName}`,
       meta: [
-        { hid: 'description', name: 'description', content: 'Page 1 description' },
+        {
+          hid: 'description',
+          name: 'description',
+          content: `Four women mainly known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
+        },
+        {
+          hid: `og:title`,
+          property: 'og:title',
+          content: `Beyond Beauty | ${this.pages[this.currentPageIdNum].pageName}`,
+        },
+        {
+          hid: 'og:description',
+          property: 'og:description',
+          content: `Four women mainly known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
+        },
+        {
+          hid: 'og:url',
+          property: 'og:url',
+          content: `https://www.beyond-beauty.co/story/${this.pages[this.currentPageIdNum].id}/`
+        },
         {
           hid: 'og:image',
           property: 'og:image',
-          content: 'https://www.beyond-beauty.co/images/share/${this.pages[this.currentPageIdNum].id}.jpg'
+          content: `https://www.beyond-beauty.co/images/share/${this.pages[this.currentPageIdNum].id}.jpg`
+        },
+        {
+          hid: 'twitter:title',
+          property: 'twitter:title',
+          content: `Beyond Beauty | ${this.pages[this.currentPageIdNum].pageName}`,
         },
         {
           hid: 'twitter:image',
           property: 'twitter:image',
-          content: 'https://www.beyond-beauty.co/images/share/${this.pages[this.currentPageIdNum].id}.jpg'
+          content: `https://www.beyond-beauty.co/images/share/${this.pages[this.currentPageIdNum].id}.jpg`
+        },
+        {
+          hid: 'twitter:description',
+          property: 'twitter:description',
+          content: `Four women mainly known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
+        },
+        {
+          hid: 'twitter:url',
+          property: 'twitter:url',
+          content: `https://www.beyond-beauty.co/story/${this.pages[this.currentPageIdNum].id}/`
         }
       ]
     }
@@ -70,6 +104,9 @@ export default {
     },
     hide(){
       this.$refs.content.hide()
+    },
+    onReady() {
+      this.doReady()
     }
   },
 

@@ -1,7 +1,7 @@
 {
   "intro": {
-    "text": "Four women mainly<br>known for their appearances.<br>Discover their<br>inner beauty.",
-    "html": "<span data-time=\"0.1\">Four women</span> <span data-time=\"0.7\">mainly</span><br><span data-time=\"0.9\">known for their appearances.</span><span data-time=\"2\"></span><br><span data-time=\"3.5\">Discover their</span><br><span data-time=\"4.2\">inner beauty.</span>"
+    "text": "Four women primarily<br>known for their appearance.<br>Discover their true<br>inner beauty.",
+    "html": "<span data-time=\"0.1\">Four women</span> <span data-time=\"0.7\">primarily</span><br><span data-time=\"0.9\">known for their appearance.</span><span data-time=\"2\"></span><br><span data-time=\"3.5\">Discover their true</span><br><span data-time=\"4.2\">inner beauty.</span>"
   },
   "pages":[
     {
@@ -47,7 +47,7 @@
         ],
         "media": [
           {"src": "natalie-portman-0.png", "width": 1279, "height": 1525},
-          {"src": "natalie-portman-1.png", "width": 1147, "height": 1144},
+          {"src": "natalie-portman-1.gif", "width": 1147, "height": 1144},
           {"src": "natalie-portman-2.png", "width": 1922, "height": 1385}
         ]
       },
@@ -257,7 +257,7 @@
         ],
         "media": [
           {"src": "cara-delevingne-0.png", "width": 1150, "height": 1150},
-          {"src": "cara-delevingne-1.png", "width": 1387, "height": 1861},
+          {"src": "cara-delevingne-1.gif", "width": 1387, "height": 1861},
           {"src": "cara-delevingne-2.png", "width": 1761, "height": 1016}
         ]
       },
@@ -287,20 +287,20 @@
   ],
   "citations":[
     {
-      "author" : "Edmund Burke 1",
+      "author" : "Edmund Burke",
       "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
     },
     {
-      "author" : "Edmund Burke 2",
-      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+      "author" : "Clare Boothe Luce",
+      "text" : "If I fail, no one will say, “She doesn’t have what it takes.” <br>They will say, “Women don’t have what it takes”."
     },
     {
-      "author" : "Edmund Burke 3",
-      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+      "author" : "Hillary Clinton",
+      "text" : "Human rights are women’s rights and women’s<br>rights are human rights, once and for all."
     },
     {
-      "author" : "Edmund Burke 4",
-      "text" : "All that is needed for the forces of evil to triumph<br>is for good men and women to do nothing."
+      "author" : "Gloria Steinem",
+      "text" : "A feminist is anyone who recognizes the equality<br>and full humanity of women and men."
     }
   ]
 }

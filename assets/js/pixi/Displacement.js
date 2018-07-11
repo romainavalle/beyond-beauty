@@ -8,25 +8,27 @@ class Displacement {
     this.height = 500
   }
 
-  load(getter) {
-    PIXI.Texture.addToCache(getter('displacement.png'))
-    this.baseTexture = new PIXI.BaseTexture.fromImage(getter('displacement.png'))
-    this.baseTexture.width = 1000
-    this.baseTexture.height = 1000
+  load(getter, renderer) {
+    PIXI.Texture.addToCache(getter('displacement.jpg'))
+    this.baseTexture = new PIXI.BaseTexture.fromImage(getter('displacement.jpg'))
+    this.baseTexture.wrapMode = PIXI.WRAP_MODES.REPEAT;
+    this.baseTexture.width = 2000
+    this.baseTexture.height = 2000
 
     this.texture = new PIXI.Texture(this.baseTexture)
-    this.movingImg = new PIXI.Sprite(new PIXI.Texture(this.baseTexture))
+    renderer.textureManager.updateTexture(this.texture);
+
     this.sprite = new PIXI.Sprite(this.texture)
+    this.sprite.width = 2000
+    this.sprite.height = 2000
     this.sprite.name = 'displacement'
-    this.sprite.scale.y = 0.1;
-    this.sprite.scale.x = 0.1;
   }
 
   tick() {
     this.time += this.speed
-    const x = 250 - this.amplitude + Math.sin(this.time * this.speed)  * this.amplitude
-    const y = 250 - this.amplitude + Math.cos(this.time * this.speed)  * this.amplitude
-    const rect = new PIXI.Rectangle(x, y, x + 500, y + 500);
+    const x = this.amplitude + Math.sin(this.time * this.speed)  * this.amplitude
+    const y =  this.amplitude + Math.cos(this.time * this.speed)  * this.amplitude
+    const rect = new PIXI.Rectangle(x, y, x + 320, y + 320);
     this.texture.frame = rect;
   }
 

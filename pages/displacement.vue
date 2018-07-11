@@ -14,8 +14,9 @@ export default {
   layout: 'dev',
   data(){
     return {
-      scaleX: 80,
-      scaleY: 80
+      scale: 42,
+      speed: .11,
+      amplitude: 80,
     }
   },
   computed: {
@@ -23,9 +24,14 @@ export default {
   },
   methods:{
     tick(){
+      this.displacement.speed = this.speed
+      this.displacement.amplitude = this.amplitude
+      this.displacementFilter.scale.x = this.scale
+      this.displacementFilter.scale.y = this.scale
       this.displacement.tick();
-      this.displacementFilter.scale.x = this.scaleX
-      this.displacementFilter.scale.y = this.scaleY
+      this.disp.speed = this.speed
+      this.disp.amplitude = this.amplitude
+      this.disp.tick();
       this.app.renderer.render(this.app.stage);
     },
     resize(w,h){
@@ -46,13 +52,16 @@ export default {
       this.displacement = new Displacement()
       this.displacement.load(this.getURI)
       this.displacementFilter = new PIXI.filters.DisplacementFilter(this.displacement.sprite);
-      this.displacementFilter.scale.x = 80
-      this.displacementFilter.scale.y = 80
+      this.displacementFilter.scale.x = 42
+      this.displacementFilter.scale.y = 42
       this.app.stage.addChild(this.displacement.sprite)
+      this.app.stage.addChild(this.sprite)
+      this.disp = new Displacement()
+      this.disp.load(this.getURI)
+      this.app.stage.addChild(this.disp.sprite)
       this.app.stage.addChild(this.sprite)
       this.sprite.filters = [this.displacementFilter];
     }
-
   },
   mounted() {
     console.log('teee')
@@ -80,8 +89,9 @@ export default {
     this.$el.appendChild(this.app.view)
 
     window.gui = new dat.default.GUI({name: 'Blob'});
-    window.gui.add(this, 'scaleX', 1, 200)
-    window.gui.add(this, 'scaleY', 1, 200)
+    window.gui.add(this, 'scale', 1, 200)
+    window.gui.add(this, 'speed', .001, .2, .001)
+    window.gui.add(this, 'amplitude', 10, 100, 1)
   }
 }
 

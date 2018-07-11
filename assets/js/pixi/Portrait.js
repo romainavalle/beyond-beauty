@@ -1,5 +1,4 @@
 
-import ResizeHelper from '~/assets/js/utils/ResizeHelper'
 import TransitionMask from "~/assets/js/pixi/Transition"
 import DisappearMask from "~/assets/js/pixi/Disappear"
 
@@ -12,7 +11,6 @@ class Portait {
     this.color = color
     this.originalW = 1652 / 2
     this.originalH = 2442 / 2
-    this.firstResize = true
 
     this.maskDisappearTint = new DisappearMask()
     this.maskDisappear = new DisappearMask()
@@ -56,14 +54,6 @@ class Portait {
     this.container.addChild(this.maskDisappearTint.sprite)
     this.maskDisappearTint.sprite.scale.x = -1
 
-    if(this.firstResize) {
-      this.firstResize = false
-      this.show()
-      this.maskTransitionOut.playOut()
-      this.maskDisappear.disappear()
-      this.maskDisappearTint.disappear()
-    }
-
   }
 
   hideAll() {
@@ -74,6 +64,8 @@ class Portait {
     this.maskDisappearTint.sprite.visible = false
   }
   resize(w, h) {
+    this.w = w
+    this.h = h
     const ratio = this.originalW / this.originalH
     let containerW, containerH
     if (w / h < ratio) {
@@ -111,9 +103,10 @@ class Portait {
     this.maskTransitionOut.sprite.visible = false
     this.maskDisappear.sprite.visible = false
     this.maskDisappearTint.sprite.visible = false
-    this.resize(ResizeHelper.width(), ResizeHelper.height())
     const dir = direction === 'forward' ? 1 : -1
+
     TweenMax.fromTo(this.container.position, 1.2, {y: this.posY + (dir * 80), x: this.posX - (dir * 60)}, {y: this.posY, x: this.posX, ease: Quart.easeOut})
+    this.resize(this.w, this.h)
   }
   hide(direction) {
     this.portrait.mask = this.maskTransitionOut.sprite
@@ -124,7 +117,9 @@ class Portait {
     this.maskDisappear.sprite.visible = false
     this.maskDisappearTint.sprite.visible = false
     const dir = direction === 'forward' ? 1 : -1
+
     TweenMax.to(this.container.position, 1, { y: this.posY - (dir * 80), x: this.posX + (dir * 60), ease: Cubic.easeIn,  onComplete: this.onHideComplete.bind(this)})
+    this.resize(this.w, this.h)
   }
 
   onHideComplete(){
@@ -143,12 +138,16 @@ class Portait {
     this.portraitTinted.mask = this.maskDisappearTint.sprite
     this.portraitTinted.visible = true
     this.container.visible = true
+
     TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: () => {
       this.container.visible = false
       this.portraitTinted.visible = false
     }})
+    this.resize(this.w, this.h)
   }
   appear() {
+    this.resize(this.w, this.h)
+
     this.maskDisappear.appear()
     this.maskDisappearTint.appear()
 
@@ -160,8 +159,9 @@ class Portait {
     this.portrait.mask = this.maskDisappear.sprite
     this.portraitTinted.mask = this.maskDisappearTint.sprite
     this.container.visible = true
-    this.resize(ResizeHelper.width(), ResizeHelper.height())
     TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: this.onAppearComplete.bind(this) })
+    this.resize(this.w, this.h)
+
   }
 
   onAppearComplete(){

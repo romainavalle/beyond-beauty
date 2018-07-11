@@ -47,6 +47,7 @@ class Titles {
 
   setupTitleBorder() {
     this.titleBorderSprite = new PIXI.Container()
+    this.titleBorderSprite.alpha = .4
     this.titleBorderSprite.name = 'titleBorderContainer'
     pages.forEach((page, i) => {
       const titleBorderContainer = new PIXI.Container()
@@ -56,7 +57,7 @@ class Titles {
     });
   }
 
-  load(getter) {
+  load(getter, renderer) {
     this.titleLoaded = false
     this.titleBorderLoaded = false
 
@@ -66,6 +67,9 @@ class Titles {
     }
     this.baseText = new PIXI.BaseTexture.fromImage(getter('titles/titles'+ urlResolution +'.png'))
     this.baseBorderText = new PIXI.BaseTexture.fromImage(getter('titles/titles-border'+ urlResolution +'.png'))
+
+    renderer.textureManager.updateTexture(this.baseText);
+    renderer.textureManager.updateTexture(this.baseBorderText);
     this.baseText.on('loaded', this.onBaseLoaded.bind(this))
     this.baseBorderText.on('loaded', this.onBaseBorderLoaded.bind(this))
   }

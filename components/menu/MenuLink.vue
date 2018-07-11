@@ -91,6 +91,10 @@ export default {
     color $colors-grey
     font-weight normal
     font-size 21 * $unitH
+    +below('l')
+      font-size 24 * $unitH
+    +above('hd')
+      font-size 18 * $unitH
   &.natalie-portman strong
     right 140 * $unitH
   &.emma-watson strong

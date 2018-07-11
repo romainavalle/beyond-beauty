@@ -30,10 +30,10 @@ class Blob {
     if(this.angle) this.setPos()
   }
   setPos() {
-    this.startX =   Math.cos(this.angle) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
-    this.startY =  Math.sin(this.angle) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
-    this.endX =  Math.cos(this.angleEnd) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
-    this.endY = Math.sin(this.angleEnd) * ((Math.min(this.h, this.w)) + (this.radius * 1.2))
+    this.startX =   Math.cos(this.angle) * ((Math.max(this.h, this.w)) + (this.radius * 1.2))
+    this.startY =  Math.sin(this.angle) * ((Math.max(this.h, this.w)) + (this.radius * 1.2))
+    this.endX =  Math.cos(this.angleEnd) * ((Math.max(this.h, this.w)) + (this.radius * 1.2))
+    this.endY = Math.sin(this.angleEnd) * ((Math.max(this.h, this.w)) + (this.radius * 1.2))
   }
   setBlob(setDelay = false) {
     TweenMax.killTweensOf(this)

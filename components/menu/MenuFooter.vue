@@ -53,6 +53,15 @@ export default {
     text-transform uppercase
     transition opacity .3s
     transition opacity .3s
+
     &:hover
       opacity .6
+  +below('l')
+    a
+      font-size 16 * $unitH
+      bottom 158 * $unitH
+  +above('hd')
+    a
+      font-size 12 * $unitH
+      bottom 162 * $unitH
 </style>

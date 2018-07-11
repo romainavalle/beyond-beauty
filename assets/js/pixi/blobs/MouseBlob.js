@@ -1,11 +1,12 @@
 import MouseHelper from '~/assets/js/utils/MouseHelper'
 class MouseBlob{
-  constructor(shapeW = 200) {
+  constructor(shapeW = 200, isBlur = false) {
     this.scale = 0
     this.rotation = 0
     this.color = 'white'
     this.shapeW = shapeW
     this.ticker = 0
+    this.isBlur = isBlur
     this.init()
   }
   init() {
@@ -23,6 +24,33 @@ class MouseBlob{
     this.graphs.forEach((element, i) => {
     this.sprite.addChild(element.graph)
     })
+    if(this.isBlur) {
+
+      var blurFilter = new PIXI.filters.BlurFilter();
+      blurFilter.blur = 10;
+      var fragSrc = [
+        'precision mediump float;',
+        'varying vec2 vTextureCoord;',
+        'uniform sampler2D uSampler;',
+        'uniform float threshold;',
+        'void main(void)',
+        '{',
+        '    vec4 color = texture2D(uSampler, vTextureCoord);',
+        '    vec3 mcolor = vec3(255.0, 255.0, 255.0);',
+        '    if (color.a > threshold) {',
+        '       gl_FragColor = vec4(mcolor, 1.0);',
+        '    } else {',
+        '       gl_FragColor = vec4(vec3(0.0), 0.0);',
+        '    }',
+        '}'
+      ].join('\n')
+      const filter = new PIXI.Filter( null, fragSrc );
+      filter.apply = function(filterManager, input, output) {
+        this.uniforms.threshold = .5
+        filterManager.applyFilter(this, input, output);
+      }
+      this.sprite.filters = [blurFilter, filter];
+    }
   }
   show() {
     this.rotation = 0

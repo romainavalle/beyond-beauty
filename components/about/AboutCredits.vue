@@ -12,6 +12,10 @@
             <li><a href="https://twitter.com/louisansa" target="_blank">Louis Ansa</a></li>
             <li><a href="https://twitter.com/romaindr" target="_blank">Romain Avalle</a></li>
           </ul>
+          <strong>Sound design by</strong>
+          <ul>
+            <li><a href="https://soundcloud.com/dimkit/" target="_blank">Dimitri Fert</a></li>
+          </ul>
         </div>
 
         <div class="credits">
@@ -80,12 +84,15 @@ export default {
   methods:{
     show() {
       if(this.isShown)return
+      TweenMax.to(this.$refs.titre, 2,{ x:'0%', ease: Power3.easeOut})
+
       this.isShown = true
       TweenMax.staggerFromTo(this.$stagger, .8, { opacity: 0, x: -50 }, { opacity: 1, x: 0, force3D: true, clearProps: 'all', ease: Power3.easeOut }, .1)
     },
     hide() {
       if(!this.isShown)return
       this.isShown = false
+      TweenMax.set(this.$refs.titre, {x: '-100%'})
         this.$stagger.forEach(element => {
         element.style.opacity = 0
       });
@@ -99,7 +106,6 @@ export default {
     tick() {
       if(this.active) {
         if(window.smooth.vars.current - this.begin > 150) this.show()
-        transform(this.$refs.titre, {translate3d: [window.smooth.vars.current - this.begin, 0, 0]})
         this.$refs.images.tick()
       }
     },

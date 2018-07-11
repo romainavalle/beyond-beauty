@@ -28,7 +28,7 @@ class Portraits {
     this.stage.addChild(this.portraitsprite)
   }
 
-  load(getter) {
+  load(getter, renderer) {
     this.baseLoaded = false
     this.transitionLoaded = false
     this.disappearLoaded = false
@@ -40,7 +40,9 @@ class Portraits {
     this.baseText = new PIXI.BaseTexture.fromImage(getter('bust/busts'+ urlResolution +'.png'))
     this.transitionText = new PIXI.BaseTexture.fromImage(getter('mask/transition'+ urlResolution +'.png'))
     this.disappearText = new PIXI.BaseTexture.fromImage(getter('mask/disappear'+ urlResolution +'.png'))
-    let time = new Date()
+    renderer.textureManager.updateTexture(this.baseText);
+    renderer.textureManager.updateTexture(this.transitionText);
+    renderer.textureManager.updateTexture(this.disappearText);
     this.baseText.on('loaded', this.onBaseLoaded.bind(this))
     this.transitionText.on('loaded', this.onTransitionLoaded.bind(this))
     this.disappearText.on('loaded', this.onDisappearLoaded.bind(this))

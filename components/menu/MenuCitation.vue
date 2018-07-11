@@ -55,5 +55,19 @@ export default {
     font-size 25 * $unitH
     line-height 40 * $unitH
     font-weight $light
+  +above('hd')
+    strong
+      font-size 18 * $unitH
+      line-height 34 * $unitH
+    p
+      font-size 21 * $unitH
+      line-height 34 * $unitH
+  +above('hd')
+    strong
+      font-size 18 * $unitH
+      line-height 34 * $unitH
+    p
+      font-size 21 * $unitH
+      line-height 34 * $unitH
 </style>
 

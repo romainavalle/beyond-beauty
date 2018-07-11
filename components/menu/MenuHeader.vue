@@ -1,7 +1,7 @@
 <template>
   <header class="MenuHeader">
     <canvas ref="canvas"></canvas>
-    <button class="close" @click="doClick" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave">
+    <button class="close" @click="doClick" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave" aria-label="close">
       close
     </button>
     <ul>
@@ -127,4 +127,8 @@ export default {
     color $colors-white
   li
     width 160 * $unitH
+  +below('l')
+    font-size 16 * $unitH
+  +above('hd')
+    font-size 12 * $unitH
 </style>

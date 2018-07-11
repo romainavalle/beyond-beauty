@@ -10,7 +10,7 @@ export default {
     return {
       tileSize: 128,
       grain: 1,
-      opacity: 0.1,
+      opacity: 0.05,
       tickInt: 0
     }
   },
@@ -28,7 +28,6 @@ export default {
       this.hiddenCanvas.height = this.tileSize
     },
     tick(){
-      return
       this.tickInt++
       if(this.tickInt !== 2)return
       this.tickInt = 0

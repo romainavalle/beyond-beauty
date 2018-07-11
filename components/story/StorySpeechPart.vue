@@ -122,7 +122,11 @@ export default {
   p
     font-size 26 * $unitH
     font-weight normal
-    line-height 40 * $unitH
+    line-height 1.5
+    +below('l')
+      font-size 30 * $unitH
+    +above('hd')
+      font-size 22 * $unitH
     &.text
       color $colors-speechdGrey
     &.html

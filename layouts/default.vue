@@ -10,7 +10,6 @@
     </transition>
     <v-sound ref="sound"></v-sound>
     <v-mouse ref="mouse"></v-mouse>
-    <v-noise ref="noise"></v-noise>
   </div>
 </template>
 
@@ -23,7 +22,6 @@ import vHomeCanvas from '~/components/HomeCanvas.vue'
 import vLogo from '~/components/common/Logo.vue'
 import vMenuButton from '~/components/common/MenuButton.vue'
 import vLoader from '~/components/common/Loader.vue'
-import vNoise from '~/components/common/Noise.vue'
 import vMenu from '~/components/menu/Menu.vue'
 import vMouse from '~/components/common/Mouse.vue'
 import vSound from '~/components/common/Sound.vue'
@@ -51,7 +49,7 @@ export default {
     ...mapState(['isAppReady', 'isPageTransition', 'isMenuOpen', 'route', 'currentHomeSlideId', 'isCanvasVisible']),
     ...mapGetters(['getPageIdNum'])
   },
-  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound, vNoise},
+  components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppLoaded','setPageTransition']),
     checkButton(from, to){
@@ -94,7 +92,6 @@ export default {
     resize(forceAfterRoute = false){
       const w = ResizeHelper.width()
       const h = ResizeHelper.height()
-      this.$refs.noise.resize(w, h)
 
       if(this.isAppReady) {
         if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(w, h)
@@ -112,11 +109,11 @@ export default {
       this.stats.domElement.style.zIndex = 100;
     },
     tick(){
-      //this.stats.begin()
-      this.$refs.noise.tick()
       if(!this.isAppReady) {
         this.$refs.loader.tick()
+
       }else{
+        this.$refs.homeCanvas.tick()
         this.$refs.logo.tick()
         this.$refs.siteMenu.tick()
         this.$refs.menuButton.tick()
@@ -126,15 +123,12 @@ export default {
       NoisePosition.tick()
       MouseHelper.tick()
       this.$refs.mouse.tick()
-      this.$refs.homeCanvas.tick()
-      //this.stats.end()
     },
     onLoaded(){
       this.setAppLoaded()
 
       Emitter.on('GLOBAL:RESIZE', this._resize)
       this.page = this.$refs.page.$children[0]
-      //this.setDebug()
       this.$refs.homeCanvas.load()
       if(this.page)this.$refs.page.$children[0].load && this.$refs.page.$children[0].load()
       this.$nextTick(()=>{

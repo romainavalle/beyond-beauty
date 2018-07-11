@@ -18,7 +18,8 @@ export default {
   components: { vScrollLayout },
   methods:{
     ...mapActions(['setCanvasVisible']),
-    onReady(){
+    doReady(){
+      console.log(this.isReady)
       if(this.isReady) return
       this.isReady = true
       this.hammerPanel = new Hammer.Manager(this.$root.$el)
@@ -67,7 +68,7 @@ export default {
       if(this.isShown)return
 
       Emitter.emit('PAGE:PANDOWN')
-      TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 0, clearProps: 'all', ease: Circ.easeOut, onComplete: () => {
+      TweenMax.to(this.$refs.scrollContent, 1, {yPercent: 0, clearProps: 'all', ease: Power4.easeInOut, onComplete: () => {
         window.smooth.addEvents(true)
         this.setCanvasVisible(false)
       }})
@@ -81,7 +82,7 @@ export default {
       this.setCanvasVisible(true)
       window.smooth.vars.target = 0
       window.smooth.removeEvents(true)
-      TweenMax.to(this.$refs.scrollContent, .5, {yPercent: 100, ease: Cubic.easeIn})
+      TweenMax.to(this.$refs.scrollContent, 1, {yPercent: 100, ease: Power4.easeInOut})
       this.hide()
       this.isShown = false
     }
@@ -95,6 +96,7 @@ export default {
     this._checkSwipe = this.checkSwipe.bind(this)
     this._panDown = this.panDown.bind(this)
     this._panUp = this.panUp.bind(this)
+    this.isReady = false
 
     TweenMax.set(this.$refs.scrollContent,  {yPercent: 100})
     this.setCanvasVisible(true)

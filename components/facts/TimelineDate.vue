@@ -1,6 +1,6 @@
 <template>
   <li class="TimelineDate" :class = "{'show' : showClass}">
-    <button @click="setCurrentFact(num)" :class="{'active': currentFact === num, 'grab': grabClass}"><span v-text="fact.year" class="text"></span><span class="point"></span></button>
+    <button @click="setCurrentFact(num)" :class="{'active': currentFact === num, 'grab': grabClass}" aria-label="change year"><span v-text="fact.year" class="text"></span><span class="point"></span></button>
   </li>
 </template>
 

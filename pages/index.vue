@@ -14,14 +14,14 @@
         </span>
       </transition-group>
     </strong>
-    <button class="prev buttonHome" @click="nextPage(-1)">
+    <button class="prev buttonHome" @click="nextPage(-1)" aria-label="prev">
       <span class="word">
         <transition-group name="fade">
           <span class="trans" v-for="(page,i) in pages" :key="i" v-text="button(i+2)" v-show="i === currentHomeSlideId"></span>
         </transition-group>
       </span>
     </button>
-    <button class="next buttonHome" @click="nextPage(1)">
+    <button class="next buttonHome" @click="nextPage(1)" aria-label="next">
       <span class="word">
         <transition-group name="fade">
           <span class="trans" v-for="(page,i) in pages" :key="i" v-text="button(i)" v-show="i === currentHomeSlideId"></span>
@@ -177,6 +177,7 @@ export default {
     left 160 * $unitH
     position absolute
     font-weight normal
+
     .innerTitle
       position absolute
       display flex
@@ -235,6 +236,14 @@ export default {
       transform translateX(20 * $unitH)
     .name-enter svg, .name-leave-to svg
       transform translateX(-10px) rotate(-90deg) scale(0.3, 0.3)
+    +below('l')
+      font-size 24 * $unitH
+      .innerTitle svg
+        transform translateX(-18 * $unitH) translateY(-2 * $unitH) translateZ(0px) rotate(-90deg) scale(1, 1)
+    +above('hd')
+      font-size 16 * $unitH
+      .innerTitle svg
+        transform translateX(-12 * $unitH) translateY(-8 * $unitH) translateZ(0px) rotate(-90deg) scale(1, 1)
   .buttonHome
     align-items center
     color $colors-black
@@ -251,6 +260,7 @@ export default {
     padding-top 10px
     padding-bottom 10px
     overflow hidden
+
     &:hover
       transition letter-spacing .4s ease-out-quart
       letter-spacing $unitH * 8
@@ -278,6 +288,14 @@ export default {
         width 100%
         height 100%
         text-align center
+    +below('l')
+      font-size 16 * $unitH
+      .word
+        height 16 * 1.3 * $unitH
+    +above('hd')
+      font-size 12 * $unitH
+      .word
+        height 12 * 1.3 * $unitH
     &:before,
     &:after
       background $colors-black

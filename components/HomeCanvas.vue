@@ -45,13 +45,13 @@ export default {
       this.titlesContainer = new PIXI.Container();
       this.titlesContainer.name = 'titlesContainer';
       this.titles = new Titles(this.titlesContainer);
-      this.titles.load(this.getURI)
+      this.titles.load(this.getURI, this.app.renderer)
       this.app.stage.addChild(this.titlesContainer);
 
       this.titlesAboutContainer = new PIXI.Container();
       this.titlesAboutContainer.name = 'titlesAboutContainer';
       this.titlesAbout = new TitlesAbout(this.titlesAboutContainer);
-      this.titlesAbout.load(this.getURI)
+      this.titlesAbout.load(this.getURI, this.app.renderer)
       this.app.stage.addChild(this.titlesAboutContainer);
 
       const blobContainer = new PIXI.Container();
@@ -70,10 +70,10 @@ export default {
       this.portraitsContainer = new PIXI.Container();
       this.portraitsContainer.name = "portraitsContainer";
       this.portraits = new Portraits(this.portraitsContainer);
-      this.portraits.load(this.getURI)
+      this.portraits.load(this.getURI, this.app.renderer)
       this.app.stage.addChild(this.portraitsContainer);
 
-      this.mouseBlob = new MouseBlob(100)
+      this.mouseBlob = new MouseBlob(100, true)
       this.app.stage.addChild(this.mouseBlob.sprite);
     },
 
@@ -271,10 +271,10 @@ export default {
       this.pixiBlobs.hideMouse()
     },
     panDown(){
-      TweenMax.to(this.$el, .5, {yPercent: -50, ease:  Circ.easeOut})
+      TweenMax.to(this.$el, 1, {yPercent: -50, ease: Power4.easeInOut})
     },
     panUp(){
-      TweenMax.to(this.$el, .5, {yPercent: 0, ease: Cubic.easeIn})
+      TweenMax.to(this.$el, 1, {yPercent: 0, ease: Power4.easeInOut})
     }
   },
   watch: {
@@ -317,7 +317,7 @@ export default {
       }
       if(old && old === 'story-pageId' && val === 'index' && this.currentHomeSlideId != -1)this.portraits.appear(this.currentHomeSlideId);
       if(val === 'index')this.showHome()
-      if(val === 'about')this.showAbout(2)
+      if(val === 'about')this.showAbout(1)
       if(old === 'about')this.hideAbout()
     },
     'route.params.pageId'(val, old) {
@@ -360,14 +360,9 @@ export default {
     PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE
     this.app.renderer.textureGC.mode = PIXI.GC_MODES.MANUAL
     var ticker = PIXI.ticker.shared;
-    // Set this to prevent starting this ticker when listeners are added to it
-    // By default this is true only on the PIXI.ticker.shared instance
     ticker.autoStart = false;
-    // Call this to ensure the ticker is stopped right now
     ticker.stop();
     this.$el.appendChild(this.app.view)
-
-
   }
 };
 </script>

@@ -130,6 +130,7 @@ export default {
     font-weight normal
     line-height 1.1
     padding-left 240 * $unitH
+
   strong
     font-size 52 * $unitH
     padding-left 240 * $unitH

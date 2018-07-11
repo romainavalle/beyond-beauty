@@ -8,7 +8,7 @@
         </div>
       </div>
     </div>
-    <button class="button bottom white" @click="onButtonClick">
+    <button class="button bottom white" @click="onButtonClick" aria-label="discover">
       <span class="word">discover</span>
     </button>
     <div class="number" ref="number">
@@ -116,6 +116,8 @@ export default {
     font-weight $light
     color $colors-grey
     position relative
+    +above('hd')
+      font-size 40 * $unitH
     &:before
       content attr(data-text)
       top 0
@@ -128,8 +130,11 @@ export default {
       -webkit-color transparent
       transition background-size 1s ease-in-out-quad
       -webkit-background-clip text
-    &.show:before
-      background-size 600px 600px
+    &.show
+      transition color 0s 1s
+      color white
+      &:before
+        background-size 600px 600px
   .number
     position absolute
     bottom 40 * $unitV
@@ -137,7 +142,7 @@ export default {
     transform rotate(90deg)
     svg
       display block
-      opacity .5
+      opacity .35
       fill white
       height 457 * $unitH
       width 583 * $unitH

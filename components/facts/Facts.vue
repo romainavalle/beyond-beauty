@@ -69,6 +69,10 @@ export default {
     font-weight normal
     text-align center
     color $colors-timelineBack
+    +below('l')
+      font-size 24 * $unitH
+    +above('hd')
+      font-size 16 * $unitH
 </style>
 <style lang="stylus">
 .fadeFact-enter-active

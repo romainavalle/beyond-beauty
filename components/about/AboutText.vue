@@ -2,7 +2,7 @@
 <template>
   <div class="aboutText">
     <div class="content">
-      <p><span class="line">tribute<span class="img" v-if="packer"><img :src="getURI('about/emma-watson.jpg')" alt="emma watson"></span>to</span><span class="line">four inspiring</span><span class="line">women<span class="img" v-if="packer"><img :src="getURI('about/jennifer-lawrence.jpg')" alt="jennifer lawrence"></span>mainly</span><span class="line">known for their</span><span class="line">appearances</span><span class="line">although they</span><span class="line">stand<span class="img" v-if="packer"><img :src="getURI('about/natalie-portman.jpg')" alt="natalie portman"></span>up &amp; act</span><span class="line"> for the greater</span><span class="line">good.<span class="img" v-if="packer"><img :src="getURI('about/cara-delevingne.jpg')" alt="cara delevingne"></span>true</span><span class="line">inner beauty.</span></p>
+      <p><span class="line">A tribute<span class="img" v-if="packer"><img :src="getURI('about/emma-watson.jpg')" alt="emma watson"></span>to</span><span class="line">four inspiring</span><span class="line">women<span class="img" v-if="packer"><img :src="getURI('about/jennifer-lawrence.jpg')" alt="jennifer lawrence"></span>mainly</span><span class="line">known for their</span><span class="line">appearance</span><span class="line">although they</span><span class="line">stand<span class="img" v-if="packer"><img :src="getURI('about/natalie-portman.jpg')" alt="natalie portman"></span>up &amp; act</span><span class="line"> for the greater</span><span class="line">good.<span class="img" v-if="packer"><img :src="getURI('about/cara-delevingne.jpg')" alt="cara delevingne"></span>true</span><span class="line">inner beauty.</span></p>
     </div>
   </div>
 </template>
@@ -12,7 +12,8 @@ export default {
   name: 'AboutText',
   data(){
     return {
-      isShown: false
+      isShown: false,
+      isReady: false
     }
   },
   computed:{
@@ -20,16 +21,26 @@ export default {
     ...mapState(['packer'])
   },
   methods:{
+    onReady() {
+      if(this.isReady) return
+      this.isReady = true
+      this.$nextTick(() => {
+        this.$lines.forEach((element, i) => {
+          if(element.querySelector('img')) element.style.zIndex = 2
+          element.style.opacity = 0
+        });
+      })
+    },
     show() {
       if(this.isShown)return
       this.isShown = true
-      TweenMax.staggerFromTo(this.$lines, .8, {y: '100%', opacity: 0}, {delay:1, y: '0%', opacity: 1, force3D: true, ease: Quad.easeOut}, .1)
+      TweenMax.staggerFromTo(this.$lines, .8, {y: '100%', opacity: 0}, {delay:1, y: '0%', opacity: 1, clearProps: 'transform', ease: Quad.easeOut}, .1)
     },
     hide() {
       if(!this.isShown)return
       this.isShown = false
       const array = [...this.$lines].reverse()
-      TweenMax.staggerTo(this.$lines, .8, {y: '100%', opacity: 0, force3D: true, ease: Quad.easeOut}, .1)
+      TweenMax.staggerTo(this.$lines, .8, {y: '100%', opacity: 0, ease: Quad.easeOut}, .1)
     },
     tick() {
       if(this.active) {
@@ -38,14 +49,6 @@ export default {
     },
   },
   watch: {
-    packer() {
-      this.$nextTick(() => {
-        this.$lines.forEach((element, i) => {
-          if(element.querySelector('img')) element.style.zIndex = 2
-          element.style.opacity = 0
-        });
-      })
-    }
   },
   mounted(){
     this.$lines = [].slice.call(this.$el.querySelectorAll('.line'))

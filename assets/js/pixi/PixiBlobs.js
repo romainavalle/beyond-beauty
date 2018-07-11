@@ -11,9 +11,9 @@ class PixiBlobs {
     this.titleBorderSprite = titleBorderSprite
     this.titleAboutBorderSprite = titleAboutBorderSprite
     this.color = 0
-    this.setDisplacement(getter)
-    this.blobs = new Blobs()
     this.renderer = renderer
+    this.blobs = new Blobs()
+    this.setDisplacement(getter)
     this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(), PIXI.SCALE_MODES.LINEAR, 2);
     this.renderDispTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(), PIXI.SCALE_MODES.LINEAR, 2);
 
@@ -22,10 +22,10 @@ class PixiBlobs {
 
   setDisplacement(getter){
     this.displacement = new Displacement()
-    this.displacement.load(getter)
+    this.displacement.load(getter, this.renderer)
     this.displacementFilter = new PIXI.filters.DisplacementFilter(this.displacement.sprite);
-    this.displacementFilter.scale.x = 80
-    this.displacementFilter.scale.y = 80
+    this.displacementFilter.scale.x = 42
+    this.displacementFilter.scale.y = 42
     this.stage.addChild(this.displacement.sprite)
     this.titleBorderSprite.filters = [this.displacementFilter];
   }

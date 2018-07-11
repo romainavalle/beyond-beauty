@@ -1,7 +1,7 @@
 <template>
 <div class="MenuButton">
   <canvas ref="canvas"></canvas>
-  <button :class="readyClass" @click="doClick" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave">
+  <button :class="readyClass" @click="doClick" @mouseenter="doMouseEnter" @mouseleave="doMouseLeave" aria-label="menu">
     <no-ssr>
       <span class="icon">
         <span></span>

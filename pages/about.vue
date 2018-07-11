@@ -39,12 +39,14 @@ export default {
     },
     load() {
     },
+    onReady() {
+      this.doReady()
+      this.$refs.text.onReady()
+    },
     show() {
       this.$refs.text.show()
     },
     hide() {
-      this.$refs.text.hide()
-      this.$refs.credits.hide()
     },
     resize(w, h) {
       this.$refs.credits.resize(w, h)

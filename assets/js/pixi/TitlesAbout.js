@@ -47,7 +47,7 @@ class TitlesAbout {
     }
   }
 
-  load(getter) {
+  load(getter, renderer) {
     this.titleLoaded = false
     this.titleBorderLoaded = false
 
@@ -57,6 +57,8 @@ class TitlesAbout {
     }
     this.baseText = new PIXI.BaseTexture.fromImage(getter('titles/titles'+ urlResolution +'.png'))
     this.baseBorderText = new PIXI.BaseTexture.fromImage(getter('titles/titles-border'+ urlResolution +'.png'))
+    renderer.textureManager.updateTexture(this.baseText);
+    renderer.textureManager.updateTexture(this.baseBorderText);
     this.baseText.on('loaded', this.onBaseLoaded.bind(this))
     this.baseBorderText.on('loaded', this.onBaseBorderLoaded.bind(this))
   }

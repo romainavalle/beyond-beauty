@@ -149,6 +149,10 @@ export default {
   cursor pointer
   will-change transform
   z-index 50
+  +below('l')
+    font-size 16 * $unitH
+  +above('hd')
+    font-size 12 * $unitH
   canvas
     width 200px
     height 200px

@@ -1,6 +1,6 @@
 <template>
 <transition  @enter="enter" @leave="leave" appear @css="false">
-  <button v-show="displayed" class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound">
+  <button v-show="displayed" class="Sound" :class="{'muted': muteSound, 'white': white}"  @click="doToggleSound" aria-label="mute sound">
     <svg viewBox="0 0 8 8">
       <circle  cx="4" cy="4" r="1" class="point"/>
       <circle  cx="4" cy="4" r="3" class="bottom"/>
@@ -43,7 +43,7 @@ export default {
   methods:{
     ...mapActions(['toggleSound']),
     enter(el, done) {
-      TweenMax.to(el, .5, {autoAlpha: 1, onComplete: done})
+      TweenMax.to(el, .5, {autoAlpha: 1, clearProps: 'all', onComplete: done})
     },
     leave(el, done) {
       TweenMax.to(el, .3, {autoAlpha: 0, onComplete: done})
@@ -123,6 +123,7 @@ export default {
     font-size 14 * $unitH
     font-weight $semi
     color $colors-black
+
   svg
     fill none
     display inline-block
@@ -140,4 +141,16 @@ export default {
     .bottom
       transform scale(0, 0)
       opacity 0
+  +below('l')
+    bottom 138 * $unitH
+    span
+      font-size 16 * $unitH
+    svg
+      transform translateY(1 * $unitH)
+  +above('hd')
+    bottom 142 * $unitH
+    span
+      font-size 12 * $unitH
+    svg
+      transform translateY(03 * $unitH)
 </style>

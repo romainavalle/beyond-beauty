@@ -11,6 +11,7 @@
           <p v-html="intro.html" class="html" ref="html"></p>
         </div>
       </div>
+      <span class="loader" ref="loader"><div class="bar"></div></span>
       <span class="loading" ref="loading">Loading</span>
     </div>
   </transition>
@@ -71,9 +72,9 @@ export default {
       return this.textSplit(name)
     },
     leave: function (el, done) {
-      TweenMax.to(this.$refs.text, 1, {delay: 0, autoAlpha: 0, ease: Quad.easeInOut})
-      TweenMax.to(this.$refs.name, 1, {delay: .3, autoAlpha: 0, ease: Quad.easeInOut})
-      TweenMax.to(el, 1, {delay: .8, autoAlpha: 0, ease: Quad.easeInOut, onComplete: done})
+      TweenMax.to(this.$refs.text, .6, {delay: .4, autoAlpha: 0, ease: Quad.easeInOut})
+      TweenMax.to(this.$refs.name, .6, {delay: .5, autoAlpha: 0, ease: Quad.easeInOut})
+      TweenMax.to(el, 1, {delay: 1, autoAlpha: 0, ease: Quad.easeInOut, onComplete: done})
     },
     changeName() {
       if(this.currentName !== -1) this.hideName()
@@ -123,7 +124,9 @@ export default {
         Emitter.emit('SET_MOUSE_TYPE', {type: 'enter'})
         Emitter.emit('SHOW_MOUSE')
         this.isMouseShowed = true
-        TweenMax.to(this.$refs.loading, 1, {opacity: 0, overwrite: 1, ease: Power4.easeOut})
+        TweenMax.to(this.$refs.loader.querySelector('.bar'), .3, {scaleX: 1, ease: Linear.easeInOut})
+        TweenMax.to(this.$refs.loader, 1, {delay:.3, opacity: 0, overwrite: 1, ease: Power4.easeOut})
+        TweenMax.to(this.$refs.loading, 1, {delay:.3, opacity: 0, overwrite: 1, ease: Power4.easeOut})
       }, 1000)
     }
   },
@@ -137,7 +140,10 @@ export default {
       this.$refs.name[index].style.opacity = 0;
     }
     this.$refs.loading.style.opacity = 0
-    TweenMax.to(this.$refs.loading, 1, {opacity: 1, ease: Power4.easeOut})
+    TweenMax.to(this.$refs.loading, .3, {opacity: 1, ease: Power4.easeOut})
+    this.$refs.loader.style.opacity = 0
+    TweenMax.to(this.$refs.loader, .3, {opacity: 1, ease: Power4.easeOut})
+    TweenMax.to(this.$refs.loader.querySelector('.bar'), 3, {scaleX: .9, ease: Linear.easeInOut})
     //
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
     this.time_array = this.$spans.map(el => {return parseFloat(el.dataset.time)})
@@ -170,12 +176,33 @@ export default {
   &.clickable
     cursor pointer
   .loading
-    font-size 26 * $unitH
+    font-size 24 * $unitH
     right 160 * $unitH
-    bottom 150 * $unitH
+    bottom 160 * $unitH
     position absolute
     color $colors-white
     pointer-events none
+    +above('hd')
+      font-size 20 * $unitH
+      bottom 162 * $unitH
+  .loader
+    left 160 * $unitH
+    bottom 160 * $unitH
+    position absolute
+    background $colors-grey
+    pointer-events none
+    height 1px
+    width 160 * $unitH
+    .bar
+      position absolute
+      top 0
+      left 0
+      right 0
+      bottom 0
+      background white
+      transform-origin 0 0
+      transform scale(0,1)
+      will-change transform
   .text, .name
     position absolute
     top 0
@@ -204,6 +231,7 @@ export default {
     .name--bottom
       overflow hidden
       display flex
+      padding-left 50 * $unitH
       span
         display block
         will-change transform
@@ -225,6 +253,10 @@ export default {
         left 0
         top 0
         color $colors-white
+    +above('hd')
+      margin-top -42 * $unitH
+      p
+        font-size 46 * $unitH
   .text .content.show p
     opacity 1
     /*&:before
