@@ -1,16 +1,27 @@
 <template>
   <footer class="MenuFooter">
     <ul>
-      <li><a href="#">facebook</a></li>
-      <li><a href="#">twitter</a></li>
+      <li><a href="#" @click.prevent="onClick('facebook')">facebook</a></li>
+      <li><a href="#" @click.prevent="onClick('twitter')">twitter</a></li>
     </ul>
   </footer>
 </template>
 
 <script>
+import Sharer from '@merci-michel/mm-sharer'
 export default {
   name: "MenuFooter",
   methods:{
+    onClick(network) {
+      console.log(network)
+      let url = 'https://www.beyond-beauty.co/'
+      if(this.$route.name === 'story-pageId')url += 'story/'+this.$route.params.pageId
+      if(network === 'facebook') {
+        Sharer.facebook(url);
+      }else{
+        Sharer.twitter('Four women primarily known for their appearance. Discover their true inner beauty.',['BeyondBeauty','Girl','Girlpower'] ,url);
+      }
+    },
     show(delay) {
       TweenMax.to(this.$el, 1, {delay, autoAlpha: 1, ease: Quad.easeOut})
     },

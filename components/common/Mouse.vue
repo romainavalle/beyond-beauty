@@ -1,6 +1,6 @@
 <template>
-  <div class="Mouse" :class="type">
-    <canvas ref="canvas" width="200" height="200" ></canvas>
+  <div class="Mouse" :class="type" style="font-family: Messina Sans;font-weight: 300;">
+    <canvas ref="canvas"></canvas>
     <span ref="word"><span v-text="word"></span></span>
   </div>
 </template>
@@ -37,7 +37,6 @@ export default {
       TweenMax.to(this.$refs.word, .8,{delay: .2, scale: 1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
       if(this.isCanvasVisible) {
         this.blob.show()
-        this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
       }
     },
 
@@ -51,12 +50,11 @@ export default {
 
     tick() {
       if(!this.isShown) return
-      transform(this.$el, {translate3d:[MouseHelper.easeX, MouseHelper.easeY, 0]})
+      transform(this.$refs.word, {translate3d:[MouseHelper.easeX, MouseHelper.easeY, 0]})
       if(this.blob.scale !== 0){
-        transform(this.$refs.canvas, {translate3d:[MouseHelper.easeSlowX - MouseHelper.easeX,MouseHelper.easeSlowY -  MouseHelper.easeY, 0]})
         this.blob.tick(this.rotation, this.scale)
-        this.ctx.clearRect(0, 0, this.cW, this.cH)
-        this.ctx.drawImage(this.blob.canvas, 0, 0, this.cW, this.cH);
+        this.ctx.clearRect(0, 0, this.w,this.h)
+        this.ctx.drawImage(this.blob.canvas,MouseHelper.easeSlowX - 100,MouseHelper.easeSlowY - 100, this.cW, this.cH);
       }
     },
 
@@ -104,6 +102,10 @@ export default {
     },
 
     resize(w, h) {
+      this.w = w
+      this.h = h
+      this.$refs.canvas.width = w
+      this.$refs.canvas.height = h
     }
 
   },
@@ -130,6 +132,8 @@ export default {
     TweenMax.set(this.$refs.word, {scale: 0, opacity: 0})
     this.blob = new MouseBlob(this.cW, this.cH, 50)
     this.ctx = this.$refs.canvas.getContext('2d')
+    this.ctx.font = '12px "Messina Sans';
+    this.ctx.fillStyle = '#4e4e4b'
   }
 }
 
@@ -148,21 +152,20 @@ export default {
   top 0
   cursor pointer
   will-change transform
+  width 100%
+  height 100%
   z-index 50
   +below('l')
     font-size 16 * $unitH
   +above('hd')
     font-size 12 * $unitH
   canvas
-    width 200px
-    height 200px
+    width 100%
+    height 100%
     top 0
     left 0
     position absolute
     display block
-    margin-top -100px
-    margin-left -100px
-    will-change transform
   span
     display block
     span

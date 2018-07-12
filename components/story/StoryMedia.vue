@@ -25,7 +25,7 @@ export default {
   },
   methods:{
     getImage(src) {
-      const path = process.env.NODE_ENV === 'dev' ? '/' : ''
+      const path = process.env.NODE_ENV === 'development' ? '/' : 'https://assets.beyond-beauty.co/'
       return `${path}images/speech/${src}`
     },
     show() {

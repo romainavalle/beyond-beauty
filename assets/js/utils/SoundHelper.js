@@ -7,11 +7,12 @@ class SoundHelper {
     this.volume = 1
     this.isBagroundSound = false
     this.isAppReady = false
+    this.path = process.env.NODE_ENV === 'development' ? '/' : 'https://assets.beyond-beauty.co/'
   }
 
   load(){
     this.soundTop = new Howl({
-      src: ['/sounds/master.mp3'],
+      src: [`${this.path}sounds/master.mp3`],
       autoplay: false,
       volume: 0,
       loop: true,
@@ -25,7 +26,7 @@ class SoundHelper {
 
     })
     this.soundBg = new Howl({
-      src: ['/sounds/bg.mp3'],
+      src: [`${this.path}sounds/bg.mp3`],
       autoplay: false,
       volume: 0,
       loop: true,
@@ -58,7 +59,7 @@ class SoundHelper {
     const partTxt = part != undefined ? `-${part}` : ''
     if(this.voice)this.voice.unload()
     this.voice = new Howl({
-      src: `/sounds/${id}${partTxt}.mp3`,
+      src: `${this.path}sounds/${id}${partTxt}.mp3`,
       autoplay: true,
       volume: 0,
       onload: () => {

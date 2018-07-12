@@ -21,27 +21,24 @@
         <div class="credits">
           <strong>Photography Natalie Portman</strong>
           <ul>
-            <li><span @mouseover="doMouseOver(0, $event)" @mouseout="doMouseOut(0)">Nahel Moussi</span></li>
-            <li><span @mouseover="doMouseOver(1, $event)" @mouseout="doMouseOut(1)">Louis Ansa</span></li>
-            <li><span @mouseover="doMouseOver(2, $event)" @mouseout="doMouseOut(2)">Romain Avalle</span></li>
+            <li><span @mouseover="doMouseOver(0, $event)" @mouseout="doMouseOut(0)" v-text="images[0].name"></span></li>
+            <li><span @mouseover="doMouseOver(1, $event)" @mouseout="doMouseOut(1)" v-text="images[1].name"></span></li>
           </ul>
           <strong>Photography Emma Watson</strong>
           <ul>
-            <li><span @mouseover="doMouseOver(3, $event)" @mouseout="doMouseOut(3)">Nahel Moussi</span></li>
-            <li><span @mouseover="doMouseOver(4, $event)" @mouseout="doMouseOut(4)">Louis Ansa</span></li>
-            <li><span @mouseover="doMouseOver(5, $event)" @mouseout="doMouseOut(5)">Romain Avalle</span></li>
+            <li><span @mouseover="doMouseOver(2, $event)" @mouseout="doMouseOut(2)" v-text="images[2].name"></span></li>
+            <li><span @mouseover="doMouseOver(3, $event)" @mouseout="doMouseOut(3)" v-text="images[3].name"></span></li>
+            <li><span @mouseover="doMouseOver(4, $event)" @mouseout="doMouseOut(4)" v-text="images[4].name"></span></li>
           </ul>
           <strong>Photography Jennifer Lawrence</strong>
           <ul>
-            <li><span @mouseover="doMouseOver(6, $event)" @mouseout="doMouseOut(6)">Nahel Moussi</span></li>
-            <li><span @mouseover="doMouseOver(7, $event)" @mouseout="doMouseOut(7)">Louis Ansa</span></li>
-            <li><span @mouseover="doMouseOver(8, $event)" @mouseout="doMouseOut(8)">Romain Avalle</span></li>
+            <li><span @mouseover="doMouseOver(5, $event)" @mouseout="doMouseOut(5)" v-text="images[5].name"></span></li>
+            <li><span @mouseover="doMouseOver(6, $event)" @mouseout="doMouseOut(6)" v-text="images[6].name"></span></li>
+            <li><span @mouseover="doMouseOver(7, $event)" @mouseout="doMouseOut(7)" v-text="images[7].name"></span></li>
           </ul>
           <strong>Photography Cara Delevingne</strong>
           <ul>
-            <li><span @mouseover="doMouseOver(9, $event)" @mouseout="doMouseOut(9)">Nahel Moussi</span></li>
-            <li><span @mouseover="doMouseOver(10, $event)" @mouseout="doMouseOut(10)">Louis Ansa</span></li>
-            <li><span @mouseover="doMouseOver(11, $event)" @mouseout="doMouseOut(11)">Romain Avalle</span></li>
+            <li><span @mouseover="doMouseOver(8, $event)" @mouseout="doMouseOut(8)" v-text="images[8].name"></span></li>
           </ul>
         </div>
       </div>
@@ -60,18 +57,15 @@ export default {
       begin: 0,
       isShown: true,
       images: [
-        'facts/natalie-portman-0.jpg',
-        'facts/natalie-portman-1.jpg',
-        'facts/natalie-portman-2.jpg',
-        'facts/emma-watson-0.jpg',
-        'facts/emma-watson-1.jpg',
-        'facts/emma-watson-2.jpg',
-        'facts/jennifer-lawrence-0.jpg',
-        'facts/jennifer-lawrence-1.jpg',
-        'facts/jennifer-lawrence-2.jpg',
-        'facts/cara-delevingne-0.jpg',
-        'facts/cara-delevingne-1.jpg',
-        'facts/cara-delevingne-2.jpg'
+        {'name': 'Aitken Jolly','img':'credits/natalie-portman/aitken-jolly.jpg'},
+        {'name': 'Luc Besson','img':'credits/natalie-portman/luc-besson.jpg'},
+        {'name': 'Carole Lambert','img':'credits/emma-watson/carole-lambert.jpg'},
+        {'name': 'Cass Bird','img':'credits/emma-watson/cass-bird.jpg'},
+        {'name': 'Malene Birger','img':'credits/emma-watson/malene-birger.jpg'},
+        {'name': 'Ben Hassett','img':'credits/jennifer-lawrence/ben-hassett.jpg'},
+        {'name': 'Evelyn Bencicova','img':'credits/jennifer-lawrence/evelyn-bencicova.jpg'},
+        {'name': 'Mel and Adam','img':'credits/jennifer-lawrence/mel-and-adam.jpg'},
+        {'name': 'Amber Fillerup Clark','img':'credits/cara-delevingne/amber-fillerup-clark.jpg'}
       ]
     }
   },

@@ -34,7 +34,6 @@
 import Emitter from '~/assets/js/events';
 import { mapState, mapActions } from 'vuex';
 export default {
-  layout: ({ isMobile }) => isMobile ? 'mobile' : 'default',
   data(){
     return {
       isIdle: false,

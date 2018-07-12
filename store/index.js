@@ -1,5 +1,8 @@
 import Vuex from 'vuex'
 import data  from '~/assets/data.json'
+if(process.browser){
+  var sniffer = require('sniffer')
+}
 const createStore = () => {
   return new Vuex.Store({
     state: {
@@ -15,7 +18,8 @@ const createStore = () => {
       intro: data.intro,
       pages: data.pages,
       currentFact: 2,
-      muteSound: false
+      muteSound: false,
+      isMobile: null
     },
     mutations: {
       TOGGLE_SOUND (state) {
@@ -50,6 +54,9 @@ const createStore = () => {
       },
       SET_PAGE_TRANSITION (state, bool){
         state.isPageTransition = bool
+      },
+      CHECK_MOBILE(state) {
+        state.isMobile = sniffer && sniffer.isPhone ? true : false
       }
     },
     actions: {
@@ -86,6 +93,9 @@ const createStore = () => {
       setPageTransition ({ commit }, bool) {
         commit('SET_PAGE_TRANSITION', bool)
       },
+      checkMobile ({commit}) {
+        commit('CHECK_MOBILE')
+      }
     },
     getters: {
       getURI: (state) => (id) => {
@@ -109,6 +119,9 @@ const createStore = () => {
       },
       pageData: (state, getters) => {
         return state.pages[getters.currentPageIdNum]
+      },
+      isMobile:(state) => {
+        return state.isMobile
       }
     }
   })

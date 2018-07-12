@@ -1,7 +1,7 @@
 
 <template>
   <div class="aboutCreditImages">
-    <img v-for="(image,i) in images" :src="getURI(image)" :key="i" ref="images" alt="credits" v-if="packer">
+    <img v-for="(image,i) in images" :src="getURI(image.img)" :key="i" ref="images" :alt="image.name" v-if="packer">
   </div>
 </template>
 <script>

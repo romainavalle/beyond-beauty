@@ -121,11 +121,11 @@ module.exports = {
     ]
   },
   modules: [
-    ['@nuxtjs/google-analytics', { id: 'UA-122129754-1' }]
+    ['@nuxtjs/google-analytics', { id: 'UA-122129754-1' }],
+    'nuxt-device-detect',
   ],
   router: {
-    base: '/',
-    middleware: ['mobile']
+    base: '/'
   },
 
   generate: {

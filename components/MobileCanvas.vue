@@ -39,7 +39,7 @@ export default {
       );
       this.app.stage.addChild(blobContainer);
       this.pixiBlobs.show()
-      this.pixiBlobs.scale(.5)
+      this.pixiBlobs.scale(.3)
       this.pixiBlobs.setTint(0xf0cab2)
     },
     tick() {

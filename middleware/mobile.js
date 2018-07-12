@@ -1,9 +1,5 @@
 export default function (ctx) {
-  let userAgent
-  if(ctx.req) {
-    userAgent = ctx.req.headers['user-agent']
-  }else if(typeof navigator !== 'undefined') {
-    userAgent = navigator.userAgent
-  }
-  ctx.isMobile = userAgent ? /mobile/i.test(userAgent) : false
+  let userAgent = ctx.req ? ctx.req.headers['user-agent'] : navigator.userAgent
+  ctx.isMobile = /mobile/i.test(userAgent)
+  console.log('Is mobile', ctx.isMobile)
 }

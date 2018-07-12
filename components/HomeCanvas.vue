@@ -25,7 +25,8 @@ export default {
       midScale: .55,
       smlScale: .36,
       tempCurrentPageIdNum: -1,
-      storyPushSwitched: false
+      storyPushSwitched: false,
+      isTickAvailable: false
     }
   },
   computed: {
@@ -78,6 +79,7 @@ export default {
     },
 
     onReady(){
+      this.isTickAvailable = true
       if(this.route.name === 'story-pageId') this.checkStory()
       Emitter.on('CANVAS_CLICK', this._canvasClick);
       Emitter.on('SHOW_MOUSE', this._showMouse);
@@ -113,7 +115,7 @@ export default {
     },
 
     tick() {
-      if(window.smooth && this.route.name === 'story-pageId')this.checkStory()
+      if(window.smooth && this.route.name === 'story-pageId' && this.isTickAvailable)this.checkStory()
       if(this.isMenuCompletlyVisible) return
       if(!this.isCanvasVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.pixiBlobs.tick()
@@ -136,13 +138,14 @@ export default {
 
     checkSwitchBeforePageChange() {
       if(this.storyPushSwitched) {
+        this.isTickAvailable = false
         this.storyPushSwitched = false
         this.doSwitch()
       }
     },
 
     doSwitch() {
-      console.log('doSwitch')
+      console.log('switch', this.storyPushSwitched)
       let nextPageNum = this.currentPageIdNum + 1
       this.mouseBlob.hide()
       if(nextPageNum > 3)nextPageNum = 0
@@ -179,7 +182,6 @@ export default {
       if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
     },
     showHomeSlide(delay = 0) {
-      console.log('showHomeSlide')
       delay = .5
       this.pixiBlobs.setTint(this.pages[this.currentHomeSlideId].color);
       this.portraits.show(this.currentHomeSlideId, this.direction);
@@ -197,7 +199,6 @@ export default {
     },
 
     showPage(delay, time, direction = 'forward') {
-      console.log('showPage', {delay},{time})
       this.pixiBlobs.scale(.8)
       this.titlesContainer.visible = true
       this.titlesAboutContainer.visible = false
@@ -211,7 +212,6 @@ export default {
       this.titles.scaleTo(this.currentPageIdNum, this.currentScale, delay, time);
     },
     showHome(delay = 0) {
-      console.log('showHome', {delay})
       this.pixiBlobs.scale(1)
       this.mouseBlob.hide()
       this.portraitsContainer.visible = true
@@ -231,7 +231,6 @@ export default {
       this.titlesAbout.hide()
     },
     canvasClick() {
-      console.log('canvasClick')
       switch (this.currentScale) {
         case this.regScale:
           this.$router.push({
@@ -252,13 +251,11 @@ export default {
       }
     },
     pageTransition() {
-      console.log('pageTrans')
       this.titles.goToYPos(0, 1.3)
       this.currentScale = this.midScale
       this.titles.scaleTo(this.currentPageIdNum , this.currentScale, 0, 1, true);
     },
     showMouse() {
-      console.log('showMouse')
       if(this.$route.name === 'index'){
         this.mouseBlob.show()
       }else{
@@ -266,7 +263,6 @@ export default {
       }
     },
     hideMouse() {
-      console.log('hideMouse')
       this.mouseBlob.hide()
       this.pixiBlobs.hideMouse()
     },

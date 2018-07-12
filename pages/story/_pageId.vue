@@ -22,6 +22,7 @@ import Emitter from '~/assets/js/events';
 
 
 export default {
+
   head () {
     return {
       title: `Beyond Beauty | ${this.pages[this.currentPageIdNum].pageName}`,

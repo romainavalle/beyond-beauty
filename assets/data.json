@@ -11,8 +11,8 @@
       "name": "Natalie Portman",
       "color": "#f7c8ae",
       "titlePosition": [0, 202, 420],
-      "titlePositionMid": [95, 202, 316],
-      "titlePositionSml": [130, 202, 278],
+      "titlePositionMid": [0, 107, 221],
+      "titlePositionSml": [0, 72, 88],
       "title": [
         {"x": 480, "y": 0, "w": 405, "h": 189},
         {"x": 1133, "y": 440, "w": 1225, "h": 220},

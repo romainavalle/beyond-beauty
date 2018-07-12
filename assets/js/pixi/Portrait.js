@@ -9,8 +9,8 @@ class Portait {
     this.idNum = idNum
     this.id = id
     this.color = color
-    this.originalW = 1652 / 2
-    this.originalH = 2442 / 2
+    this.originalW = 872
+    this.originalH = 1289
 
     this.maskDisappearTint = new DisappearMask()
     this.maskDisappear = new DisappearMask()
@@ -24,11 +24,11 @@ class Portait {
       if(window.resolution === .5) divider = 2
     }
     const potraitTexture = new PIXI.Texture.from(base)
-    potraitTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 897 / divider, 1289 / divider)
+    potraitTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 872 / divider, 1289 / divider)
     this.portrait = new PIXI.Sprite(potraitTexture)
     //this.portrait.texture.baseTexture.mipmap = true;
     const potraitTintedTexture = new PIXI.Texture.from(base)
-    potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 1300 / divider, 897 / divider, 1289 / divider)
+    potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 1300 / divider, 872 / divider, 1289 / divider)
     this.portraitTinted = new PIXI.Sprite(potraitTintedTexture)
     this.portraitTintedBlob = new PIXI.Sprite(potraitTintedTexture)
     //this.portraitTinted.texture.baseTexture.mipmap = true;
@@ -68,13 +68,14 @@ class Portait {
     this.h = h
     const ratio = this.originalW / this.originalH
     let containerW, containerH
-    if (w / h < ratio) {
-      containerW = w / 4
-      containerH = containerW / ratio
+    if (w / h < 2880 / 1760) {
+      this.screenRatio = w / 2880
     } else {
-      containerH = h * 8 / 11
-      containerW = containerH * ratio
+      this.screenRatio = h / 1760
+
     }
+    containerW = this.originalW * this.screenRatio
+    containerH = this.originalH * this.screenRatio
     this.maskTransitionIn.sprite.width = containerW
     this.maskTransitionIn.sprite.height = containerH
     this.maskTransitionOut.sprite.width = containerW
@@ -91,7 +92,7 @@ class Portait {
     this.container.width = containerW
     this.container.height = containerH
     this.container.position.x = this.posX = w * .5 - containerW / 2
-    this.container.position.y = this.posY = h * .5 - containerH / 2
+    this.container.position.y = this.posY = h * .5 - containerH / 2.1
 
   }
   show(direction) {
