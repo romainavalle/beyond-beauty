@@ -4,70 +4,149 @@ class SoundHelper {
 
   constructor () {
     this.mute = false
+    this.volume = 1
+    this.isBagroundSound = false
+    this.isAppReady = false
+  }
+
+  load(){
+    this.soundTop = new Howl({
+      src: ['/sounds/master.mp3'],
+      autoplay: false,
+      volume: 0,
+      loop: true,
+      onload: () => {
+        this.soundTopLoaded = true
+        this.onSoundLoaded()
+      },
+      onend: () => {
+        this.soundTop.seek(.55)
+      }
+
+    })
+    this.soundBg = new Howl({
+      src: ['/sounds/bg.mp3'],
+      autoplay: false,
+      volume: 0,
+      loop: true,
+      onload: () => {
+        this.soundBgLoaded = true
+        this.onSoundLoaded()
+      },
+      onend: () => {
+        this.soundBg.seek(.55)
+      }
+
+    })
+  }
+  onReady() {
+    setTimeout(()=>{
+      this.isAppReady = true
+      this.onSoundLoaded()
+    }, 1300)
+  }
+  onSoundLoaded(){
+    if(!this.soundTopLoaded) return
+    if(!this.soundBgLoaded) return
+    if(!this.isAppReady) return
+    this.soundTop.play()
+    this.soundBg.play()
+    if(this.soundTop)this.soundTop.fade(0, .2, 2000)
   }
   createSound(id, part) {
     this.id = id
     const partTxt = part != undefined ? `-${part}` : ''
-    if(this.sound)this.sound.unload()
-    const path = process.env.NODE_ENV === 'dev' ? '/' : ''
-    this.sound = new Howl({
-      src: `${path}sounds/${id}${partTxt}.mp3`,
-      autoplay: !this.mute,
+    if(this.voice)this.voice.unload()
+    this.voice = new Howl({
+      src: `/sounds/${id}${partTxt}.mp3`,
+      autoplay: true,
       volume: 0,
       onload: () => {
         Emitter.emit('SOUND_LOADED')
       },
       onend: () => {
-        if(this.id !== 'intro') Emitter.emit('SOUND_ENDED')
+        if(this.id !== 'intro') {
+          this.isBagroundSound = false
+          this.switchSound()
+          Emitter.emit('SOUND_ENDED')
+        }
       }
-
     })
-    this.sound.on('play', ()=>{
+    this.voice.on('play', ()=>{
       if(this.id === 'intro') {
-        this.sound.volume(1)
+        this.voice.volume(1)
       } else {
-        this.sound.fade(0, 1, 1000)
+        this.voice.fade(0, 1, 1000)
+        this.isBagroundSound = true
+        this.switchSound()
+
       }
     })
   }
   toggleMute(mute) {
     this.mute = mute
-    if(this.mute) this.pause()
+
+    if(this.mute) {
+      if(this.soundTop && !this.isBagroundSound)this.soundTop.fade(.2, 0, 300)
+      if(this.soundBg && this.isBagroundSound)this.soundBg.fade(.2, 0, 300)
+      if(this.voice)this.voice.fade(1, 0, 300)
+    } else {
+      if(this.soundTop && !this.isBagroundSound)this.soundTop.fade(0, .2, 300)
+      if(this.soundBg && this.isBagroundSound)this.soundBg.fade(0, 1, 300)
+      if(this.voice)this.voice.fade(0, 1, 300)
+    }
+  }
+  switchSound() {
+    if(this.isBagroundSound) {
+      if(this.soundBg)this.soundBg.fade(0, .2, 1000)
+      if(this.soundTop)this.soundTop.fade(.2, 0, 1000)
+    }else{
+      if(this.soundBg)this.soundBg.fade(.2, 0, 1000)
+      if(this.soundTop)this.soundTop.fade(0, .2, 1000)
+
+    }
   }
   isPlaying() {
-    return this.sound.playing()
+    return this.voice.playing()
   }
   playPause() {
-    if(this.mute) return
-    if(this.sound.playing()) {
+    if(this.voice.playing()) {
       this.pause()
     } else {
-      this.sound.play()
-      this.sound.fade(0, 1, 300)
+      this.voice.play()
+      this.voice.fade(0, 1, 300)
+      this.isBagroundSound = true
+      this.switchSound()
     }
   }
   pause() {
-    if(!this.sound) return
-    if(this.sound.playing()) {
-      this.sound.fade(1, 0, 300)
-      this.sound.once('fade', () => {
-        this.sound.pause()
+    if(!this.voice) return
+    if(this.voice.playing()) {
+      this.voice.fade(1, 0, 300)
+      this.voice.once('fade', () => {
+        this.voice.pause()
       });
+
+      this.isBagroundSound = false
+      this.switchSound()
     }
   }
   getPos() {
-    return this.sound.seek()
+    return this.voice.seek()
   }
   getDuration() {
-    return this.sound.duration()
+    return this.voice.duration()
   }
   fadeOut() {
-    if(!this.sound) return
-    if(this.sound.volume() !== 1) return
-    this.sound.fade(1, 0, 1000)
-    this.sound.once('fade', () => {
-      this.sound.stop()
+    if(!this.voice) return
+    if(this.voice.volume() !== 1) return
+    this.voice.fade(1, 0, 1000)
+    this.voice.once('fade', () => {
+      this.voice.stop()
     });
+
+    this.isBagroundSound = false
+    this.switchSound()
   }
 }
 

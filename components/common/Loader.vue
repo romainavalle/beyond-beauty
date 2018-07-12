@@ -80,9 +80,7 @@ export default {
       if(this.currentName !== -1) this.hideName()
       this.currentName++
       if(this.currentName === 4) this.currentName = 0
-      this.timingTimer = setTimeout(() => {
-        this.showName()
-      }, 700)
+      this.timingTimer = setTimeout(this.showName.bind(this), 700)
     },
     showName() {
       const name = this.$refs.name[this.currentName]
@@ -155,7 +153,7 @@ export default {
     setTimeout(() => {
       this.show = true
     }, 200)
-    setTimeout(() => {
+    this.changeTimer = setTimeout(() => {
       SoundHelper.createSound('intro')
       this.isActive = true
       this.changeName()

@@ -10,7 +10,7 @@
           <ul>
             <li><a href="https://twitter.com/nahelmoussi" target="_blank">Nahel Moussi</a></li>
             <li><a href="https://twitter.com/louisansa" target="_blank">Louis Ansa</a></li>
-            <li><a href="https://twitter.com/romaindr" target="_blank">Romain Avalle</a></li>
+            <li><a href="https://twitter.com/romainavalle" target="_blank">Romain Avalle</a></li>
           </ul>
           <strong>Sound design by</strong>
           <ul>

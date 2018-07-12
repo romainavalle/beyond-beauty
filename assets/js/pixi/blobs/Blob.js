@@ -15,13 +15,9 @@ class Blob {
     this.numPoints = 4 + Math.floor(Math.random() * 5)
     this.originalRadius = this.radius = 70 + Math.floor(Math.random() * 100)
     this.position = { x: 0, y: 0 }
-    this.elasticity = .001
-    this.friction = .08
-    this.rotation = 45
     this.hover = false
     this.oldMousePoint = { x: 0, y: 0 }
     this.tickInt = 0
-    this.blobGraph.rotation = this.rotation * Math.PI / 180
   }
 
   resize(w, h){
@@ -39,17 +35,13 @@ class Blob {
     TweenMax.killTweensOf(this)
     this.numPoints = 5 + Math.floor(Math.random() * 7)
     this.radius = 20 + this.numPoints * 10
-    this.divisional = Math.PI * 2 / this.numPoints
-    this.points = []
-    for (let i = 0; i < this.numPoints; i++) {
-      let point = new BlobPoint(this.divisional * i, this, i, this.elasticity, this.friction);
-      this.points.push(point);
-    }
+
     const random = Math.random()
+    this.rotation = ((Math.PI / 8) - (Math.random() * Math.PI / 4))
     this.angle = random * Math.PI / 4 + Math.PI / 2 + Math.PI / 4
-    this.angleEnd = (1 - random) * Math.PI / 4 - Math.PI / 2 + Math.PI / 4
+    this.angleEnd = (1 - random) * Math.PI / 4 - Math.PI / 2 + Math.PI / 4 + this.rotation
+    this.blobGraph.rotation = Math.PI / 4 + this.rotation
     this.setPos()
-    this.prepareStroke();
     this.blobBottom.clear()
     this.blobBottom.moveTo(0, 0)
     this.blobBottom.scale.x = .8
@@ -79,8 +71,8 @@ class Blob {
     this.blobHeadDisplace.endFill();
     this.blobHeadDisplace.rotation = Math.random() * Math.PI
 
-    const time = (this.radius * (.3 + Math.random() * .6)) / 6
-    const delay =  setDelay ? this.index : 0
+    const time = (this.radius * (.3 + Math.random() * .6)) / 4
+    const delay =  setDelay ? this.index / 3 : 0
     this.ratio = 0
     TweenMax.to(this, time, {delay, ratio: 1, onComplete: this.setBlob.bind(this), overwrite: 1, ease: Linear.easeInOut, onUpdate: this.checkBlobPos.bind(this) })
   }
@@ -89,33 +81,8 @@ class Blob {
     if(this.position.x > this.w + this.radius + 50 || this.position.y < -(this.radius + 50) )this.setBlob()
   }
 
-  onValueChange() {
-    for (let i = 0; i < this.numPoints; i++) {
-      this.points[i].friction = this.friction
-      this.points[i].elasticity = this.elasticity
-    }
-  }
 
-  prepareStroke() {
-    var i, n, prevPoint, currentPoint, nextPoint, x, y;
-    for (i = 0; i < this.numPoints; i++) {
-      prevPoint = this.points[i - 1] || this.points[this.numPoints - 1]
-      nextPoint = this.points[i + 1] || this.points[0]
-      currentPoint = this.points[i]
-      currentPoint.calcSpring(prevPoint, nextPoint)
-    }
-  }
 
-  curveThrough(shape) {
-    var i, max = this.points.length + 1, currentPoint, nextPoint, x, y;
-    for (i = 0; i < max; i++) {
-      currentPoint = this.points[i % this.numPoints]
-      nextPoint = this.points[(i + 1) % this.numPoints]
-      x = (currentPoint.position.x + nextPoint.position.x) * .5;
-      y = (currentPoint.position.y + nextPoint.position.y) * .5;
-      shape.quadraticCurveTo(currentPoint.position.x, currentPoint.position.y, x, y);
-    }
-  }
   lerp(v0, v1, t) {
     return (1 - t) * v0 + t * v1;
   }

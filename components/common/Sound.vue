@@ -21,6 +21,7 @@ export default {
     return {
       storyContentTop: 0,
       storyContentBottom: 0,
+      pageDown: false,
       active: false
     }
   },
@@ -33,7 +34,7 @@ export default {
       if(this.route.name === 'index') {
         return true
       }else if(this.route.name === 'story-pageId'){
-        if(this.active)return true
+        if(this.active && this.pageDown)return true
         return false
       }else{
         return false
@@ -58,12 +59,12 @@ export default {
       this.$storyContent = document.querySelector('.StoryContent')
       if(this.$storyContent){
         this.storyContentTop = 0
-        this.storyContentBottom = this.storyContentTop + this.$storyContent.clientHeight
+        this.storyContentBottom =  this.$storyContent.clientHeight - this.h
       }
     },
     tick(){
       if(window.smooth) {
-        if(window.smooth.vars.current >= this.storyContentTop && window.smooth.vars.current < this.storyContentBottom && this.pageDown){
+        if(window.smooth.vars.current >= this.storyContentTop && window.smooth.vars.current < this.storyContentBottom ){
           if(!this.active) this.active = true
         }else{
           if(this.active) this.active = false
@@ -74,6 +75,11 @@ export default {
       this.pageDown = true
     },
     onPageUp() {
+      this.pageDown = false
+    }
+  },
+  watch: {
+    route() {
       this.pageDown = false
     }
   },

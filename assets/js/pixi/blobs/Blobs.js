@@ -16,7 +16,7 @@ class Blobs {
     this.blobs = []
     const w = ResizeHelper.width()
     const h = ResizeHelper.height()
-    for (let index = 0; index < 10; index++) {
+    for (let index = 0; index < 20; index++) {
       const blob = new Blob(index)
       //blob.resize(w, h)
       this.sprite.addChild(blob.blobGraph)

@@ -10,20 +10,13 @@
   position absolute
   text-transform uppercase
   pointer-events auto
-  transition letter-spacing .3s ease-in-quad, transform .5s ease-out-quart 1s
+  transition opacity .5s ease-in-out-quad
   padding-top 10px
   padding-bottom 10px
   overflow hidden
+  will-change opacity
   &:hover
-    transition letter-spacing .4s ease-out-quart
-    letter-spacing $unitH * 8
-    &:before,
-    &:after
-      transition transform .4s ease-out-quart
-    &:before
-      transform translateX(-7 * $unitH)
-    &:after
-      transform translateX(7 * $unitH)
+    opacity 0.6
   .word
     position relative
     height 7px
@@ -44,8 +37,6 @@
     display block
     height 1px
     width $unitV * 40
-    will-change transform
-    transition transform .3s ease-in-out-quad
   &.top
     top 0
     transform translate(14px, 0%) rotate(90deg)

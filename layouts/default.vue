@@ -52,7 +52,17 @@ export default {
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound},
   methods:{
     ...mapActions(['setPacker', 'setMenuOpen', 'setAppLoaded','setPageTransition']),
+    async load() {
+      const assets =  await load.all([{ url: '/images/pack/pack.json', type: 'json'},{ url: '/images/pack/pack.pack', type: 'blob'}])
+
+      if(process.browser){
+        const unpacker = new MMUnpacker(assets[1], assets[0]);
+        this.setPacker(unpacker)
+      }
+      this.$nextTick(this.onLoaded.bind(this))
+    },
     checkButton(from, to){
+      console.log(from, to)
       if(!from) {
         if(to.name === 'index') {
           this.$refs.logo.show()
@@ -64,6 +74,10 @@ export default {
           if(from.name === 'index') {
             this.$refs.logo.hide()
             setTimeout(() => {this.$refs.menuButton.show()}, 1000)
+          }
+          if(to.name === 'index') {
+            this.$refs.menuButton.hide()
+            setTimeout(() => {this.$refs.logo.show()}, 1000)
           }
         }
       }
@@ -126,7 +140,7 @@ export default {
     },
     onLoaded(){
       this.setAppLoaded()
-
+      SoundHelper.load()
       Emitter.on('GLOBAL:RESIZE', this._resize)
       this.page = this.$refs.page.$children[0]
       this.$refs.homeCanvas.load()
@@ -142,7 +156,7 @@ export default {
       if(process.browser){
         this.$refs.homeCanvas.onReady()
         this.$refs.siteMenu.onReady()
-
+        SoundHelper.onReady()
       }
     }
   },
@@ -162,9 +176,8 @@ export default {
   },
   created() {
   },
-  async mounted () {
+  mounted () {
     if(process.browser) {
-      // document.fonts.load('10pt "Hawthorn')
       window.resolution = 1
     }
     this._resize = this.resize.bind(this)
@@ -198,25 +211,14 @@ export default {
       Emitter.emit('HIDE_MOUSE');
       if(doNext)next()
     })
-     // todo -> promise polyfill
-    const assets =  await load.all([{ url: '/images/pack/pack.json', type: 'json'},{ url: '/images/pack/pack.pack', type: 'blob'}])
 
-    if(process.browser){
-      const unpacker = new MMUnpacker(assets[1], assets[0]);
-      this.setPacker(unpacker)
-    }
-    this.$router.afterEach((to, from) => {
-    })
+    this.$nextTick(this.load.bind(this))
+    this.resize()
 
-    this.$nextTick(this.onLoaded.bind(this))
     console.log('%cMade with ❤️ 🧡 💛 💚 💙 💜', "font-weight: bold; color: #f7c8ae;");
     console.log('%c🖌 @LouisAnsa', "font-weight: bold; color: #f7b8b0;");
     console.log('%c🖌 @NahelMoussi', "font-weight: bold; color: #f7cfae;");
-    console.log('%c⌨️ @Romaindr', "font-weight: bold; color: #f5d4a4;");
-    window.addEventListener("blur", () => {
-      SoundHelper.pause()
-    }, false);
-    this.resize()
+    console.log('%c⌨️ @RomainAvalle', "font-weight: bold; color: #f5d4a4;");
   }
 }
 </script>
