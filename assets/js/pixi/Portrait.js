@@ -18,32 +18,44 @@ class Portait {
     this.maskTransitionOut = new TransitionMask()
   }
 
-  setTexture(base, transition, disappear) {
+  setTexture(base, mask, transition, disappear,renderer) {
     let divider = 1
     if(process.browser) {
       if(window.resolution === .5) divider = 2
     }
-    const potraitTexture = new PIXI.Texture.from(base)
-    potraitTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 872 / divider, 1289 / divider)
-    this.portrait = new PIXI.Sprite(potraitTexture)
+    const portraitTexture = new PIXI.Texture.from(base)
+    portraitTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 872 / divider, 1289 / divider)
+    const potraitMaskTexture = new PIXI.Texture.from(mask)
+    potraitMaskTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 872 / divider, 1289 / divider)
+    portraitTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 872 / divider, 1289 / divider)
+    this.renderTexture = new PIXI.RenderTexture.create(872/ divider, 1289/ divider, PIXI.SCALE_MODES.LINEAR, 2);
+    this.portraitContainer = new PIXI.Sprite(this.renderTexture)
+    this.portraitTexture = new PIXI.Sprite()
+    this.portrait = new PIXI.Sprite(portraitTexture)
+    this.portraitMask = new PIXI.Sprite(potraitMaskTexture)
+    this.portraitTexture.addChild(this.portrait)
+    this.portraitTexture.addChild(this.portraitMask)
+    this.portrait.mask = this.portraitMask
+    renderer.render(this.portraitTexture,this.renderTexture )
     //this.portrait.texture.baseTexture.mipmap = true;
-    const potraitTintedTexture = new PIXI.Texture.from(base)
-    potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 1300 / divider, 872 / divider, 1289 / divider)
+    const potraitTintedTexture = new PIXI.Texture.from(mask)
+    potraitTintedTexture.frame = new PIXI.Rectangle(900 * this.idNum / divider, 0, 872 / divider, 1289 / divider)
     this.portraitTinted = new PIXI.Sprite(potraitTintedTexture)
     this.portraitTintedBlob = new PIXI.Sprite(potraitTintedTexture)
     //this.portraitTinted.texture.baseTexture.mipmap = true;
     TweenMax.set(this.portraitTinted, { colorProps: { tint: this.color, format: "number" } })
     this.portraitTinted.visible = false
-    this.portrait.interactive = false
-    this.portrait.buttonMode = false
+    this.portraitContainer.interactive = false
+    this.portraitContainer.buttonMode = false
+    //this.portraitContainer.cacheAsBitmap = true
 
     this.portraitTinted.interactive = false
-    this.portrait.width = this.originalW
-    this.portrait.height = this.originalH
+    this.portraitContainer.width = this.originalW
+    this.portraitContainer.height = this.originalH
     this.portraitTinted.width = this.originalW
     this.portraitTinted.height = this.originalH
     this.container.addChild(this.portraitTinted)
-    this.container.addChild(this.portrait)
+    this.container.addChild(this.portraitContainer)
     this.maskTransitionIn.setTexture(transition)
     this.maskTransitionOut.setTexture(transition)
     this.container.addChild(this.maskTransitionIn.sprite)
@@ -87,8 +99,8 @@ class Portait {
 
     this.portraitTinted.width = containerW
     this.portraitTinted.height = containerH
-    this.portrait.width = containerW
-    this.portrait.height = containerH
+    this.portraitContainer.width = containerW
+    this.portraitContainer.height = containerH
     this.container.width = containerW
     this.container.height = containerH
     this.container.position.x = this.posX = w * .5 - containerW / 2
@@ -96,7 +108,7 @@ class Portait {
 
   }
   show(direction) {
-    this.portrait.mask = this.maskTransitionIn.sprite
+    this.portraitContainer.mask = this.maskTransitionIn.sprite
 
     this.maskTransitionIn.playIn(direction)
     this.container.visible = true
@@ -110,7 +122,7 @@ class Portait {
     this.resize(this.w, this.h)
   }
   hide(direction) {
-    this.portrait.mask = this.maskTransitionOut.sprite
+    this.portraitContainer.mask = this.maskTransitionOut.sprite
 
     this.maskTransitionOut.playOut(direction)
     this.maskTransitionIn.sprite.visible = false
@@ -125,7 +137,7 @@ class Portait {
 
   onHideComplete(){
     this.container.visible = false
-    this.portrait.mask = null
+    this.portraitContainer.mask = null
   }
   disappear() {
     this.maskDisappear.disappear()
@@ -135,7 +147,7 @@ class Portait {
     this.maskTransitionOut.sprite.visible = false
     this.maskDisappear.sprite.visible = true
     this.maskDisappearTint.sprite.visible = true
-    this.portrait.mask = this.maskDisappear.sprite
+    this.portraitContainer.mask = this.maskDisappear.sprite
     this.portraitTinted.mask = this.maskDisappearTint.sprite
     this.portraitTinted.visible = true
     this.container.visible = true
@@ -157,7 +169,7 @@ class Portait {
     this.maskDisappear.sprite.visible = true
     this.maskDisappearTint.sprite.visible = true
     this.portraitTinted.visible = true
-    this.portrait.mask = this.maskDisappear.sprite
+    this.portraitContainer.mask = this.maskDisappear.sprite
     this.portraitTinted.mask = this.maskDisappearTint.sprite
     this.container.visible = true
     TweenMax.to(this, 1.2, {ease: Quart.easeIn, onComplete: this.onAppearComplete.bind(this) })

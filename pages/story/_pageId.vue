@@ -1,6 +1,6 @@
 <template>
     <div class="Story">
-      <v-story-top></v-story-top>
+      <v-story-top ref="top"></v-story-top>
       <div class="scrollContent" ref="scrollContent">
         <v-scroll-layout>
           <v-story-content ref="content"></v-story-content>
@@ -108,6 +108,11 @@ export default {
     },
     onReady() {
       this.doReady()
+      this.$refs.top.onReady()
+      this.$refs.push.onReady()
+    },
+    hidePush() {
+      this.$refs.push.hide()
     }
   },
 

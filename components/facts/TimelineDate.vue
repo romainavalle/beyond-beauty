@@ -52,18 +52,18 @@ export default {
   display block
   text-align center
   button
+    align-items center
+    color $colors-timelineBlack
+    display flex
+    flex-direction column
     font-size 20 * $unitH
     font-weight $semi
-    color $colors-timelineBlack
-    margin 0 auto
-    display flex
     height 90 * $unitV
-    width 100 * $unitH
-    transform translateX(-20 * $unitV)// 100 / 2 - 60 / 2
-    flex-direction column
-    align-items center
     justify-content space-between
+    margin 0 auto
     pointer-events auto
+    transform translateX(-20 * $unitV)// 100 / 2 - 60 / 2
+    width 100 * $unitH
     .text
       display block
       position relative
@@ -75,7 +75,8 @@ export default {
     .point
       height  5px
       width  5px
-      position relative
+      position absolute
+      bottom 0
       opacity 0
       transition opacity .8s ease-out-quart
       &:after,

@@ -24,8 +24,14 @@ class TitleMobile {
     this.h = h
     if(!this.title) return
     const ratio = this.originalW / this.originalH
-    this.title.width = w / 2
-    this.title.height = w / 2 / ratio
+    if(this.isBordered) {
+      this.title.width = w / 2
+      this.title.height = w / 2 / ratio
+    }else{
+      this.title.width = w / 2
+      this.title.height = w / 2 / ratio
+
+    }
     this.container.position.x = w / 2
     this.container.position.y = h / 2 - this.title.height * .5
   }

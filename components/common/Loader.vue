@@ -13,14 +13,16 @@
       </div>
       <span class="loader" ref="loader"><div class="bar"></div></span>
       <span class="loading" ref="loading">Loading</span>
+      <span class="enter" ref="enter" v-if="isTablet">Enter</span>
     </div>
   </transition>
 </template>
 
 <script>
 import SoundHelper from '~/assets/js/utils/SoundHelper'
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import Emitter from '~/assets/js/events'
+
 export default {
   data(){
     return {
@@ -33,11 +35,13 @@ export default {
   },
   computed:{
     ...mapState(['isAppReady','isAppLoaded','pages', 'intro']),
+    ...mapGetters(['isTablet'])
   },
   methods:{
     ...mapActions(['setAppReady']),
     tick() {
       if(!this.isActive) return
+      if(this.isTablet) return
       const pos = SoundHelper.getPos()
       if(pos > this.time_array[this.currentSpan]){
         const textSplit = this.$spans[this.currentSpan].innerText.split(' ')
@@ -53,7 +57,7 @@ export default {
     },
     doClick(){
       if(!this.isMouseShowed)return
-      SoundHelper.fadeOut()
+      if(!this.isTablet) SoundHelper.fadeOut()
       this.setAppReady()
       Emitter.emit('HIDE_MOUSE')
       clearTimeout(this.changeTimer)
@@ -101,6 +105,7 @@ export default {
       this.changeTimer = setTimeout(this._changeName, 3000)
     },
     hideName() {
+      if(this.isTablet && this.currentName === 3) this.doClick()
       const name = this.$refs.name[this.currentName]
       const top = [].slice.call(name.querySelectorAll('.name--top span'))
       const bottom = [].slice.call(name.querySelectorAll('.name--bottom span'))
@@ -125,6 +130,8 @@ export default {
         TweenMax.to(this.$refs.loader.querySelector('.bar'), .3, {scaleX: 1, ease: Linear.easeInOut})
         TweenMax.to(this.$refs.loader, 1, {delay:.3, opacity: 0, overwrite: 1, ease: Power4.easeOut})
         TweenMax.to(this.$refs.loading, 1, {delay:.3, opacity: 0, overwrite: 1, ease: Power4.easeOut})
+
+        if(this.isTablet)TweenMax.to(this.$refs.enter, 1, {delay:1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
       }, 1000)
     }
   },
@@ -143,6 +150,7 @@ export default {
     TweenMax.to(this.$refs.loader, .3, {opacity: 1, ease: Power4.easeOut})
     TweenMax.to(this.$refs.loader.querySelector('.bar'), 3, {scaleX: .9, ease: Linear.easeInOut})
     //
+    if(this.isTablet)this.$refs.enter.style.opacity = 0
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
     this.time_array = this.$spans.map(el => {return parseFloat(el.dataset.time)})
 
@@ -152,9 +160,10 @@ export default {
     //
     setTimeout(() => {
       this.show = true
+      if(this.isTablet) TweenMax.staggerTo(this.$spans, .3, {delay:1, opacity: 1} , .2)
     }, 200)
     this.changeTimer = setTimeout(() => {
-      SoundHelper.createSound('intro')
+      if(!this.isTablet) SoundHelper.createSound('intro')
       this.isActive = true
       this.changeName()
     }, 1800)
@@ -173,7 +182,7 @@ export default {
   z-index 49
   &.clickable
     cursor pointer
-  .loading
+  .loading, .enter
     font-size 24 * $unitH
     right 160 * $unitH
     bottom 160 * $unitH

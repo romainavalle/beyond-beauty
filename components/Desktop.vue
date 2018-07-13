@@ -47,7 +47,7 @@ export default {
   },
   computed:{
     ...mapState(['isAppReady', 'isPageTransition', 'isMenuOpen', 'route', 'currentHomeSlideId', 'isCanvasVisible']),
-    ...mapGetters(['getPageIdNum'])
+    ...mapGetters(['getPageIdNum', 'isTablet'])
   },
   components:{vHomeCanvas, vMenu, vLogo, vMenuButton, vLoader, vMouse, vSound},
   methods:{
@@ -100,11 +100,12 @@ export default {
     },
     pageLeave(el, done) {
       if(this.isPageTransition){
+        this.$refs.page.$children[0].hidePush()
         TweenMax.to(this.$refs.page.$children[0].$el, 1.3,{yPercent: -50, ease: Power4.easeInOut})
         this.$refs.homeCanvas.pageTransition()
         setTimeout(() => {
           done()
-        }, 1200)
+        }, 1000)
       }else{
         done()
       }
@@ -186,7 +187,8 @@ export default {
   },
   mounted () {
     if(process.browser) {
-      window.resolution = 1
+      window.resolution = this.isTablet ? .5 : 1
+      if(window.devicePixelRatio < 1.5)window.resolution = .5
     }
     this._resize = this.resize.bind(this)
     this._tick = this.tick.bind(this)
@@ -238,19 +240,6 @@ export default {
   width 100%
   &.overflow
     overflow hidden
-  /*&:after
-    background url('~/assets/images/noise.jpg')
-    background-size 256px 256px
-    content ''
-    display block
-    height 100vh
-    left 0
-    opacity 0.4
-    pointer-events none
-    position fixed
-    top 0
-    width 100vw
-    z-index 99999
-    mix-blend-mode overlay*/
+
 
 </style>

@@ -20,7 +20,9 @@ export default {
     this.io.unobserve(this.$el);
   },
   mounted() {
-    this.io = new IntersectionObserver(this.ioCb.bind(this))
-    this.io.observe(this.$el);
+    this.$nextTick(()=>{
+      this.io = new IntersectionObserver(this.ioCb.bind(this))
+      this.io.observe(this.$el);
+    })
   }
 }

@@ -69,6 +69,7 @@ class MouseBlob{
       element.posY = (Math.sin(i / 8 * Math.PI * 2) * this.shapeW * .15)
       element.rotation = Math.random() * 360 * Math.PI * 2
       element.graph.endFill();
+      element.graph.cacheAsBitmap = true
     });
   }
 

@@ -122,6 +122,9 @@ const createStore = () => {
       },
       isMobile:(state) => {
         return state.isMobile
+      },
+      isTablet:(state) => {
+        return sniffer ? sniffer.isTablet : false
       }
     }
   })

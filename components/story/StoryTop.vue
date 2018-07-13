@@ -8,9 +8,11 @@
         </div>
       </div>
     </div>
-    <button class="button bottom white" @click="onButtonClick" aria-label="discover">
+    <transition name="buttonTrans">
+    <button class="button bottom white" @click="onButtonClick" aria-label="discover" v-show="isReady">
       <span class="word">discover</span>
     </button>
+    </transition>
     <div class="number" ref="number">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 527 447" v-if="currentPageIdNum === 0" preserveAspectRatio="xMidYMid slice">
         <path d="M156 3c14 0 29 4 44 12s30 22 45 39a240 240 0 0 1 45 76 283 283 0 0 1-33 246c-30 44-69 69-106 69-31 0-65-21-94-58a250 250 0 0 1-41-75 269 269 0 0 1-14-87c0-56 17-112 47-155 14-21 31-38 49-49 19-12 38-18 58-18m-31 42c-12 32-18 82-18 160 0 68 3 119 8 159 3 21 7 36 13 46s14 15 25 15c14 0 25-10 31-29 10-31 15-77 15-145v-29c-1-61-4-103-9-135-3-22-8-38-14-48-7-11-15-16-26-16s-20 8-25 22m30-44C74 1 0 107 0 225c0 62 19 118 55 164 30 37 65 58 95 58 81 0 157-111 157-228 0-64-20-121-61-167-29-34-60-51-90-51zm-2 422c-20 0-30-19-36-59-6-41-8-92-8-159 0-77 6-128 18-160 5-12 13-20 23-20 20 0 32 19 38 63 5 34 8 79 9 134v29c0 66-4 112-15 145-6 17-15 27-29 27z" class="cls-1"/>
@@ -42,7 +44,8 @@ export default {
   data(){
     return {
       textTopClass: '',
-      totalClass: ''
+      totalClass: '',
+      isReady: false
     }
   },
   computed:{
@@ -64,12 +67,15 @@ export default {
     },
     show(){
       TweenMax.to(this.$refs.title, .5, {opacity: 1, ease: Quad.easeOut, onComplete:() => {
-        setTimeout(() => { this.textTopClass = 'show' }, 1000)
+        setTimeout(() => { this.textTopClass = 'show' }, 100)
       }})
       TweenMax.to(this.$refs.number, .5, {opacity: 1, y: 0, ease: Quad.easeOut})
       TweenMax.to(this.$refs.barre, .5, {delay:.5, scaleY: 1, ease: Quad.easeOut})
       TweenMax.to(this.$refs.totalNumber, .5, {delay:.5, opacity: 1, x: 0, ease: Quad.easeOut})
 
+    },
+    onReady() {
+      this.isReady = true
     }
   },
   watch: {
@@ -135,6 +141,12 @@ export default {
       color white
       &:before
         background-size 600px 600px
+
+  .buttonTrans-enter-active, .buttonTrans-leave-active
+      transition opacity .5s ease-out-quart 1.5s, transform .5s ease-out-quart 1.5s
+  .buttonTrans-enter, .buttonTrans-leave-to
+    opacity 0
+    transform rotate(-90deg) translate(-50%, 50%)
   .number
     position absolute
     bottom 40 * $unitV

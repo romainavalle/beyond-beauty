@@ -1,7 +1,7 @@
 import BlobPoint from '~/assets/js/pixi/blobs/BlobPoint'
 import MouseHelper from '~/assets/js/utils/MouseHelper'
 class Blob {
-  constructor(index) {
+  constructor(index, isMobile) {
     this.blobGraph = new PIXI.Sprite();
     this.blobHead = new PIXI.Graphics();
     this.blobBottom = new PIXI.Graphics();
@@ -9,6 +9,7 @@ class Blob {
     this.blobGraph.addChild(this.blobHead);
     this.blobGraph.addChild(this.blobHeadDisplace);
     this.blobGraph.addChild(this.blobBottom);
+    this.isMobile = isMobile
     this.distanceRatio = 0
     this.index = index
     this.color = 'red'
@@ -72,8 +73,13 @@ class Blob {
     this.blobHeadDisplace.rotation = Math.random() * Math.PI
 
     const time = (this.radius * (.3 + Math.random() * .6)) / 4
-    const delay =  setDelay ? this.index / 3 : 0
+    const delayDivider = this.isMobile ? 1 : 1.5
+    const delay =  setDelay ? this.index / delayDivider : 0
     this.ratio = 0
+
+    this.blobHead.cacheAsBitmap = true
+    this.blobBottom.cacheAsBitmap = true
+    this.blobHeadDisplace.cacheAsBitmap = true
     TweenMax.to(this, time, {delay, ratio: 1, onComplete: this.setBlob.bind(this), overwrite: 1, ease: Linear.easeInOut, onUpdate: this.checkBlobPos.bind(this) })
   }
 

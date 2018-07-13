@@ -255,11 +255,10 @@ export default {
     position absolute
     text-transform uppercase
     pointer-events auto
-    transition letter-spacing .3s ease-in-quad, transform .5s ease-out-quart 1s
+    transition opacity .5s ease-in-quad 2s, transform .5s ease-out-quart 2s
     padding-top 10px
     padding-bottom 10px
     overflow hidden
-
     &:hover
       transition letter-spacing .4s ease-out-quart
       letter-spacing $unitH * 8

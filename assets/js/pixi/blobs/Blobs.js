@@ -2,22 +2,23 @@ import Blob from '~/assets/js/pixi/blobs/Blob'
 import ResizeHelper from '~/assets/js/utils/ResizeHelper';
 import MouseBlob from '~/assets/js/pixi/blobs/MouseBlob'
 class Blobs {
-  constructor() {
+  constructor(isMobile) {
     this.sprite = new PIXI.Sprite()
     this.sprite.name = 'blobs'
     this.alpha = 0
     this.scale = 0
-    this.actualScale = 1
-    this.init()
+    this.actualScale = isMobile ? .6 : 1
+    this.init(isMobile)
   }
-  init() {
+  init(isMobile) {
     this.mouseBlob = new MouseBlob()
     this.sprite.addChild(this.mouseBlob.sprite)
     this.blobs = []
     const w = ResizeHelper.width()
     const h = ResizeHelper.height()
-    for (let index = 0; index < 20; index++) {
-      const blob = new Blob(index)
+    const max = isMobile ? 10 : 15
+    for (let index = 0; index < max; index++) {
+      const blob = new Blob(index,isMobile)
       //blob.resize(w, h)
       this.sprite.addChild(blob.blobGraph)
       this.blobs.push(blob)

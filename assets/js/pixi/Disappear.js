@@ -22,12 +22,22 @@ class DisappearMask {
   disappear() {
     this.currentFrameTween = 0
     this.tweenUpdate()
-    TweenMax.to(this, 24, { useFrames: true,  currentFrameTween: 24, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
+    TweenMax.to(this, 24 / divider, { useFrames: true,  currentFrameTween: 24, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
   }
   appear() {
     this.currentFrameTween = 24
     this.tweenUpdate()
-    TweenMax.to(this, 24, { useFrames: true,  currentFrameTween: 0, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
+    TweenMax.to(this, 24 / divider, { useFrames: true,  currentFrameTween: 0, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
   }
 
   tweenUpdate() {

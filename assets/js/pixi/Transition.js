@@ -21,24 +21,33 @@ class TransitionMask {
   }
   playIn(direction = 'forward') {
     this.direction = direction
+
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
     if(direction === 'forward'){
       this.currentFrameTween = 0
-      TweenMax.to(this, 35, { useFrames: true,  currentFrameTween: 35, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+      TweenMax.to(this, 35 / divider, { useFrames: true,  currentFrameTween: 35, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
     }else{
       this.currentFrameTween = 59
-      TweenMax.to(this, 23, { useFrames: true,  currentFrameTween: 36, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+      TweenMax.to(this, 23 / divider, { useFrames: true,  currentFrameTween: 36, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
     }
     this.tweenUpdate()
   }
   playOut(direction = 'forward') {
 
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
     this.direction = direction
     if(direction === 'forward'){
       this.currentFrameTween = 36
-      TweenMax.to(this, 28, { useFrames: true, currentFrameTween: 64, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+      TweenMax.to(this, 28 / divider, { useFrames: true, currentFrameTween: 64, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
     }else{
       this.currentFrameTween = 35
-      TweenMax.to(this, 35, { useFrames: true, currentFrameTween: 0, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
+      TweenMax.to(this, 35 / divider, { useFrames: true, currentFrameTween: 0, ease: Linear.easeInOut, onUpdate: this.tweenUpdate.bind(this) }).timeScale(.5)
     }
     this.tweenUpdate()
   }

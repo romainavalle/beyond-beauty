@@ -13,7 +13,6 @@ export default {
   name: "MenuFooter",
   methods:{
     onClick(network) {
-      console.log(network)
       let url = 'https://www.beyond-beauty.co/'
       if(this.$route.name === 'story-pageId')url += 'story/'+this.$route.params.pageId
       if(network === 'facebook') {

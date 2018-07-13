@@ -26,7 +26,7 @@ class Titles {
 
     this.titleSprite.interactive = true
     this.titleSprite.buttonMode = true
-    this.titleSprite.on('click', () => Emitter.emit('CANVAS_CLICK'))
+    this.titleSprite.on('pointerdown', () => Emitter.emit('CANVAS_CLICK'))
     this.titleSprite.on('mouseout', () => Emitter.emit('HIDE_MOUSE'))
     this.titleSprite.on('mouseover', () => {
       let obj

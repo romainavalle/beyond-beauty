@@ -30,6 +30,7 @@ class Portraits {
 
   load(getter, renderer) {
     this.baseLoaded = false
+    this.maskLoaded = false
     this.transitionLoaded = false
     this.disappearLoaded = false
 
@@ -37,18 +38,26 @@ class Portraits {
     if(process.browser) {
       if(window.resolution === .5) urlResolution = '@0.5x'
     }
-    this.baseText = new PIXI.BaseTexture.fromImage(getter('bust/busts'+ urlResolution +'.png'))
+    this.renderer = renderer
+    this.baseText = new PIXI.BaseTexture.fromImage(getter('bust/busts'+ urlResolution +'.jpg'))
+    this.baseMaskText = new PIXI.BaseTexture.fromImage(getter('bust/mask'+ urlResolution +'.png'))
     this.transitionText = new PIXI.BaseTexture.fromImage(getter('mask/transition'+ urlResolution +'.png'))
     this.disappearText = new PIXI.BaseTexture.fromImage(getter('mask/disappear'+ urlResolution +'.png'))
     renderer.textureManager.updateTexture(this.baseText);
+    renderer.textureManager.updateTexture(this.baseMaskText);
     renderer.textureManager.updateTexture(this.transitionText);
     renderer.textureManager.updateTexture(this.disappearText);
     this.baseText.on('loaded', this.onBaseLoaded.bind(this))
+    this.baseMaskText.on('loaded', this.onMaskLoaded.bind(this))
     this.transitionText.on('loaded', this.onTransitionLoaded.bind(this))
     this.disappearText.on('loaded', this.onDisappearLoaded.bind(this))
   }
   onBaseLoaded() {
     this.baseLoaded = true
+    this.onLoaded()
+  }
+  onMaskLoaded() {
+    this.maskLoaded = true
     this.onLoaded()
   }
   onTransitionLoaded() {
@@ -61,10 +70,11 @@ class Portraits {
   }
   onLoaded() {
     if(!this.baseLoaded) return
+    if(!this.maskLoaded) return
     if(!this.transitionLoaded) return
     if(!this.disappearLoaded) return
     this.portraits.forEach(el => {
-      el.setTexture(this.baseText, this.transitionText, this.disappearText)
+      el.setTexture(this.baseText,this.baseMaskText, this.transitionText, this.disappearText, this.renderer)
     })
   }
   doReady(){

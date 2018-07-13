@@ -5,17 +5,21 @@ import Blobs from '~/assets/js/pixi/blobs/Blobs'
 import Displacement from '~/assets/js/pixi/Displacement'
 
 class PixiBlobs {
-  constructor(stage, titleBorderSprite, titleAboutBorderSprite, renderer, getter) {
+  constructor(stage, titleBorderSprite, titleAboutBorderSprite, renderer, getter, isMobile = false) {
     this.stage = stage
     this.mask = 'index'
     this.titleBorderSprite = titleBorderSprite
     this.titleAboutBorderSprite = titleAboutBorderSprite
     this.color = 0
     this.renderer = renderer
-    this.blobs = new Blobs()
+    this.blobs = new Blobs(isMobile)
     this.setDisplacement(getter)
-    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(), PIXI.SCALE_MODES.LINEAR, 2);
-    this.renderDispTexture = new PIXI.RenderTexture.create(ResizeHelper.width(), ResizeHelper.height(), PIXI.SCALE_MODES.LINEAR, 2);
+    let divider = 1
+    if(process.browser) {
+      if(window.resolution === .5) divider = 2
+    }
+    this.renderTexture = new PIXI.RenderTexture.create(ResizeHelper.width()/divider, ResizeHelper.height()/divider, PIXI.SCALE_MODES.LINEAR, 2);
+    this.renderDispTexture = new PIXI.RenderTexture.create(ResizeHelper.width()/divider, ResizeHelper.height()/divider, PIXI.SCALE_MODES.LINEAR, 2);
 
     this.init()
   }

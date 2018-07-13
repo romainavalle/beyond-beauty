@@ -30,16 +30,17 @@ export default {
       this.app.stage.addChild(this.titlesContainer);
       const blobContainer = new PIXI.Container();
       blobContainer.name = "blobContainer"
+      const isMobile = true
       this.pixiBlobs = new PixiBlobs(
         blobContainer,
         this.titles.titleBorderSprite,
         this.titles.titleBorderAboutSprite,
         this.app.renderer,
-        this.getURI
+        this.getURI,
+        isMobile
       );
       this.app.stage.addChild(blobContainer);
       this.pixiBlobs.show()
-      this.pixiBlobs.scale(.3)
       this.pixiBlobs.setTint(0xf0cab2)
     },
     tick() {
@@ -49,7 +50,6 @@ export default {
     resize(w, h) {
       this.titles.resize(w, h)
       this.pixiBlobs.resize(w, h, 50 * w / 1440)
-      this.app.renderer.resize(w, h);
     },
   },
   mounted() {
@@ -58,13 +58,15 @@ export default {
       transparent: false,
       autoStart: false,
       antialias: false,
-      resolution: 2,
+      resolution: 1,
+      width: ResizeHelper.width(),
+      height: ResizeHelper.height(),
+      autoResize: true,
       powerPreference: "high-performance"
     });
 
     this.app.renderer.autoResize = true;
     PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE
-    this.app.renderer.textureGC.mode = PIXI.GC_MODES.MANUAL
     var ticker = PIXI.ticker.shared;
     ticker.autoStart = false;
     ticker.stop();

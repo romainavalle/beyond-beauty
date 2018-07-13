@@ -1,6 +1,6 @@
 <template>
-  <div class='HomeCanvas'>
-  </div>
+  <canvas class='HomeCanvas'>
+  </canvas>
 </template>
 
 <script>
@@ -120,7 +120,7 @@ export default {
       if(!this.isCanvasVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.pixiBlobs.tick()
       if(this.isAppReady) this.mouseBlob.tick();
-      this.app.renderer.render(this.app.stage);
+     // this.app.renderer.render(this.app.stage);
     },
 
     checkStory() {
@@ -145,7 +145,6 @@ export default {
     },
 
     doSwitch() {
-      console.log('switch', this.storyPushSwitched)
       let nextPageNum = this.currentPageIdNum + 1
       this.mouseBlob.hide()
       if(nextPageNum > 3)nextPageNum = 0
@@ -179,7 +178,8 @@ export default {
       this.pixiBlobs.resize(w, h, 50 * w / 1440)
       this.mouseBlob.resize(w, h, 50 * w / 1440)
       this.app.renderer.resize(w, h);
-      if(window.smooth) this.bounding = window.smooth.vars.bounding - h / 2
+      if(window.smooth && this.$route.name === 'pageId-story') this.bounding = window.smooth.vars.bounding - h / 2
+      if(window.smooth && this.$route.name === 'about') this.bounding = window.smooth.vars.bounding
     },
     showHomeSlide(delay = 0) {
       delay = .5
@@ -275,7 +275,6 @@ export default {
   },
   watch: {
     currentHomeSlideId(val, old) {
-      console.log('watch -> currentHomeSlideId',val, old)
       if(this.route.name === 'index') {
         TweenMax.set(this.$el, {yPercent: 0})
         if (old !== -1) {
@@ -302,7 +301,6 @@ export default {
       }
     },
     'route.name'(val, old) {
-      console.log('watch -> route.name',val, old)
       TweenMax.set(this.$el, {yPercent: 0})
       if(old && old === 'index' && val === 'story-pageId'){
         this.portraits.disappear(this.currentHomeSlideId);
@@ -317,7 +315,6 @@ export default {
       if(old === 'about')this.hideAbout()
     },
     'route.params.pageId'(val, old) {
-      console.log('watch -> route.params.pageId',val, old, this.isPageTransition)
       if(!this.isPageTransition) TweenMax.set(this.$el, {yPercent: 0})
       let dir = 'forward'
       if(old && val) {
@@ -349,25 +346,27 @@ export default {
       backgroundColor: 0xe1dfd7,
       transparent: false,
       autoStart: false,
-      powerPreference: "high-performance"
+      autoResize: true,
+      powerPreference: "high-performance",
+      view: this.$el,
+      resolution: 1,
+      legacy: true //flickering on old browser
     });
+    PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.LINEAR
 
-    this.app.renderer.autoResize = true;
     PIXI.WebGLRenderer.batchMode = PIXI.WebGLRenderer.BATCH_SIMPLE
-    this.app.renderer.textureGC.mode = PIXI.GC_MODES.MANUAL
     var ticker = PIXI.ticker.shared;
     ticker.autoStart = false;
     ticker.stop();
-    this.$el.appendChild(this.app.view)
   }
 };
 </script>
 
 <style lang='stylus' scoped>
-.HomeCanvas {
+.HomeCanvas
   height 100%
   overflow hidden
   position fixed
   width 100%
-}
+
 </style>

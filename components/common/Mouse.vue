@@ -1,5 +1,5 @@
 <template>
-  <div class="Mouse" :class="type" style="font-family: Messina Sans;font-weight: 300;">
+  <div class="Mouse" :class="[type, {'tablet': isTablet}]" style="font-family: Messina Sans;font-weight: 300;">
     <canvas ref="canvas"></canvas>
     <span ref="word"><span v-text="word"></span></span>
   </div>
@@ -12,7 +12,7 @@ if(process.browser) {
 import MouseBlob from '~/assets/js/blobs/MouseBlob'
 import Emitter from '~/assets/js/events';
 import MouseHelper from '~/assets/js/utils/MouseHelper'
-
+import { mapGetters } from 'vuex'
 export default {
 
   name: 'Mouse',
@@ -21,16 +21,19 @@ export default {
     return {
       isShown: false,
       isCanvasVisible: false,
-      word: 'discover',
-      type: '',
+      word: '',
+      type: 'discover',
       cW: 200,
       cH: 200
     }
   },
-
+  computed: {
+    ...mapGetters(['isTablet'])
+  },
   methods: {
 
     show() {
+      if(this.isTablet) return
       MouseHelper.isMouseNeeded = true
       this.isShown = true
       TweenMax.set(this.$el, {autoAlpha: 1})
@@ -41,6 +44,7 @@ export default {
     },
 
     hide() {
+      if(this.isTablet) return
       TweenMax.to(this.$refs.word, .5,{scale: 0, opacity: 0, overwrite: 1, ease: Power4.easeOut, onComplete: () => {
         this.isShown = false
         TweenMax.set(this.$el, {autoAlpha: 0})
@@ -49,7 +53,9 @@ export default {
     },
 
     tick() {
+      if(this.isTablet) return
       if(!this.isShown) return
+      if(this.isTablet) return
       transform(this.$refs.word, {translate3d:[MouseHelper.easeX, MouseHelper.easeY, 0]})
       if(this.blob.scale !== 0){
         this.blob.tick(this.rotation, this.scale)
@@ -59,14 +65,17 @@ export default {
     },
 
     scaleDown() {
+      if(this.isTablet) return
       this.blob.scaleDown()
     },
 
     scaleUp() {
+      if(this.isTablet) return
       this.blob.scaleUp()
     },
 
     setMouseType(e) {
+      if(this.isTablet) return
       this.type = e.type
       this.isCanvasVisible = false
       switch(this.type){
@@ -102,6 +111,7 @@ export default {
     },
 
     resize(w, h) {
+      if(this.isTablet) return
       this.w = w
       this.h = h
       this.$refs.canvas.width = w
@@ -111,6 +121,7 @@ export default {
   },
 
   beforeDestroy() {
+    if(this.isTablet) return
     Emitter.removeListener('SHOW_MOUSE', this._show);
     Emitter.removeListener('HIDE_MOUSE', this._hide);
     Emitter.removeListener('SCALE_MOUSE_DOWN', this._scaleDown);
@@ -119,6 +130,7 @@ export default {
   },
 
   mounted(){
+    if(this.isTablet) return
     this._show = this.show.bind(this);
     this._hide = this.hide.bind(this);
     this._scaleDown = this.scaleDown.bind(this);
@@ -159,6 +171,8 @@ export default {
     font-size 16 * $unitH
   +above('hd')
     font-size 12 * $unitH
+  &.isTablet
+    display none
   canvas
     width 100%
     height 100%

@@ -31,6 +31,12 @@ export default {
     tick() {
       if(!this.active)return
       transform(this.$refs.name,{y: ( window.smooth.vars.current - window.smooth.vars.bounding) / 2})
+    },
+    onReady() {
+      TweenMax.set(this.$refs.name,  {opacity: 1})
+    },
+    hide() {
+      TweenMax.to(this.$refs.name, .6, {delay: .3, opacity: 0, ease: Power3.easeOut})
     }
   },
   mounted(){
