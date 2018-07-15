@@ -59,8 +59,10 @@ class TitlesAbout {
     this.baseBorderText = new PIXI.BaseTexture.fromImage(getter('titles/titles-border'+ urlResolution +'.png'))
     renderer.textureManager.updateTexture(this.baseText);
     renderer.textureManager.updateTexture(this.baseBorderText);
-    this.baseText.on('loaded', this.onBaseLoaded.bind(this))
-    this.baseBorderText.on('loaded', this.onBaseBorderLoaded.bind(this))
+    this._onBaseLoaded = this.onBaseLoaded.bind(this)
+    this._onBaseBorderLoaded = this.onBaseBorderLoaded.bind(this)
+    this.baseText.on('loaded', this._onBaseLoaded)
+    this.baseBorderText.on('loaded', this._onBaseBorderLoaded)
   }
 
   onBaseLoaded() {
@@ -76,6 +78,8 @@ class TitlesAbout {
   onLoaded() {
     if(!this.titleLoaded) return
     if(!this.titleBorderLoaded) return
+    this.baseText.off('loaded', this._onBaseLoaded)
+    this.baseBorderText.off('loaded', this._onBaseBorderLoaded)
 
     const pos_array = [
       [

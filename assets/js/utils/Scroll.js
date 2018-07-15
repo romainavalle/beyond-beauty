@@ -58,6 +58,7 @@ class Scroll extends SmoothScroll {
 
   removeEvents (onlyscroll) {
     super.removeEvents(onlyscroll)
+    Emitter.removeListener('GLOBAL:RESIZE', this.resize)
 
     if (support.hasWheelEvent) window.removeEventListener('wheel', this.onWheel, false)
     if (support.hasMouseWheelEvent) window.removeEventListener('mousewheel', this.onWheel, false)
@@ -233,6 +234,7 @@ class Scroll extends SmoothScroll {
   }
 
   destroy () {
+    this.removeEvents()
     Emitter.removeListener('GLOBAL:RESIZE', this.resize)
     super.destroy()
   }

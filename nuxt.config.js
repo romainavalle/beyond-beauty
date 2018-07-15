@@ -121,7 +121,7 @@ module.exports = {
     ]
   },
   modules: [
-
+    '@nuxtjs/pwa'
   ],
   router: {
     base: '/'

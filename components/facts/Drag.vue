@@ -63,11 +63,17 @@ export default {
         this.snapValues.push(Math.round(padding + timelineW / 4 * index))
       }
     },
+    onDrag(e) {
+      this.setCurrentFact(e.val)
+    },
     show(delay) {
       this.blob.show(delay)
+      this._onDrag = this.onDrag.bind(this)
+      Emitter.on('DRAG:GOTO', this._onDrag)
     },
     hide(){
       this.blob.hide()
+      Emitter.removeListener('DRAG:GOTO', this._onDrag)
     },
     doMouseEnter() {
       this.blob.doMouseEnter()
@@ -112,7 +118,6 @@ export default {
       });
     this.ctx = this.$refs.canvas.getContext('2d')
     this.setDragBlob()
-    Emitter.on('DRAG:GOTO', (e) => { this.setCurrentFact(e.val) })
   }
 }
 

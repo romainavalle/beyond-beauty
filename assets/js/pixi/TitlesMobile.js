@@ -43,8 +43,10 @@ class TitlesMobile {
 
     this.baseText = new PIXI.BaseTexture.fromImage(getter('title-mobile.png'))
     this.baseBorderText = new PIXI.BaseTexture.fromImage(getter('title-mobile-border.png'))
-    this.baseText.on('loaded', this.onBaseLoaded.bind(this))
-    this.baseBorderText.on('loaded', this.onBaseBorderLoaded.bind(this))
+    this._onBaseLoaded = this.onBaseLoaded.bind(this)
+    this._onBaseBorderLoaded = this.onBaseBorderLoaded.bind(this)
+    this.baseText.on('loaded', this._onBaseLoaded)
+    this.baseBorderText.on('loaded', this._onBaseBorderLoaded)
   }
 
   onBaseLoaded() {
@@ -60,6 +62,8 @@ class TitlesMobile {
   onLoaded() {
     if(!this.titleLoaded) return
     if(!this.titleBorderLoaded) return
+    this.baseText.off('loaded', this._onBaseLoaded)
+    this.baseBorderText.off('loaded', this._onBaseBorderLoaded)
     this.title.setTexture(this.baseText)
     this.titleBorder.setTexture(this.baseBorderText)
     this.titleBorderAbout.setTexture(this.baseBorderText)

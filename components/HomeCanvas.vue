@@ -120,7 +120,7 @@ export default {
       if(!this.isCanvasVisible && (window.smooth && window.smooth.vars.current < this.bounding))return
       this.pixiBlobs.tick()
       if(this.isAppReady) this.mouseBlob.tick();
-     // this.app.renderer.render(this.app.stage);
+      this.app.renderer.render(this.app.stage);
     },
 
     checkStory() {

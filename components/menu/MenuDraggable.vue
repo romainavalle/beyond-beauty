@@ -31,9 +31,7 @@ export default {
   methods:{
     tick() {
      this.$refs.link.forEach((el, i) => {
-       /* let t = (-this.snapValues[i] + this.draggable[0].x) / (this.w / 2)
-        const ease = t > 0 ? (--t)*t*t+1 :t*t*t*/
-        el.tick(/*ease * 200*/)
+        el.tick()
       })
     },
     doMouseEnter(){
@@ -81,13 +79,11 @@ export default {
           x: this.snapValues
         },
         onThrowUpdate: ()=>{
-          //this.getNearestEl()
         },
         onRelease: () => {
           Emitter.emit('SCALE_MOUSE_UP')
         },
         onPress: () => {
-          //this.getNearestEl()
           Emitter.emit('SCALE_MOUSE_DOWN')
         },
         onThrowComplete: () => {
@@ -107,7 +103,6 @@ export default {
       this.currentId = currentEl
     },
     show(){
-      //this.setMouseWheelListener()
       if(window.smooth) window.smooth.removeEvents()
       this.$refs.link.forEach((el, i) => {
         el.show(i * .15)
@@ -120,7 +115,6 @@ export default {
     },
     hide() {
       if(window.smooth) window.smooth.addEvents()
-      //this.removeMouseWheelListener()
       TweenMax.to(this.$refs.content, .9, {x: '+=' + this.w * .2, opacity: 0, ease: Cubic.easeIn, force3D:true, onComplete: () => {TweenMax.set(this.$refs.content, {x: 0, opacity: 1})}})
       this.$refs.link.forEach((el, i) => {
         el.hide()
@@ -128,37 +122,10 @@ export default {
     },
     onReady(){
     },
-    /*setMouseWheelListener(){
-      this.$el.addEventListener("mousewheel", this._doWheel, false);
-      this.$el.addEventListener("wheel", this._doWheel, false);
-    },
-    removeMouseWheelListener(){
-      this.$el.removeEventListener("mousewheel", this._doWheel, false);
-      this.$el.removeEventListener("wheel", this._doWheel, false);
-    },
-    doWheel(e) {
-      if(this.idleMouseWheel)return
-      this.idleMouseWheel = true
-      this.idleTimer = setTimeout(()=>{this.idleMouseWheel = false}, 1000)
-      e.preventDefault();
-      if(e.deltaY > 0 ){
-        this.currentId++
-        if(this.currentId >= 3) this.currentId=3
-      } else {
-
-        this.currentId--
-        if(this.currentId <= 0) this.currentId=0
-      }
-      console.log(this.currentId)
-      this.slideDraggable()
-    }*/
   },
   beforeDestroy() {
-    //if(this.idleTimer)clearTimeout(this.idleTimer)
-    //this.removeMouseWheelListener()
   },
   mounted() {
-    //this._doWheel = this.doWheel.bind(this)
     TweenMax.set(this.$el, {autoApha: 0})
   }
 }

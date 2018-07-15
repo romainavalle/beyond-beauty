@@ -70,8 +70,10 @@ class Titles {
 
     renderer.textureManager.updateTexture(this.baseText);
     renderer.textureManager.updateTexture(this.baseBorderText);
-    this.baseText.on('loaded', this.onBaseLoaded.bind(this))
-    this.baseBorderText.on('loaded', this.onBaseBorderLoaded.bind(this))
+    this._onBaseLoaded = this.onBaseLoaded.bind(this)
+    this._onBaseBorderLoaded = this.onBaseBorderLoaded.bind(this)
+    this.baseText.on('loaded', this._onBaseLoaded)
+    this.baseBorderText.on('loaded', this._onBaseBorderLoaded)
   }
 
   onBaseLoaded() {
@@ -87,6 +89,9 @@ class Titles {
   onLoaded() {
     if(!this.titleLoaded) return
     if(!this.titleBorderLoaded) return
+
+    this.baseText.off('loaded', this._onBaseLoaded)
+    this.baseBorderText.off('loaded', this._onBaseBorderLoaded)
 
     pages.forEach((page, i) => {
       this.titles[i].setTexture(this.baseText, page.title)

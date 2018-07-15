@@ -70,7 +70,7 @@ export default {
     }
   },
   beforeDestroy(){
-    document.addEventListener("keydown", this._onKey, false);
+    document.removeEventListener("keydown", this._onKey, false);
   },
   mounted() {
     this._onKey = this.onKey.bind(this)

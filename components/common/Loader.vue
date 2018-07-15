@@ -53,6 +53,7 @@ export default {
         this.$spans[this.currentSpan].style.opacity = 1
         TweenMax.staggerFromTo(this.$spans[this.currentSpan].querySelectorAll('span'), .3,{opacity: 0}, {opacity: 1, ease:Quad.easeOut}, stagger)
         this.currentSpan++
+        if(this.currentSpan === this.time_array.length)this.isActive = false
       }
     },
     doClick(){
@@ -87,37 +88,35 @@ export default {
       this.timingTimer = setTimeout(this.showName.bind(this), 700)
     },
     showName() {
-      const name = this.$refs.name[this.currentName]
-      const top = [].slice.call(name.querySelectorAll('.name--top span'))
-      const bottom = [].slice.call(name.querySelectorAll('.name--bottom span'))
+      const name = this.name_array[this.currentName]
       let delay = 0, index = 0
-      name.style.opacity = .2;
+      name.el.style.opacity = .2;
+      name.el.style.visibility = 'visible'
       //name.style.opacity = 1;
-      for (index = 0; index < top.length; index++) {
-        if(index > top.length - 3)delay += .05
-        TweenMax.fromTo(top[index], .8, {yPercent: 110, skewY: 20, scaleY: 1.4}, {delay, yPercent: 0, skewY: 0, scaleY: 1, force3D: true, ease: Power4.easeOut})
+
+      for (index = 0; index < name.top.length; index++) {
+        if(index > name.top.length - 3)delay += .05
+        TweenMax.fromTo(name.top[index], .8, {yPercent: 110, skewY: 20, scaleY: 1.4}, {delay, yPercent: 0, skewY: 0, scaleY: 1, force3D: true, ease: Power4.easeOut})
       }
       delay = .1
-      for (index = 0; index < bottom.length; index++) {
-        if(index > bottom.length - 3)delay += .05
-        TweenMax.fromTo(bottom[index], .8, {yPercent: 110, skewY: 20, scaleY: 1.4}, {delay, yPercent: 0, skewY: 0, scaleY: 1,force3D: true, ease: Power4.easeOut})
+      for (index = 0; index < name.bottom.length; index++) {
+        if(index > name.bottom.length - 3)delay += .05
+       TweenMax.fromTo(name.bottom[index], .8, {yPercent: 110, skewY: 20, scaleY: 1.4}, {delay, yPercent: 0, skewY: 0, scaleY: 1,force3D: true, ease: Power4.easeOut})
       }
       this.changeTimer = setTimeout(this._changeName, 3000)
     },
     hideName() {
       if(this.isTablet && this.currentName === 3) this.doClick()
-      const name = this.$refs.name[this.currentName]
-      const top = [].slice.call(name.querySelectorAll('.name--top span'))
-      const bottom = [].slice.call(name.querySelectorAll('.name--bottom span'))
+      const name = this.name_array[this.currentName]
       let delay = 0, index = 0
-      for (index = 0; index < top.length; index++) {
-        if(index > top.length - 3)delay += .05
-        TweenMax.to(top[index], .8,{delay, yPercent: -120, skewY: -10, scaleY: 1.2, force3D: true, ease: Power4.easeIn})
+      for (index = 0; index < name.top.length; index++) {
+        if(index > name.top.length - 3)delay += .05
+        TweenMax.to(name.top[index], .8,{delay, yPercent: -120, skewY: -10, scaleY: 1.2, force3D: true, ease: Power4.easeIn})
       }
       delay = .1
-      for (index = 0; index < bottom.length; index++) {
-        if(index > bottom.length - 3)delay += .05
-        TweenMax.to(bottom[index], .8,{delay, yPercent: -120, skewY: -10, scaleY: 1.2, force3D: true, ease: Power4.easeIn})
+      for (index = 0; index < name.bottom.length; index++) {
+        if(index > name.bottom.length - 3)delay += .05
+        TweenMax.to(name.bottom[index], .8,{delay, yPercent: -120, skewY: -10, scaleY: 1.2, force3D: true, ease: Power4.easeIn,onComplete: () => {name.el.style.visibility = 'hidden'}})
       }
     }
   },
@@ -128,8 +127,8 @@ export default {
         Emitter.emit('SHOW_MOUSE')
         this.isMouseShowed = true
         TweenMax.to(this.$refs.loader.querySelector('.bar'), .3, {scaleX: 1, ease: Linear.easeInOut})
-        TweenMax.to(this.$refs.loader, 1, {delay:.3, opacity: 0, overwrite: 1, ease: Power4.easeOut})
-        TweenMax.to(this.$refs.loading, 1, {delay:.3, opacity: 0, overwrite: 1, ease: Power4.easeOut})
+        TweenMax.to(this.$refs.loader, 1, {delay:.3, autoAlpha: 0, overwrite: 1, ease: Power4.easeOut})
+        TweenMax.to(this.$refs.loading, 1, {delay:.3, autoAlpha: 0, overwrite: 1, ease: Power4.easeOut})
 
         if(this.isTablet)TweenMax.to(this.$refs.enter, 1, {delay:1, opacity: 1, overwrite: 1, ease: Power4.easeOut})
       }, 1000)
@@ -157,6 +156,12 @@ export default {
     this.$spans.forEach(element => {
       element.style.opacity = 0
     });
+    this.name_array = []
+    this.$refs.name.forEach(el => {
+      const top = [].slice.call(el.querySelectorAll('.name--top span'))
+      const bottom = [].slice.call(el.querySelectorAll('.name--bottom span'))
+      this.name_array.push({el,top,bottom})
+    })
     //
     setTimeout(() => {
       this.show = true
@@ -231,6 +236,7 @@ export default {
     letter-spacing 10 * $unitH
     line-height .82
     margin-left 160 * $unitH
+    visibility hidden
     text-transform uppercase
     .name--bottom
       margin-top -8 * $unitH

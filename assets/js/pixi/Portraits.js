@@ -47,10 +47,14 @@ class Portraits {
     renderer.textureManager.updateTexture(this.baseMaskText);
     renderer.textureManager.updateTexture(this.transitionText);
     renderer.textureManager.updateTexture(this.disappearText);
-    this.baseText.on('loaded', this.onBaseLoaded.bind(this))
-    this.baseMaskText.on('loaded', this.onMaskLoaded.bind(this))
-    this.transitionText.on('loaded', this.onTransitionLoaded.bind(this))
-    this.disappearText.on('loaded', this.onDisappearLoaded.bind(this))
+    this._onBaseLoaded =     this.onBaseLoaded.bind(this)
+    this._onMaskLoaded = this.onMaskLoaded.bind(this)
+    this._onTransitionLoaded = this.onTransitionLoaded.bind(this)
+    this._onDisappearLoaded = this.onDisappearLoaded.bind(this)
+    this.baseText.on('loaded', this._onBaseLoaded)
+    this.baseMaskText.on('loaded', this._onMaskLoaded)
+    this.transitionText.on('loaded', this._onTransitionLoaded)
+    this.disappearText.on('loaded', this._onDisappearLoaded)
   }
   onBaseLoaded() {
     this.baseLoaded = true
@@ -73,6 +77,10 @@ class Portraits {
     if(!this.maskLoaded) return
     if(!this.transitionLoaded) return
     if(!this.disappearLoaded) return
+    this.baseText.off('loaded', this._onBaseLoaded)
+    this.baseMaskText.off('loaded', this._onMaskLoaded)
+    this.transitionText.off('loaded', this._onTransitionLoaded)
+    this.disappearText.off('loaded', this._onDisappearLoaded)
     this.portraits.forEach(el => {
       el.setTexture(this.baseText,this.baseMaskText, this.transitionText, this.disappearText, this.renderer)
     })
