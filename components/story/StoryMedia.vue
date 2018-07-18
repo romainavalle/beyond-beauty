@@ -1,17 +1,19 @@
 <template>
   <div class="StoryMedia" :class="id">
     <div class="img" v-for="(img,i) in media" :key="i">
-      <img :src="getImage(img.src)" :width="img.width" :height="img.height" :alt="id">
+      <img :src="getImage(img.src)" :width="img.width" :height="img.height" :data-width="img.width" :data-height="img.height" :alt="id">
     </div>
   </div>
 </template>
 <script>
 import { mapGetters } from 'vuex'
+import Emitter from '~/assets/js/events'
 export default {
   name: 'StoryMedia',
   data(){
     return {
-      isShown: false
+      isShown: false,
+      imgLoaded:0
     }
   },
   computed:{
@@ -38,15 +40,27 @@ export default {
       this.isShown = false
       TweenMax.to(this.$imgs, .5, {opacity: 0, ease: Quad.easeIn, overwrite: 1})
     },
-    load() {
-
+    onReady() {
+      this.$imgs.forEach(element => {
+        element.style.opacity = 0
+        const img = element.querySelector('img')
+        element.style.height = img.width / (parseInt(img.dataset.width, 10)/parseInt(img.dataset.height,10)) + "px"
+      });
+    },
+    resize() {
+      this.$imgs.forEach(element => {
+        const img = element.querySelector('img')
+        element.style.height = img.width / (parseInt(img.dataset.width, 10)/parseInt(img.dataset.height,10)) + "px"
+      });
     }
+
+  },
+  beforeDestroy() {
+    clearInterval(this.imgLoadTimeout)
   },
   mounted(){
     this.$imgs = [].slice.call(this.$el.querySelectorAll('.img'))
-    this.$imgs.forEach(element => {
-      element.style.opacity = 0
-    });
+
   }
 }
 
@@ -57,6 +71,7 @@ export default {
   position relative
   margin-left auto
   width 12 * 160 * $unitH
+  min-height 12 * 160 * $unitV
   .img
     position relative
   .img + .img

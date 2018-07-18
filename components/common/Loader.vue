@@ -147,7 +147,7 @@ export default {
     TweenMax.to(this.$refs.loading, .3, {opacity: 1, ease: Power4.easeOut})
     this.$refs.loader.style.opacity = 0
     TweenMax.to(this.$refs.loader, .3, {opacity: 1, ease: Power4.easeOut})
-    TweenMax.to(this.$refs.loader.querySelector('.bar'), 3, {scaleX: .9, ease: Linear.easeInOut})
+    TweenMax.to(this.$refs.loader.querySelector('.bar'), 5, {scaleX: .9, ease: Linear.easeInOut})
     //
     if(this.isTablet)this.$refs.enter.style.opacity = 0
     this.$spans = [].slice.call(this.$refs.html.querySelectorAll('span'))
@@ -251,7 +251,7 @@ export default {
   .text .content
     margin-left 480 * $unitH
     position relative
-    margin-top -34 * $unitH
+    margin-top -46 * $unitH
     p
       position relative
       display block

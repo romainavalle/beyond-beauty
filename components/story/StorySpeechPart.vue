@@ -35,7 +35,6 @@ export default {
   methods:{
     onclick() {
       Emitter.emit('PART_CLICKED', this.id)
-      Emitter.emit('HIDE_MOUSE')
     },
     onMouseEnter() {
       if(this.isActive) {

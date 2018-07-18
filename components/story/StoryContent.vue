@@ -29,6 +29,7 @@ export default {
     },
     resize(w, h){
       this.$refs.speech.resize(w, h, this.$refs.media.$el.clientHeight)
+      this.$refs.media.resize()
     },
 
     show(){
@@ -39,6 +40,9 @@ export default {
     hide(){
       this.$refs.media.hide()
       this.$refs.speech.hide()
+    },
+    onReady() {
+      this.$refs.media.onReady()
     }
   },
   beforeDestroy(){

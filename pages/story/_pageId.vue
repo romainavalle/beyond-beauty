@@ -109,6 +109,7 @@ export default {
     onReady() {
       this.doReady()
       this.$refs.top.onReady()
+      this.$refs.content.onReady()
       this.$refs.push.onReady()
     },
     hidePush() {

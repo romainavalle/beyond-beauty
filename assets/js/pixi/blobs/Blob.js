@@ -34,7 +34,7 @@ class Blob {
   }
   setBlob(setDelay = false) {
     TweenMax.killTweensOf(this)
-    this.numPoints = 5 + Math.floor(Math.random() * 7)
+    this.numPoints = 5 + Math.floor(Math.random() * 9)
     this.radius = 20 + this.numPoints * 10
 
     const random = Math.random()
@@ -72,9 +72,8 @@ class Blob {
     this.blobHeadDisplace.endFill();
     this.blobHeadDisplace.rotation = Math.random() * Math.PI
 
-    const time = (this.radius * (.3 + Math.random() * .6)) / 4
-    const delayDivider = this.isMobile ? 1 : 1.5
-    const delay =  setDelay ? this.index / delayDivider : 0
+    const time = (this.radius + (this.radius * Math.random() * .2)) / 6 * this.w / 1440
+    const delay =  this.index
     this.ratio = 0
 
     this.blobHead.cacheAsBitmap = true

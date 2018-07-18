@@ -76,6 +76,8 @@ export default {
 
       this.mouseBlob = new MouseBlob(100, true)
       this.app.stage.addChild(this.mouseBlob.sprite);
+      this.pixiBlobs.resize(ResizeHelper.width(), ResizeHelper.height())
+      this.pixiBlobs.show()
     },
 
     onReady(){
@@ -109,9 +111,7 @@ export default {
         this.portraitsContainer.visible = false
         this.titlesContainer.visible = false
       }
-      setTimeout(()=> {
-        this.pixiBlobs.show()
-      }, 1700)
+
     },
 
     tick() {
@@ -303,8 +303,17 @@ export default {
     'route.name'(val, old) {
       TweenMax.set(this.$el, {yPercent: 0})
       if(old && old === 'index' && val === 'story-pageId'){
-        this.portraits.disappear(this.currentHomeSlideId);
-        setTimeout(() => {this.portraitsContainer.visible = false}, 1000)
+        if(this.currentPageIdNum === this.currentHomeSlideId) {
+          this.portraits.disappear(this.currentHomeSlideId);
+          setTimeout(() => {this.portraitsContainer.visible = false}, 1000)
+
+        }else{
+          this.portraits.hide(this.currentHomeSlideId, this.direction);
+          this.titles.hide(this.currentHomeSlideId, true, this.direction);
+          this.titles.show(this.currentPageIdNum, 0, 0);
+          this.portraitsContainer.visible = false
+
+        }
       }
       if(old && old === 'index' && val === 'about'){
         this.hideHome()

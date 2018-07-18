@@ -65,6 +65,8 @@ export default {
       this.currentPart = part
       this.$refs.parts[this.currentPart].showPart()
       SoundHelper.createSound(this.pageData.id, this.currentPart)
+
+      Emitter.emit('SET_MOUSE_TYPE', {type: 'pause'})
     },
     reset() {
       TweenMax.set([this.$refs.name, this.$refs.date, this.$refs.text], {opacity: 0, y: 50})

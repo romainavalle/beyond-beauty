@@ -5,6 +5,7 @@ class SoundHelper {
   constructor () {
     this.mute = false
     this.volume = 1
+    this.volumeFocus = 1
     this.isBackgroundSound = false
     this.isAppReady = false
     this.path = process.env.NODE_ENV === 'development' ? '/' : 'https://assets.beyond-beauty.co/'
@@ -21,7 +22,7 @@ class SoundHelper {
         this.onSoundLoaded()
       },
       onend: () => {
-        //this.soundPiano.seek(.55)
+        //this.soundPiano.seek(.1)
       }
 
     })
@@ -35,7 +36,7 @@ class SoundHelper {
         this.onSoundLoaded()
       },
       onend: () => {
-        //this.soundBg.seek(.55)
+        //this.soundBg.seek(.1)
       }
 
     })
@@ -52,7 +53,7 @@ class SoundHelper {
     if(!this.isAppReady) return
     this.soundPiano.play()
     this.soundBg.play()
-    if(this.soundPiano)this.soundPiano.fade(0, .2 * this.volume, 2000)
+    if(this.soundPiano)this.soundPiano.fade(0, .2 * this.volume * this.volumeFocus, 2000)
   }
   createSound(id, part) {
     this.id = id
@@ -78,34 +79,51 @@ class SoundHelper {
       if(this.id === 'intro') {
         this.voice.volume(1)
       } else {
-        this.voice.fade(0, 1 * this.volume, 1000)
+        this.voice.fade(0, 1 * this.volume * this.volumeFocus, 1000)
         this.isBackgroundSound = true
         this.switchSound()
 
       }
     })
   }
+
   toggleMute(mute) {
     this.mute = mute
-
     if(this.mute) {
       this.volume = 0
-      if(this.soundPiano)this.soundPiano.fade(.2 * this.volume, 0, 300)
-      if(this.soundBg)this.soundBg.fade(.2 * this.volume, 0, 300)
-      if(this.voice)this.voice.fade(1 * this.volume, 0, 300)
+      if(this.soundPiano)this.soundPiano.fade(.2 * this.volume * this.volumeFocus, 0, 300)
+      if(this.soundBg)this.soundBg.fade(.2 * this.volume * this.volumeFocus, 0, 300)
+      if(this.voice)this.voice.fade(1 * this.volume * this.volumeFocus, 0, 300)
     } else {
       this.volume = 1
-      if(this.soundBg)this.soundBg.fade(0, .2 * this.volume, 300)
-      if(this.soundPiano && !this.isBackgroundSound)this.soundPiano.fade(0, .2 * this.volume, 300)
-      if(this.voice)this.voice.fade(0, 1 * this.volume, 300)
+      if(this.soundBg)this.soundBg.fade(0, .2 * this.volume * this.volumeFocus, 300)
+      if(this.soundPiano && !this.isBackgroundSound)this.soundPiano.fade(0, .2 * this.volume * this.volumeFocus, 300)
+      if(this.voice)this.voice.fade(0, 1 * this.volume * this.volumeFocus, 300)
     }
+  }
+
+
+  setBlur() {
+    if(this.mute) return
+    this.volume = 0
+    if(this.soundPiano)this.soundPiano.fade(.2 * this.volume * this.volumeFocus, 0, 300)
+    if(this.soundBg)this.soundBg.fade(.2 * this.volume * this.volumeFocus, 0, 300)
+    if(this.voice)this.voice.fade(1 * this.volume * this.volumeFocus, 0, 300)
+  }
+
+  setFocus() {
+    if(this.mute) return
+    this.volume = 1
+    if(this.soundBg)this.soundBg.fade(0, .2 * this.volume * this.volumeFocus, 300)
+    if(this.soundPiano && !this.isBackgroundSound)this.soundPiano.fade(0, .2 * this.volume * this.volumeFocus, 300)
+    if(this.voice)this.voice.fade(0, 1 * this.volume * this.volumeFocus, 300)
   }
   switchSound() {
 
     if(this.isBackgroundSound) {
-      if(this.soundPiano)this.soundPiano.fade(.2 * this.volume, 0, 1000)
+      if(this.soundPiano)this.soundPiano.fade(.2 * this.volume * this.volumeFocus, 0, 1000)
     }else{
-      if(this.soundPiano)this.soundPiano.fade(0, .2 * this.volume, 1000)
+      if(this.soundPiano)this.soundPiano.fade(0, .2 * this.volume * this.volumeFocus, 1000)
 
     }
   }
@@ -115,17 +133,19 @@ class SoundHelper {
   playPause() {
     if(this.voice.playing()) {
       this.pause()
+      Emitter.emit('SET_MOUSE_TYPE', {type: 'listen'})
     } else {
       this.voice.play()
-      this.voice.fade(0, 1 * this.volume, 300)
+      this.voice.fade(0, 1 * this.volume * this.volumeFocus, 300)
       this.isBackgroundSound = true
       this.switchSound()
+      Emitter.emit('SET_MOUSE_TYPE', {type: 'pause'})
     }
   }
   pause() {
     if(!this.voice) return
     if(this.voice.playing()) {
-      this.voice.fade(1 * this.volume, 0, 300)
+      this.voice.fade(1 * this.volume * this.volumeFocus, 0, 300)
       this.voice.once('fade', () => {
         this.voice.pause()
       });
@@ -143,13 +163,20 @@ class SoundHelper {
   fadeOut() {
     if(!this.voice) return
     if(this.voice.volume() !== 1) return
-    this.voice.fade(1 * this.volume, 0, 1000)
+    this.voice.fade(1 * this.volume * this.volumeFocus, 0, 1000)
     this.voice.once('fade', () => {
       this.voice.stop()
     });
 
     this.isBackgroundSound = false
     this.switchSound()
+  }
+  userNotFocus(){
+   this.volumeFocus = 0
+  }
+  userFocus(){
+    this.volumeFocus = 1
+
   }
 }
 

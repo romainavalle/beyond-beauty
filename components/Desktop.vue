@@ -113,7 +113,6 @@ export default {
     resize(forceAfterRoute = false){
       const w = ResizeHelper.width()
       const h = ResizeHelper.height()
-
       if(this.isAppReady) {
         if(this.$refs.page)this.$refs.page.$children[0].resize && this.$refs.page.$children[0].resize(w, h)
         if(!forceAfterRoute)this.$refs.homeCanvas.resize(w, h)
@@ -133,7 +132,7 @@ export default {
     tick(){
       if(!this.isAppReady) {
         this.$refs.loader.tick()
-
+        console.log('eeee')
       }else{
         this.$refs.homeCanvas.tick()
         this.$refs.logo.tick()
@@ -154,9 +153,7 @@ export default {
       this.page = this.$refs.page.$children[0]
       this.$refs.homeCanvas.load()
       if(this.page)this.$refs.page.$children[0].load && this.$refs.page.$children[0].load()
-      this.$nextTick(()=>{
-        TweenMax.ticker.addEventListener('tick', this._tick)
-      })
+
     },
     onReady() {
       this.resize()
@@ -225,8 +222,17 @@ export default {
       Emitter.emit('HIDE_MOUSE');
       if(doNext)next()
     })
+     window.addEventListener("blur", () => {
+      SoundHelper.setBlur()
+    }, false);
+     window.addEventListener("focus", () => {
+      SoundHelper.setFocus()
+    }, false);
 
-    this.$nextTick(this.load.bind(this))
+    this.$nextTick(()=>{
+        TweenMax.ticker.addEventListener('tick', this._tick)
+        this.load()
+      })
     this.resize()
   }
 }

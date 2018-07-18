@@ -16,7 +16,7 @@ class Blobs {
     this.blobs = []
     const w = ResizeHelper.width()
     const h = ResizeHelper.height()
-    const max = isMobile ? 10 : 15
+    const max = isMobile ? 10 : 12
     for (let index = 0; index < max; index++) {
       const blob = new Blob(index,isMobile)
       //blob.resize(w, h)

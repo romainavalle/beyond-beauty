@@ -176,7 +176,6 @@ export default {
     left 160 * $unitH
     position absolute
     font-weight normal
-
     .innerTitle
       position absolute
       display flex
@@ -201,7 +200,6 @@ export default {
           stroke-dashoffset 45
           stroke-dasharray 45
           stroke-width 1px
-
       span
         display block
         will-change transform
@@ -255,12 +253,13 @@ export default {
     position absolute
     text-transform uppercase
     pointer-events auto
-    transition opacity .5s ease-in-quad 2s, transform .5s ease-out-quart 2s
+    transition opacity .5s ease-in-quad, transform .5s ease-out-quart
     padding-top 10px
     padding-bottom 10px
     overflow hidden
     &:hover
-      transition letter-spacing .4s ease-out-quart
+      opacity .6
+      /*transition letter-spacing .4s ease-out-quart
       letter-spacing $unitH * 8
       &:before,
       &:after
@@ -268,7 +267,7 @@ export default {
       &:before
         transform translateX(-7 * $unitH)
       &:after
-        transform translateX(7 * $unitH)
+        transform translateX(7 * $unitH)*/
     .word
       position relative
       width 100 * $unitH
