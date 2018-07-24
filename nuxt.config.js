@@ -37,7 +37,7 @@ module.exports = {
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: "Four women mainly known for their appearances. Discover their inner beauty." },
+      { hid: 'description', name: 'description', content: "Four women primarily known for their appearances. Discover their inner beauty." },
       { name: 'theme-color', content: '#e1dfd7' },
       { name: 'msapplication-TileColor', content: '#e1dfd7' },
       { name: 'mobile-web-app-capable', content: 'yes' },
@@ -54,7 +54,7 @@ module.exports = {
       {
         hid: 'og:description',
         property: 'og:description',
-        content: "Four women mainly known for their appearance. Discover their inner beauty."
+        content: "Four women primarily known for their appearance. Discover their inner beauty."
       },
       {
         hid: 'og:site_name',
@@ -94,7 +94,7 @@ module.exports = {
       {
         hid: 'twitter:description',
         property: 'twitter:description',
-        content: "Four women mainly known for their appearances. Discover their inner beauty."
+        content: "Four women primarily known for their appearances. Discover their inner beauty."
       },
       {
         hid: 'twitter:site',
@@ -121,7 +121,10 @@ module.exports = {
     ]
   },
   modules: [
-    '@nuxtjs/pwa'
+    '@nuxtjs/pwa',
+    ['@nuxtjs/google-analytics', {
+      id: 'UA-122129754-1'
+    }]
   ],
   router: {
     base: '/'

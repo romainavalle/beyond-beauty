@@ -163,12 +163,13 @@ export default {
       this.name_array.push({el,top,bottom})
     })
     //
+    if(!this.isTablet) SoundHelper.createSound('intro')
     setTimeout(() => {
       this.show = true
       if(this.isTablet) TweenMax.staggerTo(this.$spans, .3, {delay:1, opacity: 1} , .2)
-    }, 200)
+    }, 100)
     this.changeTimer = setTimeout(() => {
-      if(!this.isTablet) SoundHelper.createSound('intro')
+
       this.isActive = true
       this.changeName()
     }, 1800)

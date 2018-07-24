@@ -132,7 +132,6 @@ export default {
     tick(){
       if(!this.isAppReady) {
         this.$refs.loader.tick()
-        console.log('eeee')
       }else{
         this.$refs.homeCanvas.tick()
         this.$refs.logo.tick()
@@ -167,6 +166,7 @@ export default {
     }
   },
   beforeDestroy(){
+    clearTimeout(this.loadAndTickerTimeout)
     if(process.browser){
       Emitter.removeListener('GLOBAL:RESIZE', this._resize)
       TweenMax.ticker.removeEventListener('tick', this._tick)
@@ -185,6 +185,13 @@ export default {
   mounted () {
     if(process.browser) {
       window.resolution = this.isTablet ? .5 : 1
+      const canvas = document.createElement('canvas');
+      const gl = canvas.getContext('webgl');
+      if(gl) {
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info')
+        const renderer = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)
+        if(renderer == "Intel Iris Graphics") window.resolution = .5
+      }
       if(window.devicePixelRatio < 1.5)window.resolution = .5
     }
     this._resize = this.resize.bind(this)
@@ -229,10 +236,10 @@ export default {
       SoundHelper.setFocus()
     }, false);
 
-    this.$nextTick(()=>{
+    this.loadAndTickerTimeout = setTimeout(()=>{
         TweenMax.ticker.addEventListener('tick', this._tick)
         this.load()
-      })
+      }, 100)
     this.resize()
   }
 }

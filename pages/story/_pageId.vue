@@ -30,7 +30,7 @@ export default {
         {
           hid: 'description',
           name: 'description',
-          content: `Four women mainly known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
+          content: `Four women primarily known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
         },
         {
           hid: `og:title`,
@@ -40,7 +40,7 @@ export default {
         {
           hid: 'og:description',
           property: 'og:description',
-          content: `Four women mainly known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
+          content: `Four women primarily known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
         },
         {
           hid: 'og:url',
@@ -65,7 +65,7 @@ export default {
         {
           hid: 'twitter:description',
           property: 'twitter:description',
-          content: `Four women mainly known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
+          content: `Four women primarily known for their appearances. Discover their inner beauty. Learn more about ${this.pages[this.currentPageIdNum].name}.`
         },
         {
           hid: 'twitter:url',

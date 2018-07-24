@@ -2,7 +2,7 @@
 <template>
   <div class="aboutText">
     <div class="content">
-      <p><span class="line">A tribute<span class="img" v-if="packer"><img :src="getURI('about/emma-watson.jpg')" alt="emma watson"></span>to</span><span class="line">four inspiring</span><span class="line">women<span class="img" v-if="packer"><img :src="getURI('about/jennifer-lawrence.jpg')" alt="jennifer lawrence"></span>mainly</span><span class="line">known for their</span><span class="line">appearance</span><span class="line">although they</span><span class="line">stand<span class="img" v-if="packer"><img :src="getURI('about/natalie-portman.jpg')" alt="natalie portman"></span>up &amp; act</span><span class="line"> for the greater</span><span class="line">good.<span class="img" v-if="packer"><img :src="getURI('about/cara-delevingne.jpg')" alt="cara delevingne"></span>true</span><span class="line">inner beauty.</span></p>
+      <p><span class="line">A tribute<span class="img" v-if="packer"><img :src="getURI('about/emma-watson.jpg')" alt="emma watson"></span>to</span><span class="line">four inspiring</span><span class="line">women<span class="img" v-if="packer"><img :src="getURI('about/jennifer-lawrence.jpg')" alt="jennifer lawrence"></span>primarily</span><span class="line">known for their</span><span class="line">appearance</span><span class="line">although they</span><span class="line">stand<span class="img" v-if="packer"><img :src="getURI('about/natalie-portman.jpg')" alt="natalie portman"></span>up &amp; act</span><span class="line"> for the greater</span><span class="line">good.<span class="img" v-if="packer"><img :src="getURI('about/cara-delevingne.jpg')" alt="cara delevingne"></span>true</span><span class="line">inner beauty.</span></p>
     </div>
   </div>
 </template>

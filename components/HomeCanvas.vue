@@ -356,7 +356,7 @@ export default {
       transparent: false,
       autoStart: false,
       autoResize: true,
-      powerPreference: "high-performance",
+      /*powerPreference: "high-performance",*/
       view: this.$el,
       resolution: 1,
       legacy: true //flickering on old browser
